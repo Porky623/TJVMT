@@ -6,9 +6,7 @@ const UserSchema = mongoose.Schema({
     gradYear: Number, //Graduation year
     firstName: String,
     lastName: String,
-    password: String
-}, {
-    timestamps: true
+    password: String //Probably will remove
 });
 
 module.exports = mongoose.model('User', UserSchema);

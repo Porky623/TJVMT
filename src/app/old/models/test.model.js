@@ -2,7 +2,11 @@ const mongoose = require('mongoose');
 
 const TestSchema = mongoose.Schema({
     id: String,
-    Individuals: {
+    Individuals: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    Scores: {
         id: {
             score: Number,
             answers: {
@@ -11,12 +15,8 @@ const TestSchema = mongoose.Schema({
         }
     },
     Index: {
-        Individuals: {
-            id: Number //Score for a student's ID
-        }
+        id: Number //Student ID to index
     }
-}, {
-    timestamps: true
 });
 
 module.exports = mongoose.model('Test', TestSchema);

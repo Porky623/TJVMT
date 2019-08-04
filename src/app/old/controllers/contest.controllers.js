@@ -142,3 +142,10 @@ exports.delete = (req, res) => {
     });
 };
 
+function getContestWithTests(contest){
+    return Contest.findOne({ name: contest })
+        .populate('tests').exec((err, tests) => {
+            console.log("Populated Contest " + tests);
+        })
+}
+
