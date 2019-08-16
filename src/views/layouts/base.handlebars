@@ -18,12 +18,14 @@
 <div id="header">
     {{> header}}
 </div>
-
 <div class="container" id="content">
     {{#each message}}
     <div class="alert alert-{{ message.tags }}">{{ message }}</div>
         {{content}}
     {{/each}}
+</div>
+<div id="flash notifications">
+{{{flash}}}
 </div>
 
 {{{body}}}

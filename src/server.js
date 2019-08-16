@@ -10,9 +10,10 @@ const dbConfig = require('./config/database.config.js');
 // const port = 3000;
 const cookieSession = require('cookie-session');
 const passport = require('passport');
-// const passportSetup = require('./config/passport-setup');
+const passportSetup = require('./config/passport-setup');
 const keys = require('./config/keys');
 const routes = require('./routes');
+const flash = require('express-flash-notification');
 
 mongoose.connect(dbConfig.url, {
   useNewUrlParser: true,
@@ -56,6 +57,15 @@ app.use(express.static(path.join(__dirname, 'static')));
 app.use(bodyParser.urlencoded({extended: true}));
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
+
+app.use(flash(app, {
+  sessionName: 'flash',
+  utilityName: 'flash',
+  localsName: 'flash',
+  viewName: 'partials/flash',
+  beforeSingleRender: function(item, callback){ callback(null, item) },
+  afterAllRender: function(htmlFragments, callback){ callback(null, htmlFragments.join('\n')) }
+}));
 
 app.use('/', routes);
 

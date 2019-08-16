@@ -37,7 +37,7 @@ router.get('/', (req, res) => {
   res.locals.metaTags = {
     title: 'TJ VMT',
   };
-  res.render('index', { user: req.user });
+  res.render('index', {user: req.user});
 });
 
 //Calendar

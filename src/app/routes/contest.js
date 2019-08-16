@@ -4,12 +4,7 @@ const contestController = require('../controllers/contest');
 const officerCheck = require('../routes/officer').officerCheck;
 
 //Add Contests
-router.get('/contest/add', officerCheck, (req, res) => {
-  res.locals.metaTags = {
-    title: 'Add Contests',
-  };
-  res.render('add_contests_tests', { user: req.user });
-});
+router.get('/contest/add', officerCheck, contestController.contest_create);
 
 router.post('/contest/add', officerCheck, contestController.contest_create_post);
 

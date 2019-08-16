@@ -1,15 +1,11 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var ContestSchema = new Schema({
+var TestSchema = new Schema({
   name: {type: String, required: true},
-  tests: [{
+  scores: [{
     type: Schema.ObjectId,
-    ref: 'Test'
-  }],
-  weighting: [{
-    type: Schema.ObjectId,
-    ref: 'TestWeight'
+    ref: 'Score'
   }],
   indices: [{
     type: Schema.ObjectId,
@@ -18,4 +14,4 @@ var ContestSchema = new Schema({
 });
 
 //Export model
-module.exports = mongoose.model('Contest', ContestSchema);
+module.exports = mongoose.model('Test', TestSchema);
