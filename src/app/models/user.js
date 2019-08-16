@@ -6,8 +6,18 @@ var UserSchema = new Schema({
     lastName: {type: String, required: true},
     gradYear: {type: Number, min: 2000, max: 3000},
     email: String,
-    username: {type: String, required: true}
+    username: {type: String, required: true},
+    role: String,
 });
+
+UserSchema.statics = {
+    usernameExists(un) {
+        return this.find({username: un})
+        .then(result => {
+            if (!result) throw new Error('Username not found')
+        })
+    },
+};
 
 //Virtual for full name
 UserSchema
@@ -15,13 +25,6 @@ UserSchema
 .get(function() {
     return this.firstName + ' ' + this.lastName;
 });
-
-// Virtual for user's profile
-UserSchema
-    .virtual('url')
-    .get(function () {
-        return '/profile/' + this._id;
-    });
 
 //Export model
 module.exports = mongoose.model('User', UserSchema);

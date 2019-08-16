@@ -33,4 +33,9 @@
     <li><a href="rankings">Rankings</a></li>
     <li><a href="archive">Archive</a></li>
     <li><a href="tjimo">TJIMO</a></li>
+    {{#if user}}
+        <li><a href="/auth/logout">Logout</a></li>
+    {{else}}
+        <li><a href="/auth/login">Login</a></li>
+    {{/if}}
 </ul>

@@ -5,3 +5,4 @@ node_modules
 # files
 db.json
 *.log
+src/config/keys.js
