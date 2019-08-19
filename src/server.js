@@ -7,7 +7,6 @@ const path = require('path');
 const mongoose = require('mongoose');
 // Configuring the database
 const dbConfig = require('./config/database.config.js');
-// const port = 3000;
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const passportSetup = require('./config/passport-setup');
@@ -39,18 +38,18 @@ let urlencodedParser = bodyParser.urlencoded({
 });
 let jsonParser = bodyParser.json();
 
-app.set('views', path.join(path.resolve(__dirname), 'views'));
+app.set('views', path.join(path.resolve(__dirname), '/views'));
 let hbs = exphbs.create({
   defaultLayout: 'base',
   extname: '.handlebars',
-  layoutsDir: 'src/views/layouts',
-  partialsDir: 'src/views/partials',
+  layoutsDir: './vmt_Node/src/views/layouts',
+  partialsDir: './vmt_Node/src/views/partials',
   helpers: require('./helpers/helpers')
 });
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
-app.use(express.static(path.join(__dirname, 'static')));
+app.use(express.static(path.join(__dirname, 'src/static')));
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: true}));
 // parse requests of content-type - application/json
@@ -60,7 +59,7 @@ app.use(flash(app, {
   sessionName: 'flash',
   utilityName: 'flash',
   localsName: 'flash',
-  viewName: 'partials/flash',
+  viewName: 'elements/flash',
   beforeSingleRender: function(item, callback){ callback(null, item) },
   afterAllRender: function(htmlFragments, callback){ callback(null, htmlFragments.join('\n')) }
 }));
@@ -72,6 +71,6 @@ app.use(function(req,res,next){
 
 app.use('/', routes);
 
-app.listen(3000, () => {
-  console.log('app running on port 3000');
+app.listen(process.env.PORT, function() {
+    console.log("Server listening on: " + process.env.PORT);
 });
