@@ -30,7 +30,7 @@ exports.test_create_post = async (req,res,next) => {
       redirect: false
     });
   }
-  res.redirect('/officers');
+  res.redirect('/vmt/officers');
 };
 
 exports.test_update_score_name = async(req,res) => {
@@ -47,10 +47,10 @@ exports.test_update_score_name_post = async(req,res,next) => {
       message: 'There is no test named '+req.body.name+'.',
       redirect: false
     });
-    res.redirect('/test/update/score');
+    res.redirect('/vmt/test/update/score');
   }
   else {
-    res.redirect('/test/update/score/add?name='+req.body.name);
+    res.redirect('/vmt/test/update/score/add?name='+req.body.name);
   }
 };
 
@@ -67,7 +67,7 @@ exports.test_update_score_post = async (req,res,next) => {
     req.flash({
       type: 'Warning',
       message: 'There is no test named '+req.query.name+'.',
-      redirect: '/test/update/score'
+      redirect: '/vmt/test/update/score'
     });
   }
   else if (!(await User.exists({username: req.body.username}))) {
@@ -76,7 +76,7 @@ exports.test_update_score_post = async (req,res,next) => {
       message: 'Cannot find student with username ' + req.body.username + '.',
       redirect: false
     });
-    res.redirect('/test/update/score/add?name=' + req.query.name);
+    res.redirect('/vmt/test/update/score/add?name=' + req.query.name);
   }
   else {
     let test = await Test.findOne({name: req.query.name});
@@ -103,7 +103,7 @@ exports.test_update_score_post = async (req,res,next) => {
       test.scores.push(score._id);
       test.save();
     }
-    res.redirect('/test/update/score/add?name=' + req.query.name);
+    res.redirect('/vmt/test/update/score/add?name=' + req.query.name);
   }
 };
 
@@ -122,7 +122,7 @@ exports.test_update_indices_post = async (req,res,next) => {
       message: 'There is no test named '+req.body.testName+'.',
       redirect: false
     });
-    res.redirect('/test/update/indices');
+    res.redirect('/vmt/test/update/indices');
   }
   else {
     let test = await Test.findOne({name: req.body.testName});
@@ -210,7 +210,7 @@ exports.test_update_indices_post = async (req,res,next) => {
         redirect: false
       });
     }
-    res.redirect('/officers');
+    res.redirect('/vmt/officers');
   }
 };
 
@@ -234,13 +234,13 @@ exports.test_writer_post = async(req, res, next) => {
     req.flash({
       type: 'Warning',
       message: 'Writer already in test! Writer not added',
-      redirect: '/test/update/writer'
+      redirect: '/vmt/test/update/writer'
     });
   }
   else {
     let writer = await User.findOne({username: req.body.username});
     await test.writersNames.push(writer.username);
     await test.save();
-    res.redirect('/test/update/writer');
+    res.redirect('/vmt/test/update/writer');
   }
 };

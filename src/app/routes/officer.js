@@ -5,10 +5,10 @@ const User = require('../models/user');
 
 const officerCheck = (req, res, next) =>{
   if(!req.user) {
-    res.redirect('/auth/login');
+    res.redirect('/vmt/auth/login');
   } else {
     if (!req.user.isOfficer) {
-      res.redirect('/');
+      res.redirect('/vmt/');
     } else {
       next();
     }
@@ -36,7 +36,7 @@ router.post('/add_officer', officerCheck, async (req, res)=> {
     req.flash({
       type: 'Warning',
       message: 'Cannot find student with username '+req.body.username,
-      redirect: '/add_officer'
+      redirect: '/vmt/add_officer'
     })
   }
   else {
@@ -65,7 +65,7 @@ router.post('/remove_officer', officerCheck, async (req, res) => {
     req.flash({
       type: 'Warning',
       message: 'Cannot find student with username '+req.body.username,
-      redirect: '/add_officer'
+      redirect: '/vmt/add_officer'
     })
   }
   else {

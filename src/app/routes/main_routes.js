@@ -9,7 +9,7 @@ const Handlebars = require('express-handlebars');
 
 const authCheck = (req, res, next) => {
   if(!req.user){
-    res.redirect('/auth/login');
+    res.redirect('/vmt/auth/login');
   } else {
     next();
   }
@@ -23,7 +23,7 @@ router.get('/auth/login', (req, res) => {
 // auth logout
 router.get('/auth/logout', (req, res) => {
   req.logout();
-  res.redirect('/');
+  res.redirect('/vmt/');
 });
 
 // auth with Ion
@@ -33,8 +33,8 @@ router.get('/auth/ion', passport.authenticate('ion', {
 
 // callback route for Ion to redirect to
 // hand control to passport to use code to grab profile info
-router.get('/auth/ion/redirect', passport.authenticate('ion', { failureRedirect: '/auth/login'}), (req, res) => {
-  res.redirect('/');
+router.get('/auth/ion/redirect', passport.authenticate('ion', { failureRedirect: '/vmt/auth/login'}), (req, res) => {
+  res.redirect('/vmt/');
 });
 
 //Home page

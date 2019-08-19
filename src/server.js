@@ -25,9 +25,6 @@ mongoose.connect(dbConfig.url, {
 });
 mongoose.Promise = global.Promise;
 
-
-// const HOSTED_DOMAIN = 'http://localhost:3000';
-
 let app = express();
 
 app.use(cookieSession({
