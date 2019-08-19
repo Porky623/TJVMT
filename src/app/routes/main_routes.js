@@ -5,6 +5,7 @@ const Ind = require('../models/ind');
 const Test = require('../models/test');
 const User = require('../models/user');
 const Score = require('../models/score');
+const Contest = require('../models/contest');
 const Handlebars = require('express-handlebars');
 
 const authCheck = (req, res, next) => {
@@ -86,58 +87,86 @@ router.get('/rankings', (req, res) => {
 });
 
 //Rankings
-router.get('/rankings/test', (req, res) => {
+router.get('/rankings/test', async (req, res) => {
   res.locals.metaTags = {
     title: 'Test Rankings',
   };
-  res.render('rankings_choose_test');
+  var testNames = [];
+  let allTests = await Test.find({});
+  for(var i=0; i<allTests.length; i++) {
+      testNames.push(allTests[i].name);
+  }
+  res.render('rankings_choose_test', {testName: testNames});
 });
 
 router.get('/rankings/test/view', async (req, res) => {
   res.locals.metaTags = {
     title: 'Test Rankings',
   };
-  let ranks = await Ind.find({testName: req.query.name}).sort("-indexVal");
-  var out = [];
-  for(var i=0; i<ranks.length; i++) {
-    let rank = ranks[i];
-    let score = await Score.findOne({studentUsername: rank.studentUsername, testName: rank.testName});
-    out.push({
-      rank: rank.rank,
-      studentName: rank.studentName,
-      indexVal: rank.indexVal,
-      gradYear: rank.studentGradYear,
-      scoreDist: score.scoreDist
-    });
+  if(!(await Test.exists({name: req.query.name}))) {
+    req.flash({
+        type: 'Warning',
+        message: 'No test named '+req.query.name,
+        redirect: '/vmt/rankings/test'
+    })
   }
-  res.render('rankings_view_test', {ranks: out, testName: req.query.name});
+  else {
+    let ranks = await Ind.find({testName: req.query.name}).sort("-indexVal");
+    var out = [];
+    for(var i=0; i<ranks.length; i++) {
+      let rank = ranks[i];
+      let score = await Score.findOne({studentUsername: rank.studentUsername, testName: rank.testName});
+      out.push({
+        rank: rank.rank,
+        studentName: rank.studentName,
+        indexVal: rank.indexVal,
+        gradYear: rank.studentGradYear,
+        scoreDist: score.scoreDist
+      });
+    }
+    res.render('rankings_view_test', {ranks: out, testName: req.query.name});
+  }
 });
 
 //Rankings
-router.get('/rankings/contest', (req, res) => {
+router.get('/rankings/contest', async (req, res) => {
   res.locals.metaTags = {
     title: 'Contest Rankings',
   };
-  res.render('rankings_choose_contest');
+  var contestNames = [];
+  let allContests = await Contest.find({});
+  for(var i=0; i<allContests.length; i++) {
+      contestNames.push(allContests[i].name);
+  }
+  res.render('rankings_choose_contest', {contestName: contestNames});
 });
 
 router.get('/rankings/contest/view', async (req, res) => {
   res.locals.metaTags = {
     title: 'Contest Rankings',
   };
-  let ranks = await Ind.find({testName: req.query.name}).sort("-indexVal");
-  var out = [];
-  for(var i=0; i<ranks.length; i++) {
-    let rank = ranks[i];
-    let score = await Score.findOne({studentUsername: rank.studentUsername, testName: rank.testName});
-    out.push({
-      rank: rank.rank,
-      studentName: rank.studentName,
-      indexVal: rank.indexVal,
-      gradYear: rank.studentGradYear
-    });
+  if(!(await Contest.exists({name: req.query.name}))) {
+    req.flash({
+        type: 'Warning',
+        message: 'No contest named '+req.query.name,
+        redirect: '/vmt/rankings/contest'
+    })
   }
-  res.render('rankings_view_contest', {ranks: out, testName: req.query.name});
+  else {
+    let ranks = await Ind.find({testName: req.query.name}).sort("-indexVal");
+    var out = [];
+    for(var i=0; i<ranks.length; i++) {
+      let rank = ranks[i];
+      let score = await Score.findOne({studentUsername: rank.studentUsername, testName: rank.testName});
+      out.push({
+        rank: rank.rank,
+        studentName: rank.studentName,
+        indexVal: rank.indexVal,
+        gradYear: rank.studentGradYear
+      });
+    }
+    res.render('rankings_view_contest', {ranks: out, testName: req.query.name});
+  }
 });
 
 module.exports = router;
