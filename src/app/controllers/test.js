@@ -94,8 +94,7 @@ exports.test_update_score_post = async (req,res,next) => {
       score = new Score({
         studentName: student.firstName+' '+student.lastName,
         studentUsername: student.username,
-        //temporary
-        studentGradYear: 2000,
+        studentGradYear: student.gradYear,
         testName: test.name,
         scoreVal: req.body.scoreVal,
         scoreDist: req.body.scoreDist
@@ -147,7 +146,7 @@ exports.test_update_indices_post = async (req,res,next) => {
           let score = new Score({
             studentName: writer.firstName + ' ' + writer.lastName,
             studentUsername: writer.username,
-            studentGradYear: 2000,
+            studentGradYear: writer.gradYear,
             testName: test.name,
             scoreVal: 0,
             scoreDist: 'Writer'

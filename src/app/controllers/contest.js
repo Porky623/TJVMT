@@ -127,8 +127,7 @@ exports.contest_update_indices_post = async (req, res, next) => {
       let ind = new Ind({
         studentName: student.firstName + ' ' + student.lastName,
         studentUsername: studentUsername,
-        //TEMPORARY
-        studentGradYear: 2000,
+        studentGradYear: student.gradYear,
         testName: req.body.contestName,
         indexVal: indValue
       });
