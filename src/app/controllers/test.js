@@ -222,25 +222,41 @@ exports.test_writer = async(req, res) => {
 };
 
 exports.test_writer_post = async(req, res, next) => {
-  let test = await Test.findOne({name: req.body.testName});
-  var inTest = false;
-  for(var i=0; i<test.writersNames.length; i++) {
-    if(test.writersNames[i]==req.body.username) {
-      inTest = true;
-      break;
-    }
-  }
-  if(inTest) {
-    req.flash({
-      type: 'Warning',
-      message: 'Writer already in test! Writer not added',
-      redirect: prefix+'test/update/writer'
-    });
+  if(!(await Test.exists({name: req.body.testName}))) {
+      req.flash({
+          type: 'Warning',
+          message: 'Could not find test named '+req.body.testName,
+          redirect: prefix+'test/update/writer'
+      })
   }
   else {
-    let writer = await User.findOne({username: req.body.username});
-    await test.writersNames.push(writer.username);
-    await test.save();
-    res.redirect(prefix+'test/update/writer');
+      let test = await Test.findOne({name: req.body.testName});
+      var inTest = false;
+      for(var i=0; i<test.writersNames.length; i++) {
+        if(test.writersNames[i]==req.body.username) {
+          inTest = true;
+          break;
+        }
+      }
+      if(inTest) {
+        req.flash({
+          type: 'Warning',
+          message: 'Writer already in test! Writer not added',
+          redirect: prefix+'test/update/writer'
+        });
+      }
+      else if(!(await User.exists({username: req.body.username}))) {
+        req.flash({
+            type: 'Warning',
+            message: 'There is no student with username '+req.body.username,
+            redirect: prefix+'test/update/writer'
+        })
+      }
+      else {
+        let writer = await User.findOne({username: req.body.username});
+        await test.writersNames.push(writer.username);
+        await test.save();
+        res.redirect(prefix+'test/update/writer');
+      }
   }
 };
