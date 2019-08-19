@@ -1,7 +1,7 @@
 <h1>Add a Test</h1>
-<form name="add_test_form" action="/vmt/test/add" method="post">
+<form name="add_test_form" action="{{prefix}}test/add" method="post">
     <label for="name">Test name</label>
     <input class="form-control" type="text" id="name" name="name">
     <input class="btn btn-primary" type="submit" value="Submit">
 </form>
-<a href="/vmt/officers"><button type="button" class="btn btn-primary">Return to Officers Page</button></a>
+<a href="{{prefix}}officers"><button type="button" class="btn btn-primary">Return to Officers Page</button></a>

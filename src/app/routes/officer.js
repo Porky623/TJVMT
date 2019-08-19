@@ -2,13 +2,14 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const User = require('../models/user');
+const prefix = require('../../config/url-config').prefix;
 
 const officerCheck = (req, res, next) =>{
   if(!req.user) {
-    res.redirect('/vmt/auth/login');
+    res.redirect(prefix+'auth/login');
   } else {
     if (!req.user.isOfficer) {
-      res.redirect('/vmt/');
+      res.redirect(prefix+'');
     } else {
       next();
     }
@@ -38,7 +39,7 @@ router.post('/add_officer', officerCheck, async (req, res)=> {
       message: 'Cannot find student with username '+req.body.username,
       redirect: false
     })
-    res.redirect('/vmt/add_officer');
+    res.redirect(prefix+'add_officer');
   }
   else {
     User.updateOne({username: req.body.username}, {
@@ -66,7 +67,7 @@ router.post('/remove_officer', officerCheck, async (req, res) => {
     req.flash({
       type: 'Warning',
       message: 'Cannot find student with username '+req.body.username,
-      redirect: '/vmt/add_officer'
+      redirect: prefix+'add_officer'
     })
   }
   else {

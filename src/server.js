@@ -13,6 +13,7 @@ const passportSetup = require('./config/passport-setup');
 const keys = require('./config/keys');
 const routes = require('./routes');
 const flash = require('express-flash-notification');
+const prefix = require('./config/url-config').prefix;
 
 mongoose.connect(dbConfig.url, {
   useNewUrlParser: true,
@@ -42,8 +43,13 @@ app.set('views', path.join(path.resolve(__dirname), '/views'));
 let hbs = exphbs.create({
   defaultLayout: 'base',
   extname: '.handlebars',
+  //For actual site use
   layoutsDir: './vmt_Node/src/views/layouts',
   partialsDir: './vmt_Node/src/views/partials',
+
+  //For local use
+  // layoutsDir: './src/views/layouts',
+  // partialsDir: './src/views/partials',
   helpers: require('./helpers/helpers')
 });
 app.engine('handlebars', hbs.engine);
@@ -66,11 +72,19 @@ app.use(flash(app, {
 
 app.use(function(req,res,next){
   res.locals.user = req.user;
+  res.locals.prefix = prefix;
   next();
 });
 
 app.use('/', routes);
 
+//For actual site use
 app.listen(process.env.PORT, function() {
-    console.log("Server listening on: " + process.env.PORT);
+  console.log("Server listening on: " + process.env.PORT);
 });
+
+
+//For local use
+// app.listen(3000, () => {
+//     console.log("Server listening on: port 3000");
+// });
