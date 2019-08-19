@@ -20,4 +20,8 @@ router.get('/update/indices', officerCheck, testController.test_update_indices);
 
 router.post('/update/indices', officerCheck, testController.test_update_indices_post);
 
+router.get('/update/writer', officerCheck, testController.test_writer);
+
+router.post('/update/writer', officerCheck, testController.test_writer_post);
+
 module.exports = router;

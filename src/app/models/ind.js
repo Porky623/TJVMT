@@ -1,14 +1,14 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var ScoreSchema = new Schema({
+var IndSchema = new Schema({
   studentUsername: String,
   studentName: String,
   studentGradYear: String,
   testName: String,
-  scoreVal: {type: Number, required: true},
-  scoreDist: String
+  indexVal: {type: Number, required: true},
+  rank: {type: Number}
 });
 
 //Export model
-module.exports = mongoose.model('Score', ScoreSchema);
+module.exports = mongoose.model('Ind', IndSchema);

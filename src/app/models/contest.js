@@ -13,7 +13,7 @@ var ContestSchema = new Schema({
   }],
   indices: [{
     type: Schema.ObjectId,
-    ref: 'Index'
+    ref: 'Ind'
   }]
 });
 

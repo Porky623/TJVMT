@@ -2,20 +2,21 @@ const Test = require('../models/test');
 const flash = require('express-flash-notification');
 const Score = require('../models/score');
 const User = require('../models/user');
-const Index = require('../models/index');
+const Ind = require('../models/ind');
 const topAvgNum = 12;
 
 exports.test_create = async(req,res) => {
   res.locals.metaTags = {
     title: 'Add Test',
   };
-  res.render('add_test', { user: req.user });
+  res.render('add_test');
 };
 
 exports.test_create_post = async (req,res,next) => {
   if(!(await Test.exists({name: req.body.name}))) {
     var test = new Test({
-      name: req.body.name
+      name: req.body.name,
+      writersNames: []
     });
     test.save(function(err,test) {
       if(err) return next(err);
@@ -36,7 +37,7 @@ exports.test_update_score_name = async(req,res) => {
   res.locals.metaTags = {
     title: 'Update/Add Score',
   };
-  res.render('update_score_name', { user: req.user });
+  res.render('update_score_name');
 };
 
 exports.test_update_score_name_post = async(req,res,next) => {
@@ -57,7 +58,7 @@ exports.test_update_score = async(req,res) => {
   res.locals.metaTags = {
     title: 'Update/Add Score',
   };
-  res.render('update_score', { user: req.user, query: req.query});
+  res.render('update_score', { query: req.query});
 };
 
 exports.test_update_score_post = async (req,res,next) => {
@@ -69,6 +70,16 @@ exports.test_update_score_post = async (req,res,next) => {
       redirect: '/test/update/score'
     });
   }
+  // //EXPERIMENTAL ONLY
+  // else if (!(await User.exists({username: req.body.username}))) {
+  //   let student = new User({
+  //     firstName: req.body.firstname,
+  //     lastName: req.body.lastname,
+  //     username: req.body.username
+  //   });
+  //   student.save();
+  // }
+
   else if (!(await User.exists({username: req.body.username}))) {
     req.flash({
       type: 'Warning',
@@ -78,37 +89,30 @@ exports.test_update_score_post = async (req,res,next) => {
     res.redirect('/test/update/score/add?name=' + req.query.name);
   }
   else {
-    await Test.findOne({name: req.query.name}, async (err, test) => {
-      console.log(test.scores[0]);
-      await User.findOne({username: req.body.username},
-          async (err, student) => {
-            if (err) {
-              next(err);
-            }
-            if (Score.exists({student: student._id, test: test._id})) {
-              await Score.findOne({student: student._id, test: test._id},
-                  async (err, sc) => {
-                    sc.student = student._id;
-                    sc.test = test._id;
-                    sc.scoreVal = req.body.scoreVal;
-                    sc.scoreDist = req.body.scoreDist;
-                    sc.save();
-                    test.scores.push(sc._id);
-                  });
-            } else {
-              score = new Score({
-                student: student._id,
-                test: test._id,
-                scoreVal: req.body.scoreVal,
-                scoreDist: req.body.scoreDist
-              });
-              score.save();
-              test.scores.push(score._id);
-              test.save();
-            }
+    let test = await Test.findOne({name: req.query.name});
+    let student = await User.findOne({username: req.body.username});
+    if (await Score.exists({studentUsername: req.body.username, testName: req.query.name})) {
+      await Score.findOne({studentUsername: req.body.username, testName: req.query.name},
+          async (err, sc) => {
+            sc.scoreVal = req.body.scoreVal;
+            sc.scoreDist = req.body.scoreDist;
+            sc.save();
+            test.scores.push(sc._id);
           });
-      console.log(test.scores[0]);
-    });
+    } else {
+      score = new Score({
+        studentName: student.firstName+' '+student.lastName,
+        studentUsername: student.username,
+        //temporary
+        studentGradYear: 2000,
+        testName: test.name,
+        scoreVal: req.body.scoreVal,
+        scoreDist: req.body.scoreDist
+      });
+      score.save();
+      test.scores.push(score._id);
+      test.save();
+    }
     res.redirect('/test/update/score/add?name=' + req.query.name);
   }
 };
@@ -117,7 +121,7 @@ exports.test_update_indices = async(req,res) => {
   res.locals.metaTags = {
     title: 'Update Indices',
   };
-  res.render('update_indices_test', {user: req.user});
+  res.render('update_indices_test');
 };
 
 exports.test_update_indices_post = async (req,res,next) => {
@@ -131,57 +135,122 @@ exports.test_update_indices_post = async (req,res,next) => {
     res.redirect('/test/update/indices');
   }
   else {
-    await Test.findOne({name: req.body.testName}, async(err, test) => {
-      var scores = test.scores;
-      if(err) {
-        next(err);
+    let test = await Test.findOne({name: req.body.testName});
+    await Ind.deleteMany({testName: test.name});
+    test.indices = [];
+    var scores = test.scores;
+    if (scores.length < topAvgNum) {
+      enoughScores = false;
+    } else {
+      var topAvg = 0;
+      var query = await Score.
+          find({testName: test.name}).
+          sort("-scoreVal");
+      for (var i = 0; i < topAvgNum; i++) {
+        topAvg = topAvg + query[i].scoreVal;
       }
-      if(scores.length<topAvgNum) {
-        enoughScores = false;
-      }
-      else {
-        //Sorts in decreasing scoreVal order
-        scores.sort(function(score1id,score2id) {
-          let s1 = Score.findById(score1id);
-          let val1 = s1.scoreVal;
-          let s2 = Score.findById(score2id);
-          let val2 = s2.scoreVal;
-          if(val1 != val2) {
-            return val2-val1;
-          }
-          else {
-            return User.findById(s2.student).username-User.findById(s1.student).username;
-          }
-        });
-        var topAvg = 0;
-        for(var i=0; i<topAvgNum; i++) {
-          let v = Score.findById(scores[i]).scoreVal;
-          topAvg+=v;
-        }
-        topAvg/=topAvgNum;
-        for(var i=0; i<scores.length; i++) {
-          let score = Score.findById(scores[i]);
-          let index = new Index({
-            student: score.student,
-            test: test._id,
-            indexVal: 2000*score.scoreVal/topAvg
+      topAvg = topAvg / topAvgNum;
+      for(var i=0; i<test.writersNames.length; i++) {
+        let writer = await User.findOne({username: test.writersNames[i]});
+        if(!(await Score.exists({studentName: writer.firstName+' '+writer.lastName}))) {
+          let score = new Score({
+            studentName: writer.firstName + ' ' + writer.lastName,
+            studentUsername: writer.username,
+            studentGradYear: 2000,
+            testName: test.name,
+            scoreVal: 0,
+            scoreDist: 'Writer'
           });
-          index.save();
-          test.indices.push(index._id);
-          test.save();
+          await score.save();
+          test.scores.push(score._id);
+          await test.save();
         }
       }
-    })
+      query = await Score.
+          find({testName: test.name}).
+          sort("-scoreVal");
+      var last, lastRank=1;
+      for (var i = 0; i < scores.length; i++) {
+        let score = query[i];
+        var index;
+        if (score.scoreDist.trim() == 'Writer') {
+          index = new Ind({
+            studentName: score.studentName,
+            studentUsername: score.studentUsername,
+            studentGradYear: score.studentGradYear,
+            testName: score.testName,
+            indexVal: 2000
+          });
+        } else {
+          index = new Ind({
+            studentName: score.studentName,
+            studentUsername: score.studentUsername,
+            studentGradYear: score.studentGradYear,
+            testName: score.testName,
+            indexVal: 2000 * score.scoreVal / topAvg
+          });
+        }
+        await index.save();
+        await test.indices.push(index._id);
+        await test.save();
+      }
+      indices = await Ind
+          .find({testName: test.name})
+          .sort("-indexVal");
+      for(var i=0; i<indices.length; i++) {
+        index = indices[i];
+        if(i==0) {
+          last=index.indexVal;
+        }
+        if(index.indexVal==last) {
+          index.rank=lastRank;
+        }
+        else {
+          last=index.indexVal;
+          lastRank=i+1;
+          index.rank=lastRank;
+        }
+        await index.save();
+      }
+    }
+    if(!enoughScores) {
+      req.flash({
+        type: 'Warning',
+        message: 'Not enough scores entered into the test!',
+        redirect: false
+      });
+    }
+    res.redirect('/test/update/indices');
   }
-  if(!enoughScores) {
+};
+
+exports.test_writer = async(req, res) => {
+  res.locals.metaTags = {
+    title: 'Add Writer',
+  };
+  res.render('add_writer', { query: req.query});
+};
+
+exports.test_writer_post = async(req, res, next) => {
+  let test = await Test.findOne({name: req.body.testName});
+  var inTest = false;
+  for(var i=0; i<test.writersNames.length; i++) {
+    if(test.writersNames[i]==req.body.username) {
+      inTest = true;
+      break;
+    }
+  }
+  if(inTest) {
     req.flash({
       type: 'Warning',
-      message: 'Not enough scores entered into the test!',
-      redirect: false
+      message: 'Writer already in test! Writer not added',
+      redirect: '/test/update/writer'
     });
-    res.redirect('/test/update/indices');
   }
   else {
-    res.redirect('/test/update/indices');
+    let writer = await User.findOne({username: req.body.username});
+    await test.writersNames.push(writer.username);
+    await test.save();
+    res.redirect('/test/update/writer');
   }
 };

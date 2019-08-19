@@ -9,8 +9,9 @@ var TestSchema = new Schema({
   }],
   indices: [{
     type: Schema.ObjectId,
-    ref: 'Index'
-  }]
+    ref: 'Ind'
+  }],
+  writersNames: [String] //the test writers' Ion usernames
 });
 
 //Export model

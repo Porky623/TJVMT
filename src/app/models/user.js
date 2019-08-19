@@ -7,7 +7,7 @@ var UserSchema = new Schema({
     gradYear: {type: Number, min: 2000, max: 3000},
     email: String,
     username: {type: String, required: true},
-    role: String,
+    isOfficer: Boolean
 });
 
 UserSchema.statics = {
@@ -18,7 +18,6 @@ UserSchema.statics = {
         })
     },
 };
-
 //Virtual for full name
 UserSchema
 .virtual('name')

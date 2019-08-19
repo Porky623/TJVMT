@@ -28,12 +28,15 @@
 </style>
 <ul class="nav">
     <li><a href="/">Home</a></li>
-    <li><a href="about">About</a></li>
-    <li><a href="calendar">Schedule</a></li>
-    <li><a href="rankings">Rankings</a></li>
-    <li><a href="archive">Archive</a></li>
-    <li><a href="tjimo">TJIMO</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/calendar">Schedule</a></li>
+    <li><a href="/rankings">Rankings</a></li>
+    <li><a href="/archive">Archive</a></li>
+    <li><a href="/tjimo">TJIMO</a></li>
     {{#if user}}
+        {{#if user.isOfficer}}
+            <li><a href="/officers">Officers</a></li>
+        {{/if}}
         <li><a href="/auth/logout">Logout</a></li>
     {{else}}
         <li><a href="/auth/login">Login</a></li>

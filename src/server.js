@@ -48,6 +48,7 @@ let hbs = exphbs.create({
   extname: '.handlebars',
   layoutsDir: 'src/views/layouts',
   partialsDir: 'src/views/partials',
+  helpers: require('./helpers/helpers')
 });
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
@@ -66,6 +67,11 @@ app.use(flash(app, {
   beforeSingleRender: function(item, callback){ callback(null, item) },
   afterAllRender: function(htmlFragments, callback){ callback(null, htmlFragments.join('\n')) }
 }));
+
+app.use(function(req,res,next){
+  res.locals.user = req.user;
+  next();
+});
 
 app.use('/', routes);
 

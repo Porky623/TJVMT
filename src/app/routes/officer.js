@@ -7,7 +7,7 @@ const officerCheck = (req, res, next) =>{
   if(!req.user) {
     res.redirect('/auth/login');
   } else {
-    if (req.user[0].role !== 'officer') {
+    if (!req.user.isOfficer) {
       res.redirect('/');
     } else {
       next();
@@ -31,16 +31,25 @@ router.get('/add_officer', officerCheck, (req, res) => {
   res.render('add_officer', { user: req.user });
 });
 
-router.post('/add_officer', officerCheck, (req, res)=> {
-  User.updateOne({username: req.body.username}, {
-    role: 'officer'
-  }, function(err, stat) {
-    if(err){
-      res.render(err);
-    } else{
-      res.render('add_officer', {user: req.user});
-    }
-  });
+router.post('/add_officer', officerCheck, async (req, res)=> {
+  if (!(await User.exists({username: req.body.username}))) {
+    req.flash({
+      type: 'Warning',
+      message: 'Cannot find student with username '+req.body.username,
+      redirect: '/add_officer'
+    })
+  }
+  else {
+    User.updateOne({username: req.body.username}, {
+      isOfficer: true
+    }, function(err, stat) {
+      if (err) {
+        res.render(err);
+      } else {
+        res.render('add_officer', {user: req.user});
+      }
+    });
+  }
 });
 
 //Remove Officers
@@ -51,16 +60,25 @@ router.get('/remove_officer', officerCheck, (req, res) => {
   res.render('remove_officers', { user: req.user });
 });
 
-router.post('/remove_officer', officerCheck, (req, res) => {
-  User.updateOne({username: req.body.username}, {
-    role: 'student'
-  }, function(err, stat) {
-    if(err){
-      res.render(err);
-    } else{
-      res.render('remove_officer', {user: req.user});
-    }
-  });
+router.post('/remove_officer', officerCheck, async (req, res) => {
+  if (!(await User.exists({username: req.body.username}))) {
+    req.flash({
+      type: 'Warning',
+      message: 'Cannot find student with username '+req.body.username,
+      redirect: '/add_officer'
+    })
+  }
+  else {
+    User.updateOne({username: req.body.username}, {
+      isOfficer: false
+    }, function(err, stat) {
+      if (err) {
+        res.render(err);
+      } else {
+        res.render('remove_officer', {user: req.user});
+      }
+    });
+  }
 });
 
 module.exports.router = router;

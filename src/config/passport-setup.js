@@ -8,7 +8,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-  User.find({username: id}).then((user) => {
+  User.findOne({username: id}).then((user) => {
     done(null, user);
   });
 });
@@ -48,7 +48,7 @@ passport.use('ion', client=new OAuth2Strategy({
             gradYear: profile.graduation_year,
             email: profile.tj_email,
             username: profile.ion_username,
-            role: 'student',
+            isOfficer: false,
           }).save().then((newUser) => {
             console.log('Creating new user');
             cb(null, newUser);

@@ -7,7 +7,7 @@ exports.contest_create = async(req,res) => {
   res.locals.metaTags = {
     title: 'Add Contest',
   };
-  res.render('add_contest', { user: req.user });
+  res.render('add_contest');
 };
 
 exports.contest_create_post = async (req,res,next) => {
@@ -35,7 +35,7 @@ exports.contest_update_tests_name = function(req,res) {
   res.locals.metaTags = {
     title: 'Select Contest',
   };
-  res.render('update_contest_test_name', {user: req.user});
+  res.render('update_contest_test_name');
 };
 
 exports.contest_update_tests_add = async (req,res) => {
@@ -52,7 +52,7 @@ exports.contest_update_tests_add = async (req,res) => {
   }
   else {
     res.render('update_contest_test_add',
-        {user: req.user, query: req._parsedOriginalUrl.query});
+        { query: req._parsedOriginalUrl.query});
   }
 };
 
