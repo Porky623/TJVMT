@@ -59,7 +59,7 @@ router.get('/remove_officer', officerCheck, (req, res) => {
   res.locals.metaTags = {
     title: 'Remove Officers',
   };
-  res.render('remove_officers', { user: req.user });
+  res.render('remove_officer', { user: req.user });
 });
 
 router.post('/remove_officer', officerCheck, async (req, res) => {
