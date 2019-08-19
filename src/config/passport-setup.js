@@ -32,7 +32,7 @@ passport.use('ion', client=new OAuth2Strategy({
       tokenURL: 'https://ion.tjhsst.edu/oauth/token/',
       clientID: keys.ion.clientID,
       clientSecret: keys.ion.clientSecret,
-      callbackURL: '/auth/ion/redirect',
+      callbackURL: 'https://activities.tjhsst.edu/vmt/auth/ion/redirect',
     },(accessToken, refreshToken, profile, cb) => {
       // check if user already exists in our own db
       User.findOne({username: profile.ion_username}).then((currentUser) => {

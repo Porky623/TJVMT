@@ -29,7 +29,7 @@ exports.contest_create_post = async (req,res,next) => {
       redirect: false
     });
   }
-  res.redirect('/officers');
+  res.redirect('/vmt/officers');
 };
 
 //Select which contest to update
@@ -50,7 +50,7 @@ exports.contest_update_tests_add = async (req,res) => {
       message: 'There is no contest name '+req._parsedOriginalUrl.query.substring(5),
       redirect: false
     });
-    res.redirect('/contest/update/test');
+    res.redirect('/vmt/contest/update/test');
   }
   else {
     res.render('update_contest_test_add',
@@ -86,7 +86,7 @@ exports.contest_update_tests_add_post = async (req,res,next) => {
     contest.weighting.push(weight._id);
     contest.save();
   });
-  res.redirect('/contest/update/test/add?name='+req.query.name);
+  res.redirect('/vmt/contest/update/test/add?name='+req.query.name);
 };
 
 exports.contest_update_indices = async (req, res) => {
@@ -153,5 +153,5 @@ exports.contest_update_indices_post = async (req, res, next) => {
       await index.save();
     }
   }
-  res.redirect('/officers');
+  res.redirect('/vmt/officers');
 };
