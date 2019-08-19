@@ -7,10 +7,11 @@ const User = require('../models/user');
 const Score = require('../models/score');
 const Contest = require('../models/contest');
 const Handlebars = require('express-handlebars');
+const prefix = require('../../config/url-config').prefix;
 
 const authCheck = (req, res, next) => {
   if(!req.user){
-    res.redirect('/vmt/auth/login');
+    res.redirect(prefix+'auth/login');
   } else {
     next();
   }
@@ -24,7 +25,7 @@ router.get('/auth/login', (req, res) => {
 // auth logout
 router.get('/auth/logout', (req, res) => {
   req.logout();
-  res.redirect('/vmt/');
+  res.redirect(prefix+'');
 });
 
 // auth with Ion
@@ -34,8 +35,8 @@ router.get('/auth/ion', passport.authenticate('ion', {
 
 // callback route for Ion to redirect to
 // hand control to passport to use code to grab profile info
-router.get('/auth/ion/redirect', passport.authenticate('ion', { failureRedirect: '/vmt/auth/login'}), (req, res) => {
-  res.redirect('/vmt/');
+router.get('/auth/ion/redirect', passport.authenticate('ion', { failureRedirect: prefix+'auth/login'}), (req, res) => {
+  res.redirect(prefix+'');
 });
 
 //Home page
@@ -107,7 +108,7 @@ router.get('/rankings/test/view', async (req, res) => {
     req.flash({
         type: 'Warning',
         message: 'No test named '+req.query.name,
-        redirect: '/vmt/rankings/test'
+        redirect: prefix+'rankings/test'
     })
   }
   else {
@@ -149,7 +150,7 @@ router.get('/rankings/contest/view', async (req, res) => {
     req.flash({
         type: 'Warning',
         message: 'No contest named '+req.query.name,
-        redirect: '/vmt/rankings/contest'
+        redirect: prefix+'rankings/contest'
     })
   }
   else {

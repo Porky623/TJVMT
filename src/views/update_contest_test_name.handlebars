@@ -1,7 +1,7 @@
 <h1>Select which contest to update</h1>
-<form name="add_contest_form_test" action="/vmt/contest/update/test/add" method="get">
+<form name="add_contest_form_test" action="{{prefix}}contest/update/test/add" method="get">
     <label for="name">Contest name</label>
     <input class="form-control" type="text" id="name" name="name" autofocus="autofocus">
     <input class="btn btn-primary" type="submit" value="Submit">
 </form>
-<a href="/vmt/officers"><button type="button" class="btn btn-primary">Return to Officers Page</button></a>
+<a href="{{prefix}}officers"><button type="button" class="btn btn-primary">Return to Officers Page</button></a>

@@ -1,5 +1,5 @@
 <h1>Input information</h1>
-<form name="add_score_form" action="/vmt/test/update/score/add/?name={{query.name}}" method="post">
+<form name="add_score_form" action="{{prefix}}test/update/score/add/?name={{query.name}}" method="post">
     <label for="username">Ion username of student</label>
     <input class="form-control" type="text" required id="username" name="username" autofocus="autofocus">
     <label for="scoreVal">Score of student (integer)</label>
@@ -8,4 +8,4 @@
     <input class="form-control" type="text" required id="scoreDist" name="scoreDist">
     <input class="btn btn-primary" type="submit" value="Submit">
 </form>
-<a href="/vmt/officers"><button type="button" class="btn btn-primary">Return to Officers Page</button></a>
+<a href="{{prefix}}officers"><button type="button" class="btn btn-primary">Return to Officers Page</button></a>

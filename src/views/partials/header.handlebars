@@ -27,18 +27,18 @@
 
 </style>
 <ul class="nav">
-    <li><a href="/vmt/">Home</a></li>
-    <li><a href="/vmt/about">About</a></li>
-    <li><a href="/vmt/calendar">Schedule</a></li>
-    <li><a href="/vmt/rankings">Rankings</a></li>
-    <li><a href="/vmt/archive">Archive</a></li>
-    <li><a href="/vmt/tjimo">TJIMO</a></li>
+    <li><a href="{{prefix}}">Home</a></li>
+    <li><a href="{{prefix}}about">About</a></li>
+    <li><a href="{{prefix}}calendar">Schedule</a></li>
+    <li><a href="{{prefix}}rankings">Rankings</a></li>
+    <li><a href="{{prefix}}archive">Archive</a></li>
+    <li><a href="{{prefix}}tjimo">TJIMO</a></li>
     {{#if user}}
         {{#if user.isOfficer}}
-            <li><a href="/vmt/officers">Officers</a></li>
+            <li><a href="{{prefix}}officers">Officers</a></li>
         {{/if}}
-        <li><a href="/vmt/auth/logout">Logout</a></li>
+        <li><a href="{{prefix}}auth/logout">Logout</a></li>
     {{else}}
-        <li><a href="/vmt/auth/login">Login</a></li>
+        <li><a href="{{prefix}}auth/login">Login</a></li>
     {{/if}}
 </ul>
