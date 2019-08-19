@@ -30,7 +30,7 @@ Install nodemon with `npm install nodemon` in the terminal (once you're already 
 * Make sure to check src/server.js, src/config/url-config.js, src/config/passport-setup.js, and possibly src/app/routes/main_routes.js for settings that differ between the live site and local development.
 ## Current To-Do List
 * Try and make formatting more consistent, especially with avoiding callbacks.
-* Remove unnecessary libraries from package.json
+* Display weights with contest rankings
 * Make styling easier to manage than page-by-page
 * Clean up CSS and HTML to look better
 * Update actual content from 2017-2018
