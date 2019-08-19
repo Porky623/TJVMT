@@ -19,8 +19,8 @@ Install nodemon with `npm install nodemon` in the terminal (once you're already 
   * After doing npm install, go to node_modules => express-flash-notifications => index.js and add `item['layout']=false;` at line 72.
 * server.js
   * If you move around flash.handlebars, make sure you change the corresponding *viewName* in the app.use.
-* src/config/keys.js
-  * You may notice there is no keys file on Github; this is intended for security. Please use Ion's [Director](http://director.tjhsst.edu) to access the contents of the file, and be careful not to accidentally release them!
+* src/config/keys.js, database.config.js
+  * You may notice there are no keys or database config files on Github; this is intended for security. Please use Ion's [Director](http://director.tjhsst.edu) to access the contents of these files, and be careful not to accidentally release them!
 * MongoDB
   * Atlas has an IP whitelist, so if you can't connect to the database please contact me (Derek) to be added.
   * Right now everything is experimental; in the future we can change the database to be based off of the VMT officers' email.
