@@ -1,6 +1,6 @@
 module.exports = {
   //If doing on main site
-  //prefix: '/vmt/',
+  prefix: '/vmt/',
   //If doing on localhost
-  prefix: '/',
+  // prefix: '/',
 };

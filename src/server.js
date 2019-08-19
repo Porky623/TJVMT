@@ -44,12 +44,12 @@ let hbs = exphbs.create({
   defaultLayout: 'base',
   extname: '.handlebars',
   //For actual site use
-  // layoutsDir: './vmt_Node/src/views/layouts',
-  // partialsDir: './vmt_Node/src/views/partials',
+  layoutsDir: './vmt_Node/src/views/layouts',
+  partialsDir: './vmt_Node/src/views/partials',
 
   //For local use
-  layoutsDir: './src/views/layouts',
-  partialsDir: './src/views/partials',
+  // layoutsDir: './src/views/layouts',
+  // partialsDir: './src/views/partials',
   helpers: require('./helpers/helpers')
 });
 app.engine('handlebars', hbs.engine);
@@ -79,12 +79,12 @@ app.use(function(req,res,next){
 app.use('/', routes);
 
 //For actual site use
-// app.listen(process.env.PORT, function() {
-//   console.log("Server listening on: " + process.env.PORT);
-// });
+app.listen(process.env.PORT, function() {
+  console.log("Server listening on: " + process.env.PORT);
+});
 
 
 //For local use
-app.listen(3000, () => {
-    console.log("Server listening on: port 3000");
-});
+// app.listen(3000, () => {
+//     console.log("Server listening on: port 3000");
+// });
