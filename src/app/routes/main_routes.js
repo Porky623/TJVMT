@@ -121,4 +121,23 @@ router.get('/rankings/contest', (req, res) => {
   res.render('rankings_choose_contest');
 });
 
+router.get('/rankings/contest/view', async (req, res) => {
+  res.locals.metaTags = {
+    title: 'Contest Rankings',
+  };
+  let ranks = await Ind.find({testName: req.query.name}).sort("-indexVal");
+  var out = [];
+  for(var i=0; i<ranks.length; i++) {
+    let rank = ranks[i];
+    let score = await Score.findOne({studentUsername: rank.studentUsername, testName: rank.testName});
+    out.push({
+      rank: rank.rank,
+      studentName: rank.studentName,
+      indexVal: rank.indexVal,
+      gradYear: rank.studentGradYear
+    });
+  }
+  res.render('rankings_view_contest', {ranks: out, testName: req.query.name});
+});
+
 module.exports = router;

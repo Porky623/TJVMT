@@ -14,4 +14,8 @@ router.get('/contest/update/test/add', officerCheck, contestController.contest_u
 
 router.post('/contest/update/test/add', officerCheck, contestController.contest_update_tests_add_post);
 
+router.get('/contest/update/indices', officerCheck, contestController.contest_update_indices);
+
+router.post('/contest/update/indices', officerCheck, contestController.contest_update_indices_post);
+
 module.exports = router;

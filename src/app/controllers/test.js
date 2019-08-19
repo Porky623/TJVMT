@@ -70,16 +70,6 @@ exports.test_update_score_post = async (req,res,next) => {
       redirect: '/test/update/score'
     });
   }
-  // //EXPERIMENTAL ONLY
-  // else if (!(await User.exists({username: req.body.username}))) {
-  //   let student = new User({
-  //     firstName: req.body.firstname,
-  //     lastName: req.body.lastname,
-  //     username: req.body.username
-  //   });
-  //   student.save();
-  // }
-
   else if (!(await User.exists({username: req.body.username}))) {
     req.flash({
       type: 'Warning',
@@ -169,7 +159,6 @@ exports.test_update_indices_post = async (req,res,next) => {
       query = await Score.
           find({testName: test.name}).
           sort("-scoreVal");
-      var last, lastRank=1;
       for (var i = 0; i < scores.length; i++) {
         let score = query[i];
         var index;
@@ -194,6 +183,7 @@ exports.test_update_indices_post = async (req,res,next) => {
         await test.indices.push(index._id);
         await test.save();
       }
+      var last, lastRank=1;
       indices = await Ind
           .find({testName: test.name})
           .sort("-indexVal");
@@ -220,7 +210,7 @@ exports.test_update_indices_post = async (req,res,next) => {
         redirect: false
       });
     }
-    res.redirect('/test/update/indices');
+    res.redirect('/officers');
   }
 };
 

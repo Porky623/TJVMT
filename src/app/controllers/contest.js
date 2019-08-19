@@ -1,6 +1,8 @@
 const Contest = require('../models/contest');
 const TestWeight = require('../models/testWeighting');
 const Test = require('../models/test');
+const Ind = require('../models/ind');
+const User = require('../models/user');
 const flash = require('express-flash-notification');
 
 exports.contest_create = async(req,res) => {
@@ -85,4 +87,71 @@ exports.contest_update_tests_add_post = async (req,res,next) => {
     contest.save();
   });
   res.redirect('/contest/update/test/add?name='+req.query.name);
+};
+
+exports.contest_update_indices = async (req, res) => {
+  res.locals.metaTags = {
+    title: 'Update Indices',
+  };
+  res.render('update_indices_contest');
+};
+
+exports.contest_update_indices_post = async (req, res, next) => {
+  if(!(await Contest.exists({name: req.body.contestName}))) {
+    req.flash({
+      type: 'Warning',
+      message: 'There is no contest named '+req.body.contestName+'.',
+      redirect: false
+    });
+  }
+  else {
+    let contest = await Contest.findOne({name: req.body.contestName});
+    await Ind.deleteMany({name: contest.name});
+    let conIndices = new Map();
+    for (var i = 0; i < contest.weighting.length; i++) {
+      let weighting = await TestWeight.findById(contest.weighting[i]);
+      let test = await Test.findById(weighting.testId);
+      for (var j = 0; j < test.indices.length; j++) {
+        let index = await Ind.findById(test.indices[j]);
+        let weightedInd = index.indexVal*weighting.weighting;
+        if (!conIndices.has(index.studentUsername)) {
+          conIndices.set(index.studentUsername, 0);
+        }
+        conIndices.set(index.studentUsername,
+            conIndices.get(index.studentUsername) + weightedInd);
+      }
+    }
+    for (var [studentUsername, indValue] of conIndices) {
+      let student = await User.findOne({username: studentUsername});
+      let ind = new Ind({
+        studentName: student.firstName + ' ' + student.lastName,
+        studentUsername: studentUsername,
+        //TEMPORARY
+        studentGradYear: 2000,
+        testName: req.body.contestName,
+        indexVal: indValue
+      });
+      await ind.save();
+      contest.indices.push(ind._id);
+      await contest.save();
+    }
+    var last, lastRank = 1;
+    let indices = await Ind.find({testName: req.body.contestName}).
+        sort("-indexVal");
+    for (var i = 0; i < indices.length; i++) {
+      index = indices[i];
+      if (i == 0) {
+        last = index.indexVal;
+      }
+      if (index.indexVal == last) {
+        index.rank = lastRank;
+      } else {
+        last = index.indexVal;
+        lastRank = i + 1;
+        index.rank = lastRank;
+      }
+      await index.save();
+    }
+  }
+  res.redirect('/officers');
 };
