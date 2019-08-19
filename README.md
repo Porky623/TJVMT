@@ -22,8 +22,8 @@ Install nodemon with `npm install nodemon` in the terminal (once you're already 
 * src/config/keys.js, database.config.js
   * You may notice there are no keys or database config files on Github; this is intended for security. Please use Ion's [Director](http://director.tjhsst.edu) to access the contents of these files, and be careful not to accidentally release them!
 * MongoDB
-  * Atlas has an IP whitelist, so if you can't connect to the database please contact me (Derek) to be added.
-  * Right now everything is experimental; in the future we can change the database to be based off of the VMT officers' email.
+  * Atlas has an IP whitelist
+  * The live database is now set to an account off the vmtofficers email; if you need to add to a whitelist, log in yourself. If you would like to work with testing data, switch the setting in src/config/database.config.js to the local version.
   * Be careful about using MongoDB Compass or the browser for *adding* documents to a collection; it was the source of much hassle during development as manually added documents couldn't be accessed through code, even if they looked to be in the same collection.
 * URL routing
   * For some reason the actual VMT website current has an inherent /vmt. Now, in src/config/url-config.js you can set the "prefix" to be used; for local sites it should just be `/` but for the actual site it should be `/vmt/`.
