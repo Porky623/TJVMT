@@ -14,6 +14,7 @@ Primarily utilizing:
 * Handlebars (HTML engine)
 * Express Flash Notifications (notifications when validation fails)
 ## Notes for devs trying to replicate the project locally
+Install nodemon with `npm install nodemon` in the terminal (once you're already in the project's directory), and run with `npm run dev`. Also check the package.json file and install all the packages with `npm install <package>`.
 * express-flash-notifications
   * After doing npm install, go to node_modules => express-flash-notifications => index.js and add `item['layout']=false;` at line 72.
 * server.js
@@ -25,7 +26,8 @@ Primarily utilizing:
   * Right now everything is experimental; in the future we can change the database to be based off of the VMT officers' email.
   * Be careful about using MongoDB Compass or the browser for *adding* documents to a collection; it was the source of much hassle during development as manually added documents couldn't be accessed through code, even if they looked to be in the same collection.
 * URL routing
-  * For some reason the actual VMT website current has an inherent /vmt. What this meant was I had to prepend '/vmt' to every redirect and href call, but not to every get request. Hopefully this can be changed in the future.
+  * For some reason the actual VMT website current has an inherent /vmt. Now, in src/config/url-config.js you can set the "prefix" to be used; for local sites it should just be `/` but for the actual site it should be `/vmt/`.
+* Make sure to check src/server.js, src/config/url-config.js, src/config/passport-setup.js, and possibly src/app/routes/main_routes.js for settings that differ between the live site and local development.
 ## Current To-Do List
 * Try and make formatting more consistent, especially with avoiding callbacks.
 * Remove unnecessary libraries from package.json
