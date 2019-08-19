@@ -6,3 +6,4 @@ node_modules
 db.json
 *.log
 src/config/keys.js
+src/config/database.config.js
