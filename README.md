@@ -30,11 +30,10 @@ Install nodemon with `npm install nodemon` in the terminal (once you're already 
 * Make sure to check src/server.js, src/config/url-config.js, src/config/passport-setup.js, and possibly src/app/routes/main_routes.js for settings that differ between the live site and local development.
 * **PLEASE** push to dev or another branch instead of directly to the master branch.
 ## Current To-Do List
-* Try and make formatting more consistent, especially with avoiding callbacks.
+* Try and make formatting more consistent~~, especially with avoiding callbacks.~~
 * Display weights with contest rankings
 * Make styling easier to manage than page-by-page
 * Clean up CSS and HTML to look better
-* Update actual content from 2017-2018
 * Ideas for pages to add:
   * TJAIME/TJUSAMO lecture handout/video archive
   * TJOMO submission and grading
