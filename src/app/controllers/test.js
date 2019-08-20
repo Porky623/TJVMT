@@ -19,16 +19,14 @@ exports.test_create_post = async (req,res,next) => {
       name: req.body.name,
       writersNames: []
     });
-    test.save(function(err,test) {
-      if(err) return next(err);
-      console.log('Test created!');
-    });
+    await test.save();
+    console.log('Test created!');
   }
   else {
-    req.flash({
+    return req.flash({
       type: 'Warning',
       message: 'There already exists a test name '+req.body.name+'! Test not created.',
-      redirect: false
+      redirect: req.app.get('prefix')+'officers'
     });
   }
   res.redirect(req.app.get('prefix')+'officers');
@@ -43,16 +41,13 @@ exports.test_update_score_name = async(req,res) => {
 
 exports.test_update_score_name_post = async(req,res,next) => {
   if(!(await Test.exists({name: req.body.name}))) {
-    req.flash({
+    return req.flash({
       type: 'Warning',
       message: 'There is no test named '+req.body.name+'.',
-      redirect: false
+      redirect: req.app.get('prefix')+'/test/update/score'
     });
-    res.redirect(req.app.get('prefix')+'/test/update/score');
   }
-  else {
-    res.redirect(req.app.get('prefix')+'test/update/score/add?name='+req.body.name);
-  }
+  res.redirect(req.app.get('prefix')+'test/update/score/add?name='+req.body.name);
 };
 
 exports.test_update_score = async(req,res) => {
@@ -65,31 +60,28 @@ exports.test_update_score = async(req,res) => {
 exports.test_update_score_post = async (req,res,next) => {
   var score;
   if(!(await Test.exists({name: req.query.name}))) {
-    req.flash({
+    return req.flash({
       type: 'Warning',
       message: 'There is no test named '+req.query.name+'.',
       redirect: req.app.get('prefix')+'test/update/score'
     });
   }
   else if (!(await User.exists({username: req.body.username}))) {
-    req.flash({
+    return req.flash({
       type: 'Warning',
       message: 'Cannot find student with username ' + req.body.username + '.',
-      redirect: false
+      redirect: req.app.get('prefix')+'test/update/score/add?name=' + req.query.name
     });
-    res.redirect(req.app.get('prefix')+'test/update/score/add?name=' + req.query.name);
   }
   else {
     let test = await Test.findOne({name: req.query.name});
     let student = await User.findOne({username: req.body.username});
     if (await Score.exists({studentUsername: req.body.username, testName: req.query.name})) {
-      await Score.findOne({studentUsername: req.body.username, testName: req.query.name},
-          async (err, sc) => {
-            sc.scoreVal = req.body.scoreVal;
-            sc.scoreDist = req.body.scoreDist;
-            sc.save();
-            test.scores.push(sc._id);
-          });
+      let sc = await Score.findOne({studentUsername: req.body.username, testName: req.query.name});
+      sc.scoreVal = req.body.scoreVal;
+      sc.scoreDist = req.body.scoreDist;
+      sc.save();
+      test.scores.push(sc._id);
     } else {
       score = new Score({
         studentName: student.firstName+' '+student.lastName,
@@ -103,8 +95,8 @@ exports.test_update_score_post = async (req,res,next) => {
       test.scores.push(score._id);
       test.save();
     }
-    res.redirect(req.app.get('prefix')+'test/update/score/add?name=' + req.query.name);
   }
+  res.redirect(req.app.get('prefix')+'test/update/score/add?name=' + req.query.name);
 };
 
 exports.test_update_indices = async(req,res) => {
@@ -117,12 +109,11 @@ exports.test_update_indices = async(req,res) => {
 exports.test_update_indices_post = async (req,res,next) => {
   var enoughScores = true;
   if(!(await Test.exists({name: req.body.testName}))) {
-    req.flash({
+    return req.flash({
       type: 'Warning',
       message: 'There is no test named '+req.body.testName+'.',
-      redirect: false
+      redirect: req.app.get('prefix')+'/test/update/indices'
     });
-    res.redirect(req.app.get('prefix')+'/test/update/indices');
   }
   else {
     let test = await Test.findOne({name: req.body.testName});
@@ -217,14 +208,14 @@ exports.test_update_indices_post = async (req,res,next) => {
       await rankPage.save();
     }
     if(!enoughScores) {
-      req.flash({
+      return req.flash({
         type: 'Warning',
         message: 'Not enough scores entered into the test!',
-        redirect: false
+        redirect: req.app.get('prefix')+'officers'
       });
     }
-    res.redirect(req.app.get('prefix')+'officers');
   }
+  res.redirect(req.app.get('prefix')+'officers');
 };
 
 exports.test_writer = async(req, res) => {
