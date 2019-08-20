@@ -54,7 +54,12 @@ exports.test_update_score = async(req,res) => {
   res.locals.metaTags = {
     title: 'Update/Add Score',
   };
-  res.render('update_score', { query: req.query});
+  var testNames = [];
+  let allTests = await Test.find({});
+  for(var i=0; i<allTests.length; i++) {
+    await testNames.push(allTests[i].name);
+  }
+  res.render('update_score', { query: req.query, testName: testNames});
 };
 
 exports.test_update_score_post = async (req,res,next) => {
@@ -103,7 +108,12 @@ exports.test_update_indices = async(req,res) => {
   res.locals.metaTags = {
     title: 'Update Indices',
   };
-  res.render('update_indices_test');
+  var testNames = [];
+  let allTests = await Test.find({});
+  for(var i=0; i<allTests.length; i++) {
+    await testNames.push(allTests[i].name);
+  }
+  res.render('update_indices_test', {testName: testNames});
 };
 
 exports.test_update_indices_post = async (req,res,next) => {

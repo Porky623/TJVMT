@@ -1,7 +1,11 @@
 <h1>Select which test to add scores to</h1>
 <form name="add_score_form_test" action="{{prefix}}test/update/score" method="post">
     <label for="name">Test name</label>
-    <input class="form-control" type="text" id="name" name="name" autofocus="autofocus">
-    <input class="btn btn-primary" type="submit" value="Submit">
+    <select class="form-control" required id="name" name="name" autofocus="autofocus">
+        {{#each testName}}
+            <option value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select>
+    <input class="btn btn-primary" type="submit" value="Next">
 </form>
-<a href="{{prefix}}officers"><button type="button" class="btn btn-primary">Return to Officers Page</button></a>
+<a href="{{prefix}}officers"><button type="button" class="btn btn-secondary">Return to Officers Page</button></a>
