@@ -7,6 +7,7 @@ const User = require('../models/user');
 const Score = require('../models/score');
 const Contest = require('../models/contest');
 const RankPage = require('../models/rankpage');
+const Announcement = require('../models/announcement');
 const Handlebars = require('express-handlebars');
 const prefix = require('../../config/url-config').prefix;
 
@@ -65,11 +66,20 @@ router.get('/tjimo', (req, res) => {
 });
 
 //About
-router.get('/about', (req, res) => {
+router.get('/about', async (req, res) => {
   res.locals.metaTags = {
     title: 'About TJ VMT',
   };
-  res.render('about');
+  let announcements = []
+  let allAnnounce = await Announcement.find({});
+  for(var i=0; i<allAnnounce.length; i++) {
+    announcements.push({
+      title: allAnnounce[i].title,
+      body: allAnnounce[i].body,
+      date: allAnnounce[i].date
+    })
+  }
+  res.render('about', {announcement: announcements});
 });
 
 //Archive

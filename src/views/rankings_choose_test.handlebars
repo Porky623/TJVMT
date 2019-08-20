@@ -1,13 +1,15 @@
-<h1>Select which test's rankings to view</h1>
 <div class="container-fluid">
-    <form name="choose_test_rank" action="{{prefix}}rankings/test/view" method="get">
-        <label for="name">Test name</label>
-        <select class="form-control" required id="name" name="name" autofocus="autofocus">
-            {{#each testName}}
-                <option value="{{this}}">{{this}}</option>
-            {{/each}}
-        </select>
-        <input class="btn btn-primary" type="submit" value="View">
-    </form>
-    <a href="{{prefix}}rankings"><button type="button" class="btn btn-secondary">Return to Rankings Selection</button></a>
+    <h1>Select which test's rankings to view</h1>
+    <div>
+        <form name="choose_test_rank" action="{{prefix}}rankings/test/view" method="get">
+            <label for="name">Test name</label>
+            <select class="form-control" required id="name" name="name" autofocus="autofocus">
+                {{#each testName}}
+                    <option value="{{this}}">{{this}}</option>
+                {{/each}}
+            </select>
+            <input class="btn btn-primary" type="submit" value="View">
+        </form>
+        <a href="{{prefix}}rankings"><button type="button" class="btn btn-secondary">Return to Rankings Selection</button></a>
+    </div>
 </div>

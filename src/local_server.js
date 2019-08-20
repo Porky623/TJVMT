@@ -67,7 +67,18 @@ app.use(flash(app, {
   utilityName: 'flash',
   localsName: 'flash',
   viewName: 'elements/flash',
-  beforeSingleRender: function(item, callback){ callback(null, item) },
+  beforeSingleRender: function(item, callback){
+    if(item.type) {
+      switch(item.type) {
+        case 'Warning':
+          item.alert_class = 'alert-danger';
+          break;
+        case 'Success':
+          item.alert_class = 'alert-success';
+      }
+    }
+    callback(null, item);
+  },
   afterAllRender: function(htmlFragments, callback){ callback(null, htmlFragments.join('\n')) }
 }));
 

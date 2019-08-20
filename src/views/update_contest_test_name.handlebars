@@ -1,11 +1,13 @@
-<h1>Select which contest to update</h1>
-<form name="add_contest_form_test" action="{{prefix}}contest/update/test/add" method="get">
-    <label for="name">Contest name</label>
-    <select class="form-control" required id="name" name="name" autofocus="autofocus">
-        {{#each contestName}}
-            <option value="{{this}}">{{this}}</option>
-        {{/each}}
-    </select>
-    <input class="btn btn-primary" type="submit" value="Next">
-</form>
-<a href="{{prefix}}officers"><button type="button" class="btn btn-secondary">Return to Officers Page</button></a>
+<div class="container-fluid">
+    <h1>Select which contest to update</h1>
+    <form name="add_contest_form_test" action="{{prefix}}contest/update/test/add" method="get">
+        <label for="name">Contest name</label>
+        <select class="form-control" required id="name" name="name" autofocus="autofocus">
+            {{#each contestName}}
+                <option value="{{this}}">{{this}}</option>
+            {{/each}}
+        </select>
+        <input class="btn btn-primary" type="submit" value="Next">
+    </form>
+    <a href="{{prefix}}officers"><button type="button" class="btn btn-secondary">Return to Officers Page</button></a>
+</div>

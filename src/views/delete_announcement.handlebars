@@ -1,0 +1,15 @@
+<div class="container-fluid">
+    <h1>Remove an Announcement</h1>
+    <div class="form-group">
+        <form name="delete_announcement_form" action="{{prefix}}announcement/delete" method="post">
+            <label for="title">Announcement Title</label>
+            <select class="form-control" required id="title" name="title" autofocus="autofocus">
+                {{#each announcement}}
+                    <option value="{{title}}">{{title}}</option>
+                {{/each}}
+            </select>
+            <input class="btn btn-success" type="submit" value="Submit">
+        </form>
+    </div>
+    <a href="{{prefix}}officers"><button type="button" class="btn btn-secondary">Return to Officers Page</button></a>
+</div>
