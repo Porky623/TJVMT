@@ -11,7 +11,7 @@ const prefix = require('../../config/url-config').prefix;
 
 const authCheck = (req, res, next) => {
   if(!req.user){
-    res.redirect(prefix+'auth/login');
+    res.redirect(req.app.get('prefix')+'auth/login');
   } else {
     next();
   }
@@ -25,7 +25,7 @@ router.get('/auth/login', (req, res) => {
 // auth logout
 router.get('/auth/logout', (req, res) => {
   req.logout();
-  res.redirect(prefix+'');
+  res.redirect(req.app.get('prefix')+'');
 });
 
 // auth with Ion
@@ -36,7 +36,7 @@ router.get('/auth/ion', passport.authenticate('ion', {
 // callback route for Ion to redirect to
 // hand control to passport to use code to grab profile info
 router.get('/auth/ion/redirect', passport.authenticate('ion', { failureRedirect: prefix+'auth/login'}), (req, res) => {
-  res.redirect(prefix+'');
+  res.redirect(req.app.get('prefix')+'');
 });
 
 //Home page
@@ -108,7 +108,7 @@ router.get('/rankings/test/view', async (req, res) => {
     req.flash({
         type: 'Warning',
         message: 'No test named '+req.query.name,
-        redirect: prefix+'rankings/test'
+        redirect: req.app.get('prefix')+'rankings/test'
     })
   }
   else {
@@ -150,7 +150,7 @@ router.get('/rankings/contest/view', async (req, res) => {
     req.flash({
         type: 'Warning',
         message: 'No contest named '+req.query.name,
-        redirect: prefix+'rankings/contest'
+        redirect: req.app.get('prefix')+'rankings/contest'
     })
   }
   else {

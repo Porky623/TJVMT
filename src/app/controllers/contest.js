@@ -3,7 +3,6 @@ const TestWeight = require('../models/testWeighting');
 const Test = require('../models/test');
 const Ind = require('../models/ind');
 const User = require('../models/user');
-const prefix = require('../../config/url-config').prefix;
 const flash = require('express-flash-notification');
 
 exports.contest_create = async(req,res) => {
@@ -30,7 +29,7 @@ exports.contest_create_post = async (req,res,next) => {
       redirect: false
     });
   }
-  res.redirect(prefix+'officers');
+  res.redirect(req.app.get('prefix')+'officers');
 };
 
 //Select which contest to update
@@ -51,7 +50,7 @@ exports.contest_update_tests_add = async (req,res) => {
       message: 'There is no contest name '+req._parsedOriginalUrl.query.substring(5),
       redirect: false
     });
-    res.redirect(prefix+'contest/update/test');
+    res.redirect(req.app.get('prefix')+'contest/update/test');
   }
   else {
     res.render('update_contest_test_add',
@@ -87,7 +86,7 @@ exports.contest_update_tests_add_post = async (req,res,next) => {
     contest.weighting.push(weight._id);
     contest.save();
   });
-  res.redirect(prefix+'contest/update/test/add?name='+req.query.name);
+  res.redirect(req.app.get('prefix')+'contest/update/test/add?name='+req.query.name);
 };
 
 exports.contest_update_indices = async (req, res) => {
@@ -153,5 +152,5 @@ exports.contest_update_indices_post = async (req, res, next) => {
       await index.save();
     }
   }
-  res.redirect(prefix+'officers');
+  res.redirect(req.app.get('prefix')+'officers');
 };

@@ -1,0 +1,2 @@
+prefix:
+main_routes.js: get redirect

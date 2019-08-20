@@ -28,6 +28,7 @@ Install nodemon with `npm install nodemon` in the terminal (once you're already 
 * URL routing
   * For some reason the actual VMT website current has an inherent /vmt. Now, in src/config/url-config.js you can set the "prefix" to be used; for local sites it should just be `/` but for the actual site it should be `/vmt/`.
 * Make sure to check src/server.js, src/config/url-config.js, src/config/passport-setup.js, and possibly src/app/routes/main_routes.js for settings that differ between the live site and local development.
+* **PLEASE** push to dev or another branch instead of directly to the master branch.
 ## Current To-Do List
 * Try and make formatting more consistent, especially with avoiding callbacks.
 * Display weights with contest rankings
