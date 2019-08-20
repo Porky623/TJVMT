@@ -3,6 +3,7 @@ const flash = require('express-flash-notification');
 const Score = require('../models/score');
 const User = require('../models/user');
 const Ind = require('../models/ind');
+const RankPage = require('../models/rankpage');
 const topAvgNum = 12;
 
 exports.test_create = async(req,res) => {
@@ -126,6 +127,7 @@ exports.test_update_indices_post = async (req,res,next) => {
   else {
     let test = await Test.findOne({name: req.body.testName});
     await Ind.deleteMany({testName: test.name});
+    await RankPage.deleteMany({testName: test.name});
     test.indices = [];
     var scores = test.scores;
     if (scores.length < topAvgNum) {
@@ -167,6 +169,7 @@ exports.test_update_indices_post = async (req,res,next) => {
             studentUsername: score.studentUsername,
             studentGradYear: score.studentGradYear,
             testName: score.testName,
+            scoreDist: score.scoreDist,
             indexVal: 2000
           });
         } else {
@@ -175,7 +178,8 @@ exports.test_update_indices_post = async (req,res,next) => {
             studentUsername: score.studentUsername,
             studentGradYear: score.studentGradYear,
             testName: score.testName,
-            indexVal: 2000 * score.scoreVal / topAvg
+            indexVal: 2000 * score.scoreVal / topAvg,
+            scoreDist: score.scoreDist
           });
         }
         await index.save();
@@ -186,6 +190,7 @@ exports.test_update_indices_post = async (req,res,next) => {
       indices = await Ind
           .find({testName: test.name})
           .sort("-indexVal");
+      let rankPage = new RankPage({testName: test.name});
       for(var i=0; i<indices.length; i++) {
         index = indices[i];
         if(i==0) {
@@ -200,7 +205,16 @@ exports.test_update_indices_post = async (req,res,next) => {
           index.rank=lastRank;
         }
         await index.save();
+        let rank = index;
+        await rankPage.out.push({
+          rank: rank.rank,
+          studentName: rank.studentName,
+          indexVal: rank.indexVal,
+          gradYear: rank.studentGradYear,
+          scoreDist: rank.scoreDist
+        });
       }
+      await rankPage.save();
     }
     if(!enoughScores) {
       req.flash({
