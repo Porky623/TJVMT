@@ -2,8 +2,9 @@
 Thomas Jefferson High School for Science and Technology's [Varsity Math Team's website](https://activities.tjhsst.edu/vmt/).
 
 Features added:
-* Score entering process streamlined for officers
+* Score entering and viewing process streamlined for officers and members, respectively
 * Linked to [TJ Intranet](https://ion.tjhsst.edu), a.k.a. Ion
+* 
 ## Using
 Primarily utilizing:
 * Node JS
@@ -39,3 +40,4 @@ Install nodemon with `npm install nodemon` in the terminal (once you're already 
   * TJOMO submission and grading
   * Problem tracking per person
   * Managing the database to not overfill it: more important when the school year or document schemas change
+* Improve announcement creation options; maybe support Markdown (currently embeds body directly into HTML through Handlebars)
