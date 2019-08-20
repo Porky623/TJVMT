@@ -14,6 +14,7 @@ const keys = require('./config/keys');
 const routes = require('./routes');
 const flash = require('express-flash-notification');
 const prefix = require('./config/url-config').prefix;
+const siteKey = require('./config/url-config').siteKey;
 
 mongoose.connect(dbConfig.url, {
   useNewUrlParser: true,
@@ -85,6 +86,7 @@ app.use(flash(app, {
 app.use(function(req,res,next){
   res.locals.user = req.user;
   res.locals.prefix = prefix;
+  res.locals.siteKey = siteKey;
   next();
 });
 
