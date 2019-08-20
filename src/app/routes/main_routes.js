@@ -112,6 +112,13 @@ router.get('/rankings/test/view', async (req, res) => {
         redirect: req.app.get('prefix')+'rankings/test'
     })
   }
+  else if(!(await RankPage.exists({name: req.query.name}))) {
+    req.flash({
+      type: 'Warning',
+      message: 'Ranks for test '+req.query.name+' have not yet been updated',
+      redirect: req.app.get('prefix')+'rankings/test'
+    })
+  }
   else {
     let rankPage = await RankPage.findOne({testName: req.query.name});
     let out = rankPage.out;
@@ -141,6 +148,13 @@ router.get('/rankings/contest/view', async (req, res) => {
         type: 'Warning',
         message: 'No contest named '+req.query.name,
         redirect: req.app.get('prefix')+'rankings/contest'
+    })
+  }
+  else if(!(await RankPage.exists({name: req.query.name}))) {
+    req.flash({
+      type: 'Warning',
+      message: 'Ranks for contest '+req.query.name+' have not yet been updated',
+      redirect: req.app.get('prefix')+'rankings/contest'
     })
   }
   else {
