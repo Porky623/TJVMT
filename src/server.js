@@ -54,6 +54,7 @@ let hbs = exphbs.create({
 });
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
+app.set('prefix', prefix);
 
 app.use(express.static(path.join(__dirname, 'static')));
 // parse requests of content-type - application/x-www-form-urlencoded
