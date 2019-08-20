@@ -26,7 +26,7 @@ Install nodemon with `npm install nodemon` in the terminal (once you're already 
   * The live database is now set to an account off the vmtofficers email; if you need to add to a whitelist, log in yourself. If you would like to work with testing data, switch the setting in src/config/database.config.js to the local version.
   * Be careful about using MongoDB Compass or the browser for *adding* documents to a collection; it was the source of much hassle during development as manually added documents couldn't be accessed through code, even if they looked to be in the same collection.
 * URL routing
-  * For some reason the actual VMT website current has an inherent /vmt. ~~Now, in src/config/url-config.js you can set the "prefix" to be used; for local sites it should just be `/` but for the actual site it should be `/vmt/`.~~ Now simply running npm run local should suffice. HOWEVER be sure to check errata.txt for unresolved differences between the local and live sites.
+  * For some reason the actual VMT website current has an inherent /vmt. ~~Now, in src/config/url-config.js you can set the "prefix" to be used; for local sites it should just be `/` but for the actual site it should be `/vmt/`.~~ Now simply running `npm run local` should suffice. HOWEVER be sure to check errata.txt for unresolved differences between the local and live sites.
 * Make sure to check src/server.js, src/config/url-config.js, src/config/passport-setup.js, and possibly src/app/routes/main_routes.js for settings that differ between the live site and local development.
 * **PLEASE** push to dev or another branch instead of directly to the master branch.
 ## Current To-Do List
