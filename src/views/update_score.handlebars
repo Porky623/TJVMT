@@ -1,5 +1,6 @@
-<h1>Input information</h1>
-<form name="add_score_form" action="{{prefix}}test/update/score/add/?name={{query.name}}" method="post">
+<div class="container-fluid">
+    <h1>Input information</h1>
+    <form name="add_score_form" action="{{prefix}}test/update/score/add/?name={{query.name}}" method="post">
     <label for="username">Ion username of student</label>
     <input class="form-control" type="text" required id="username" name="username" autofocus="autofocus">
     <label for="scoreVal">Score of student (integer)</label>
@@ -7,5 +8,6 @@
     <label for="scoreDist">Score distribution of student (e.g. 101110)</label>
     <input class="form-control" type="text" required id="scoreDist" name="scoreDist">
     <input class="btn btn-primary" type="submit" value="Submit">
-</form>
-<a href="{{prefix}}officers"><button type="button" class="btn btn-secondary">Return to Officers Page</button></a>
+    </form>
+    <a href="{{prefix}}officers"><button type="button" class="btn btn-secondary">Return to Officers Page</button></a>
+</div>

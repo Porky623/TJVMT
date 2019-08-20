@@ -7,9 +7,15 @@
         </div>
         <div>
             <h2>News</h2>
-            <p>
-
-            </p>
+            {{#each announcement}}
+                <div class="card bg-light border-primary mb-3" style="max-width: 20rem;">
+                    <div class="card-header">{{date}}</div>
+                    <div class="card-body">
+                        <h4 class="card-title">{{title}}</h4>
+                        <p class="card-text">{{body}}</p>
+                    </div>
+                </div>
+            {{/each}}
         </div>
     </div>
 </body>
