@@ -4,6 +4,7 @@ const Test = require('../models/test');
 const Ind = require('../models/ind');
 const User = require('../models/user');
 const flash = require('express-flash-notification');
+const RankPage = require('../models/rankpage');
 
 exports.contest_create = async(req,res) => {
   res.locals.metaTags = {
@@ -106,7 +107,8 @@ exports.contest_update_indices_post = async (req, res, next) => {
   }
   else {
     let contest = await Contest.findOne({name: req.body.contestName});
-    await Ind.deleteMany({name: contest.name});
+    await RankPage.deleteMany({testName: contest.name});
+    await Ind.deleteMany({testName: contest.name});
     let conIndices = new Map();
     for (var i = 0; i < contest.weighting.length; i++) {
       let weighting = await TestWeight.findById(contest.weighting[i]);
@@ -137,20 +139,29 @@ exports.contest_update_indices_post = async (req, res, next) => {
     var last, lastRank = 1;
     let indices = await Ind.find({testName: req.body.contestName}).
         sort("-indexVal");
+    let rankPage = new RankPage({testName: contest.name});
     for (var i = 0; i < indices.length; i++) {
-      index = indices[i];
+      let rank = indices[i];
+      var rankVal;
       if (i == 0) {
-        last = index.indexVal;
+        last = rank.indexVal;
       }
-      if (index.indexVal == last) {
-        index.rank = lastRank;
+      if (rank.indexVal == last) {
+        rankVal = lastRank;
       } else {
-        last = index.indexVal;
+        last = rank.indexVal;
         lastRank = i + 1;
-        index.rank = lastRank;
+        rankVal = lastRank;
       }
-      await index.save();
+      await rankPage.out.push({
+        rank: rankVal,
+        studentName: rank.studentName,
+        indexVal: rank.indexVal,
+        gradYear: rank.studentGradYear
+      });
     }
+    await Ind.deleteMany({testName: contest.name});
+    await rankPage.save();
   }
   res.redirect(req.app.get('prefix')+'officers');
 };

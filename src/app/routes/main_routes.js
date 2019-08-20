@@ -6,6 +6,7 @@ const Test = require('../models/test');
 const User = require('../models/user');
 const Score = require('../models/score');
 const Contest = require('../models/contest');
+const RankPage = require('../models/rankpage');
 const Handlebars = require('express-handlebars');
 const prefix = require('../../config/url-config').prefix;
 
@@ -112,19 +113,8 @@ router.get('/rankings/test/view', async (req, res) => {
     })
   }
   else {
-    let ranks = await Ind.find({testName: req.query.name}).sort("-indexVal");
-    var out = [];
-    for(var i=0; i<ranks.length; i++) {
-      let rank = ranks[i];
-      let score = await Score.findOne({studentUsername: rank.studentUsername, testName: rank.testName});
-      out.push({
-        rank: rank.rank,
-        studentName: rank.studentName,
-        indexVal: rank.indexVal,
-        gradYear: rank.studentGradYear,
-        scoreDist: score.scoreDist
-      });
-    }
+    let rankPage = await RankPage.findOne({testName: req.query.name});
+    let out = rankPage.out;
     res.render('rankings_view_test', {ranks: out, testName: req.query.name});
   }
 });
@@ -154,20 +144,15 @@ router.get('/rankings/contest/view', async (req, res) => {
     })
   }
   else {
-    let ranks = await Ind.find({testName: req.query.name}).sort("-indexVal");
-    var out = [];
-    for(var i=0; i<ranks.length; i++) {
-      let rank = ranks[i];
-      let score = await Score.findOne({studentUsername: rank.studentUsername, testName: rank.testName});
-      out.push({
-        rank: rank.rank,
-        studentName: rank.studentName,
-        indexVal: rank.indexVal,
-        gradYear: rank.studentGradYear
-      });
-    }
+    let rankPage = await RankPage.findOne({testName: req.query.name});
+    let out = rankPage.out;
     res.render('rankings_view_contest', {ranks: out, testName: req.query.name});
   }
+});
+
+router.get('/custom', async (req, res) => {
+
+  res.render('officers');
 });
 
 module.exports = router;
