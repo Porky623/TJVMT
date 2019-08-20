@@ -1,4 +1,4 @@
-# vmt_Node
+# TJVMT
 Thomas Jefferson High School for Science and Technology's [Varsity Math Team's website](https://activities.tjhsst.edu/vmt/).
 
 Features added:
