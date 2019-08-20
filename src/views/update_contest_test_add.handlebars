@@ -1,9 +1,17 @@
 <h1>Input the test weighting</h1>
 <form name="add_contest_form_test" action="{{prefix}}contest/update/test/add?{{query}}" method="post">
-    <label for="testName">Name of test</label>
-    <input class="form-control" type="text" required id="testName" name="testName" autofocus="autofocus">
-    <label for="testWeight">Weighting of test (as a decimal to the nearest hundredth)</label>
-    <input class="form-control" type="number" required min="0" value="0" step="0.01" id="testWeight" name="testWeight">
-    <input class="btn btn-primary" type="submit" value="Submit">
+    <fieldset>
+        <div class="form-group">
+            <label for="testName">Name of test</label>
+            <select class="form-control" required id="testName" name="testName" autofocus="autofocus">
+                {{#each testName}}
+                    <option value="{{this}}">{{this}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <label for="testWeight">Weighting of test (as a decimal to the nearest hundredth)</label>
+        <input class="form-control" type="number" required min="0" value="0" step="0.01" id="testWeight" name="testWeight">
+        <input class="btn btn-primary" type="submit" value="Submit">
+    </fieldset>
 </form>
-<a href="{{prefix}}officers"><button type="button" class="btn btn-primary">Return to Officers Page</button></a>
+<a href="{{prefix}}officers"><button type="button" class="btn btn-secondary">Return to Officers Page</button></a>

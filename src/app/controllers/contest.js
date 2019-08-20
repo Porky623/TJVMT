@@ -32,11 +32,16 @@ exports.contest_create_post = async (req,res,next) => {
 };
 
 //Select which contest to update
-exports.contest_update_tests_name = function(req,res) {
+exports.contest_update_tests_name = async (req,res) => {
   res.locals.metaTags = {
     title: 'Select Contest',
   };
-  res.render('update_contest_test_name');
+  var contestNames = [];
+  let allContests = await Contest.find({});
+  for(var i=0; i<allContests.length; i++) {
+    await contestNames.push(allContests[i].name);
+  }
+  res.render('update_contest_test_name', {contestName: contestNames});
 };
 
 exports.contest_update_tests_add = async (req,res) => {
@@ -50,8 +55,13 @@ exports.contest_update_tests_add = async (req,res) => {
       redirect: req.app.get('prefix')+'contest/update/test'
     });
   }
+  var testNames = [];
+  let allTests = await Test.find({});
+  for(var i=0; i<allTests.length; i++) {
+    await testNames.push(allTests[i].name);
+  }
   res.render('update_contest_test_add',
-      { query: req._parsedOriginalUrl.query});
+      { query: req._parsedOriginalUrl.query, testName: testNames});
 };
 
 exports.contest_update_tests_add_post = async (req,res,next) => {
@@ -77,7 +87,12 @@ exports.contest_update_indices = async (req, res) => {
   res.locals.metaTags = {
     title: 'Update Indices',
   };
-  res.render('update_indices_contest');
+  var contestNames = [];
+  let allContests = await Contest.find({});
+  for(var i=0; i<allContests.length; i++) {
+    await contestNames.push(allContests[i].name);
+  }
+  res.render('update_indices_contest', {contestName: contestNames});
 };
 
 exports.contest_update_indices_post = async (req, res, next) => {

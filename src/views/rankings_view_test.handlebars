@@ -16,23 +16,24 @@
     }
 </style>
 
-<h3>{{testName}}</h3>
-
-<table>
-    <tr>
-        <th>Rank</th>
-        <th>Name</th>
-        <th>Index</th>
-        <th>GradYear</th>
-        <th>Distr.</th>
-    </tr>
-    {{#each ranks}}
+<div class="container-fluid">
+    <h3>{{testName}}</h3>
+    <table>
         <tr>
-            <td>{{rank}}</td>
-            <td>{{studentName}}</td>
-            <td>{{indexVal}}</td>
-            <td>{{gradYear}}</td>
-            <td>{{scoreDist}}</td>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Index</th>
+            <th>GradYear</th>
+            <th>Distr.</th>
         </tr>
-    {{/each}}
-</table>
+        {{#each ranks}}
+            <tr>
+                <td>{{rank}}</td>
+                <td>{{studentName}}</td>
+                <td>{{indexVal}}</td>
+                <td>{{gradYear}}</td>
+                <td>{{scoreDist}}</td>
+            </tr>
+        {{/each}}
+    </table>
+</div>
