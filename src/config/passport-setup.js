@@ -36,27 +36,26 @@ passport.use('ion', client=new OAuth2Strategy({
       callbackURL: 'https://activities.tjhsst.edu/vmt/auth/ion/redirect',
       //For local usage
       // callbackURL: 'http://localhost:3000/auth/ion/redirect',
-    },(accessToken, refreshToken, profile, cb) => {
+    },async (accessToken, refreshToken, profile, cb) => {
       // check if user already exists in our own db
-      User.findOne({username: profile.ion_username}).then((currentUser) => {
-        if(currentUser){
-          // already have this user
-          console.log('Getting existing user');
-          cb(null, currentUser);
-        } else {
-          // if not, create user in our db
-          new User({
-            firstName: profile.first_name,
-            lastName: profile.last_name,
-            gradYear: profile.graduation_year,
-            email: profile.tj_email,
-            username: profile.ion_username,
-            isOfficer: false,
-          }).save().then((newUser) => {
-            console.log('Creating new user');
-            cb(null, newUser);
-          });
-        }
-      });
+      let currentUser = await User.findOne({username: profile.ion_username});
+      if(currentUser){
+        // already have this user
+        console.log('Getting existing user');
+        cb(null, currentUser);
+      } else {
+        // if not, create user in our db
+        let newUser = new User({
+          firstName: profile.first_name,
+          lastName: profile.last_name,
+          gradYear: profile.graduation_year,
+          email: profile.tj_email,
+          username: profile.ion_username,
+          isOfficer: false,
+        });
+        newUser.save();
+        console.log('Creating new user');
+        cb(null, newUser);
+      }
     })
 );
