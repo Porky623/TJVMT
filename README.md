@@ -13,7 +13,8 @@ Primarily utilizing:
 * OAuth 2.0 (also for authentication)
 * Mongoose (for easier MongoDB database usage)
 * Handlebars (HTML engine)
-* Express Flash Notifications (notifications when validation fails)
+* Express Flash Notifications (notifications when validation fails; currently adding for successful operations)
+* Bootswatch (styling: using Sandstone template)
 ## Notes for devs trying to replicate the project locally
 Install nodemon with `npm install nodemon` in the terminal (once you're already in the project's directory), and run with `npm run dev`. Also check the package.json file and install all the packages with `npm install <package>`.
 * express-flash-notifications
