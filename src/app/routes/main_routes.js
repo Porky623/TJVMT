@@ -66,9 +66,9 @@ router.get('/tjimo', (req, res) => {
 });
 
 //About
-router.get('/about', async (req, res) => {
+router.get('/news', async (req, res) => {
   res.locals.metaTags = {
-    title: 'About TJ VMT',
+    title: 'Announcements',
   };
   let announcements = []
   let allAnnounce = await Announcement.find({});
@@ -79,7 +79,7 @@ router.get('/about', async (req, res) => {
       date: allAnnounce[i].date
     })
   }
-  res.render('about', {announcement: announcements});
+  res.render('news', {announcement: announcements});
 });
 
 //Archive
