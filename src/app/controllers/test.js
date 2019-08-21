@@ -36,7 +36,12 @@ exports.test_update_score_name = async(req,res) => {
   res.locals.metaTags = {
     title: 'Update/Add Score',
   };
-  res.render('update_score_name');
+  var testNames = [];
+  let allTests = await Test.find({});
+  for(var i=0; i<allTests.length; i++) {
+    await testNames.push(allTests[i].name);
+  }
+  res.render('update_score_name', { query: req.query, testName: testNames});
 };
 
 exports.test_update_score_name_post = async(req,res,next) => {
@@ -54,12 +59,7 @@ exports.test_update_score = async(req,res) => {
   res.locals.metaTags = {
     title: 'Update/Add Score',
   };
-  var testNames = [];
-  let allTests = await Test.find({});
-  for(var i=0; i<allTests.length; i++) {
-    await testNames.push(allTests[i].name);
-  }
-  res.render('update_score', { query: req.query, testName: testNames});
+  res.render('update_score');
 };
 
 exports.test_update_score_post = async (req,res,next) => {
