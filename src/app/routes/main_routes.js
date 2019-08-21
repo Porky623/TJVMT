@@ -91,14 +91,6 @@ router.get('/archive', (req, res) => {
 });
 
 //Rankings
-router.get('/rankings', (req, res) => {
-  res.locals.metaTags = {
-    title: 'Rankings',
-  };
-  res.render('rankings_choose');
-});
-
-//Rankings
 router.get('/rankings/test', async (req, res) => {
   res.locals.metaTags = {
     title: 'Test Rankings',

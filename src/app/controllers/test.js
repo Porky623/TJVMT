@@ -207,12 +207,20 @@ exports.test_update_indices_post = async (req,res,next) => {
         }
         await index.save();
         let rank = index;
+        var rowClass;
+        if(i%2==0) {
+          rowClass = 'table-light';
+        }
+        else {
+          rowClass = 'table-active';
+        }
         await rankPage.out.push({
           rank: rank.rank,
           studentName: rank.studentName,
           indexVal: rank.indexVal,
           gradYear: rank.studentGradYear,
-          scoreDist: rank.scoreDist
+          scoreDist: rank.scoreDist,
+          rowClass: rowClass,
         });
       }
       await rankPage.save();

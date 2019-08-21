@@ -150,11 +150,19 @@ exports.contest_update_indices_post = async (req, res, next) => {
       lastRank = i + 1;
       rankVal = lastRank;
     }
+    var rowClass;
+    if(i%2==0) {
+      rowClass = 'table-light';
+    }
+    else {
+      rowClass = 'table-active';
+    }
     await rankPage.out.push({
       rank: rankVal,
       studentName: rank.studentName,
       indexVal: rank.indexVal,
-      gradYear: rank.studentGradYear
+      gradYear: rank.studentGradYear,
+      rowClass: rowClass,
     });
   }
   Ind.deleteMany({testName: contest.name});
