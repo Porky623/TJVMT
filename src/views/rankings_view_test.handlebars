@@ -10,10 +10,6 @@
         text-align: left;
         padding: 8px;
     }
-
-    tr:nth-child(even) {
-        background-color: #dddddd;
-    }
 </style>
 
 <div class="container-fluid">
@@ -27,7 +23,7 @@
             <th>Distr.</th>
         </tr>
         {{#each ranks}}
-            <tr>
+            <tr class="{{rowClass}}">
                 <td>{{rank}}</td>
                 <td>{{studentName}}</td>
                 <td>{{indexVal}}</td>
