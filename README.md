@@ -53,4 +53,4 @@ So what if we want to make a database call, say to get a User, and use the objec
 * [ ] Speed up page loading, especially for mobile devices, by reducing Javascript
 * [ ] Test more complex flash notification systems
 * [ ] Link email list subscriptions/unsubscribing
-
+* [ ] Write to log when an officer performs an action
