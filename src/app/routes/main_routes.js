@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
+const marked = require('marked');
 const Ind = require('../models/ind');
 const Test = require('../models/test');
 const User = require('../models/user');
@@ -76,7 +77,7 @@ router.get('/news', async (req, res) => {
   for(var i=0; i<allAnnounce.length; i++) {
     announcements.push({
       title: allAnnounce[i].title,
-      body: allAnnounce[i].body,
+      body: marked(allAnnounce[i].body),
       date: allAnnounce[i].date
     })
   }
