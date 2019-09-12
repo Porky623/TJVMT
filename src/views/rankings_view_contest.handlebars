@@ -15,6 +15,18 @@
     <h3>{{testName}}</h3>
     <table>
         <tr>
+            <th>Name</th>
+            <th>Weighting</th>
+        </tr>
+        {{#each weights}}
+            <tr class="{{rowClass}}">
+                <td>{{name}}</td>
+                <td>{{weight}}</td>
+            </tr>
+        {{/each}}
+    </table>
+    <table>
+        <tr>
             <th>Rank</th>
             <th>Name</th>
             <th>Index</th>

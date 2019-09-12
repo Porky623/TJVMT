@@ -8,6 +8,7 @@ const Score = require('../models/score');
 const Contest = require('../models/contest');
 const RankPage = require('../models/rankpage');
 const Announcement = require('../models/announcement');
+const Weighting = require('../models/testWeighting');
 const Handlebars = require('express-handlebars');
 const prefix = require('../../config/url-config').prefix;
 
@@ -159,7 +160,16 @@ router.get('/rankings/contest/view', async (req, res) => {
   }
   let rankPage = await RankPage.findOne({testName: req.query.name});
   let out = rankPage.out;
-  res.render('rankings_view_contest', {ranks: out, testName: req.query.name});
+  let query = await Weighting.find({contestName: req.query.name});
+  let outWeights = [];
+  for (var i=0; i<query.length; i++) {
+    let weight = query[i];
+    let test = await Test.findById(weight.testId);
+    await outWeights.push({
+      name: test.name,
+      weight: weight.weighting});
+  }
+  res.render('rankings_view_contest', {ranks: out, weights: outWeights, testName: req.query.name});
 });
 
 router.get('/custom', async (req, res) => {
