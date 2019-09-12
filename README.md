@@ -39,7 +39,7 @@ So what if we want to make a database call, say to get a User, and use the objec
 *Async/await* calls are actually a newer way of dealing with "promises." Suppose you wanted to use `User.find()` with async/await functionality but without labelling the function with await and putting the call inside an async function. Then you could do something of the form `User.find(filter).then(f).catch(g)` for functions `f` and `g`, but what if you wanted to use `User.find()`, `Test.find()`, *and* `Score.find()`, then use all three of them to do some calculation? This is doable with `.then().catch()`, but becomes very messy very fast. For this reason, I prefer `async/await` and used them instead in my code. I'm not too sure about performance, but it's definitely much easier to read and debug in my opinion.
 ## Current To-Do List
 * [x] Try and make formatting more consistent
-* [ ] Display weights with contest rankings
+* [x] Display weights with contest rankings
 * [ ] Make styling easier to manage than page-by-page
   * [ ] Fix styles.css not being applied
 * [x] Clean up CSS and HTML to look better
