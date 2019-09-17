@@ -11,7 +11,8 @@ var TestSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Ind'
   }],
-  writersNames: [String] //the test writers' Ion usernames
+  writersNames: [String], //the test writers' Ion usernames
+  numQuestions: Number
 });
 
 //Export model

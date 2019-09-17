@@ -1,0 +1,16 @@
+<div class="container-fluid">
+    <h1>Input information</h1>
+    <form name="update_weighted_scores" action="{{prefix}}test/update/weighted_score/add" method="post">
+        <label for="name">Test name</label>
+        <select class="form-control" required id="name" name="name" autofocus="autofocus">
+            {{#each testName}}
+                <option value="{{this}}">{{this}}</option>
+            {{/each}}
+        </select>
+        <label for="weighting">Weight distribution (e.g. "1,1.,3.5,2.69,4.20,96.9")</label>
+        <input class="form-control" type="text" required id="weighting" name="weighting">
+        <input class="btn btn-success" type="submit" value="Update">
+    </form>
+    </form>
+    <a href="{{prefix}}officers"><button type="button" class="btn btn-secondary">Return to Officers Page</button></a>
+</div>
