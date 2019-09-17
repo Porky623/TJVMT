@@ -3,6 +3,8 @@
     <form name="add_test_form" action="{{prefix}}test/add" method="post">
         <label for="name">Test name</label>
         <input class="form-control" type="text" required id="name" name="name" autofocus="autofocus">
+        <label for="numQuestions">Number of questions</label>
+        <input class="form-control" type="number" required min="1" value="0" id="numQuestions" name="numQuestions">
         <input class="btn btn-success" type="submit" value="Submit">
     </form>
     <a href="{{prefix}}officers"><button type="button" class="btn btn-secondary">Return to Officers Page</button></a>

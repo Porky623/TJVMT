@@ -6,6 +6,19 @@ const Ind = require('../models/ind');
 const RankPage = require('../models/rankpage');
 const topAvgNum = 12;
 
+let valid = function(scoreVal, scoreDist, numQuestions) {
+  if(numQuestions!=scoreDist.length)
+    return false;
+  // var count=0;
+  // for(var i=0; i<scoreDist.length; i++) {
+  //   if(scoreDist[i]!='0') {
+  //     count++;
+  //   }
+  // }
+  // return count==scoreVal;
+  return true;
+};
+
 exports.test_create = async(req,res) => {
   res.locals.metaTags = {
     title: 'Add Test',
@@ -17,7 +30,8 @@ exports.test_create_post = async (req,res,next) => {
   if(!(await Test.exists({name: req.body.name}))) {
     var test = new Test({
       name: req.body.name,
-      writersNames: []
+      writersNames: [],
+      numQuestions: req.body.numQuestions
     });
     await test.save();
     console.log('Test created!');
@@ -32,7 +46,30 @@ exports.test_create_post = async (req,res,next) => {
   res.redirect(req.app.get('prefix')+'officers');
 };
 
-exports.test_update_score_name = async(req,res) => {
+// exports.test_update_score_name = async(req,res) => {
+//   res.locals.metaTags = {
+//     title: 'Update/Add Score',
+//   };
+//   var testNames = [];
+//   let allTests = await Test.find({});
+//   for(var i=0; i<allTests.length; i++) {
+//     await testNames.push(allTests[i].name);
+//   }
+//   res.render('update_score_name', { query: req.query, testName: testNames});
+// };
+//
+// exports.test_update_score_name_post = async(req,res,next) => {
+//   if(!(await Test.exists({name: req.body.name}))) {
+//     return req.flash({
+//       type: 'Warning',
+//       message: 'There is no test named '+req.body.name+'.',
+//       redirect: req.app.get('prefix')+'/test/update/score'
+//     });
+//   }
+//   res.redirect(req.app.get('prefix')+'test/update/score/add?name='+req.body.name);
+// };
+
+exports.test_update_score = async(req,res) => {
   res.locals.metaTags = {
     title: 'Update/Add Score',
   };
@@ -41,48 +78,39 @@ exports.test_update_score_name = async(req,res) => {
   for(var i=0; i<allTests.length; i++) {
     await testNames.push(allTests[i].name);
   }
-  res.render('update_score_name', { query: req.query, testName: testNames});
-};
-
-exports.test_update_score_name_post = async(req,res,next) => {
-  if(!(await Test.exists({name: req.body.name}))) {
-    return req.flash({
-      type: 'Warning',
-      message: 'There is no test named '+req.body.name+'.',
-      redirect: req.app.get('prefix')+'/test/update/score'
-    });
-  }
-  res.redirect(req.app.get('prefix')+'test/update/score/add?name='+req.body.name);
-};
-
-exports.test_update_score = async(req,res) => {
-  res.locals.metaTags = {
-    title: 'Update/Add Score',
-  };
-  res.render('update_score');
+  if(req.query.name)
+    testNames=[req.query.name];
+  res.render('update_score', {query: req.query, testName: testNames});
 };
 
 exports.test_update_score_post = async (req,res,next) => {
   var score;
-  if(!(await Test.exists({name: req.query.name}))) {
+  if(!(await Test.exists({name: req.body.name}))) {
     return req.flash({
       type: 'Warning',
-      message: 'There is no test named '+req.query.name+'.',
-      redirect: req.app.get('prefix')+'test/update/score'
+      message: 'There is no test named '+req.body.name+'.',
+      redirect: req.app.get('prefix')+'test/update/score/add'
     });
   }
   else if (!(await User.exists({username: req.body.username}))) {
     return req.flash({
       type: 'Warning',
       message: 'Cannot find student with username ' + req.body.username + '.',
-      redirect: req.app.get('prefix')+'test/update/score/add?name=' + req.query.name
+      redirect: req.app.get('prefix')+'test/update/score/add?name='+req.body.name
     });
   }
   else {
-    let test = await Test.findOne({name: req.query.name});
+    let test = await Test.findOne({name: req.body.name});
+    if(!valid(req.body.scoreVal, req.body.scoreDist, test.numQuestions)){
+      return req.flash({
+        type: 'Warning',
+        message: 'Score value does not match score distribution, or score distribution is not valid.',
+        redirect: req.app.get('prefix')+'test/update/score/add?name='+req.body.name
+      })
+    }
     let student = await User.findOne({username: req.body.username});
-    if (await Score.exists({studentUsername: req.body.username, testName: req.query.name})) {
-      let sc = await Score.findOne({studentUsername: req.body.username, testName: req.query.name});
+    if (await Score.exists({studentUsername: req.body.username, testName: req.body.name})) {
+      let sc = await Score.findOne({studentUsername: req.body.username, testName: req.body.name});
       sc.scoreVal = req.body.scoreVal;
       sc.scoreDist = req.body.scoreDist;
       sc.save();
@@ -101,7 +129,8 @@ exports.test_update_score_post = async (req,res,next) => {
       test.save();
     }
   }
-  res.redirect(req.app.get('prefix')+'test/update/score/add?name=' + req.query.name);
+  res.redirect(req.app.get('prefix')+'test/update/score/add?name='+req.body.name);
+  // res.redirect(req.app.get('prefix')+'test/update/score/add?name=' + req.query.name);
 };
 
 exports.test_update_indices = async(req,res) => {
@@ -281,4 +310,86 @@ exports.test_writer_post = async(req, res, next) => {
         res.redirect(req.app.get('prefix')+'test/update/writer');
       }
   }
+};
+
+exports.update_weighted_scores = async(req, res) => {
+  res.locals.metaTags = {
+    title: 'Update/Add Weighted Score',
+  };
+  var testNames = [];
+  let allTests = await Test.find({});
+  for(var i=0; i<allTests.length; i++) {
+    await testNames.push(allTests[i].name);
+  }
+  res.render('update_score_weighted', { query: req.query, testName: testNames});
+};
+
+exports.update_weighted_scores_post = async(req, res, next) => {
+  var enoughScores = true;
+  if(!(await Test.exists({name: req.body.name}))) {
+    return req.flash({
+      type: 'Warning',
+      message: 'There is no test named '+req.body.name+'.',
+      redirect: req.app.get('prefix')+'/test/update/indices'
+    });
+  }
+  else {
+    let test = await Test.findOne({name: req.body.name});
+    test.indices = [];
+    var scores = test.scores;
+    if (scores.length < 1) {
+      enoughScores = false;
+    } else {
+      let numCorrect = [];
+      for(var i=0; i<test.numQuestions; i++) {
+        numCorrect.push(0);
+      }
+      // for(var i=0; i<scores.length; i++) {
+      //   for(var j=0; j<numCorrect.length; j++) {
+      //     if(scores[i].scoreDist.charAt(j)!='0') {
+      //       numCorrect[j]++;
+      //     }
+      //   }
+      // }
+      let weightings = req.body.weighting.split(",");
+      if(weightings.length!=numCorrect.length) {
+        return req.flash({
+          type: "Warning",
+          message: "The number of weightings does not match the number of questions.",
+          redirect: req.app.get("prefix")+'test/update/weighted_score/add'
+        });
+      }
+      for(var i=0; i<numCorrect.length; i++) {
+        // if(numCorrect[i]>0)
+        numCorrect[i]=parseFloat(weightings[i]);
+        if(isNaN(numCorrect[i]))
+          return req.flash({
+            type: "Warning",
+            message: "Invalid weighting found at index "+i,
+            redirect: req.app.get("prefix")+'test/update/weighted_score/add'
+          });
+      }
+      for(var i=0; i<scores.length; i++) {
+        let score = await Score.findById(scores[i]);
+        if(score.scoreDist=="Writer")
+          continue;
+        var totalScore = 0;
+        for(var j=0; j<numCorrect.length; j++) {
+          if(score.scoreDist.charAt(j)!='0') {
+            totalScore+=numCorrect[j];
+          }
+        }
+        score.scoreVal = totalScore;
+        await score.save();
+      }
+    }
+    // if(!enoughScores) {
+    //   return req.flash({
+    //     type: 'Warning',
+    //     message: 'At least one score must be entered!',
+    //     redirect: req.app.get('prefix')+'officers'
+    //   });
+    // }
+  }
+  res.redirect(req.app.get('prefix')+'officers');
 };
