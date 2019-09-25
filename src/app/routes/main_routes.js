@@ -181,7 +181,7 @@ router.get('/custom', async (req, res) => {
 });
 
 router.post('/custom', async(req,res,next)=> {
-  let currentUser = await User.findOne({username: profile.ion_username});
+  let currentUser = await User.findOne({username: req.body.ion_username});
   if(currentUser){
     return req.flash({
       type: "Warning",
