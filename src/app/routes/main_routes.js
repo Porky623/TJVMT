@@ -174,8 +174,33 @@ router.get('/rankings/contest/view', async (req, res) => {
 });
 
 router.get('/custom', async (req, res) => {
+  res.locals.metaTags = {
+    title: 'Update Users',
+  };
+  res.render('custom');
+});
 
-  res.render('officers');
+router.post('/custom', async(req,res,next)=> {
+  let currentUser = await User.findOne({username: profile.ion_username});
+  if(currentUser){
+    return req.flash({
+      type: "Warning",
+      message: "User already exists",
+      redirect: req.app.get('prefix')+'custom'
+    })
+  } else {
+    // if not, create user in our db
+    let newUser = new User({
+      firstName: req.body.first_name,
+      lastName: req.body.last_name,
+      gradYear: req.body.graduation_year,
+      email: req.body.tj_email,
+      username: req.body.ion_username,
+      isOfficer: false,
+    });
+    await newUser.save();
+    res.redirect(req.app.get('prefix')+'custom');
+  }
 });
 
 module.exports = router;
