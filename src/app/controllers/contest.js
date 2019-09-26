@@ -107,10 +107,14 @@ exports.contest_update_indices_post = async (req, res, next) => {
     await Ind.deleteMany({testName: contest.name});
     let conIndices = new Map();
     let pumacInds = new Map();
+    let totalWeight = 0;
     if (contest.name == "2019pumac") {
         for (var i = 0; i < contest.weighting.length; i++) {
             let weighting = await TestWeight.findById(contest.weighting[i]);
             let test = await Test.findById(weighting.testId);
+            if(test.indices.length>0) {
+                totalWeight+=weighting.weighting;
+            }
             if (test.name.substring(0, 9) == "2019pumac") {
                 for (var j = 0; j < test.indices.length; j++) {
                     let index = await Ind.findById(test.indices[j]);
@@ -146,6 +150,9 @@ exports.contest_update_indices_post = async (req, res, next) => {
         for (var i = 0; i < contest.weighting.length; i++) {
             let weighting = await TestWeight.findById(contest.weighting[i]);
             let test = await Test.findById(weighting.testId);
+            if(test.indices.length>0) {
+                totalWeight+=weighting.weighting;
+            }
             for (var j = 0; j < test.indices.length; j++) {
                 let index = await Ind.findById(test.indices[j]);
                 let weightedInd = index.indexVal * weighting.weighting;
@@ -163,7 +170,7 @@ exports.contest_update_indices_post = async (req, res, next) => {
             studentUsername: studentUsername,
             studentGradYear: student.gradYear,
             testName: req.body.contestName,
-            indexVal: indValue
+            indexVal: indValue/totalWeight
         });
         await ind.save();
         contest.indices.push(ind._id);
