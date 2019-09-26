@@ -173,7 +173,7 @@ exports.test_update_indices_post = async (req,res,next) => {
       topAvg = topAvg / topAvgNum;
       for(var i=0; i<test.writersNames.length; i++) {
         let writer = await User.findOne({username: test.writersNames[i]});
-        if(!(await Score.exists({studentName: writer.firstName+' '+writer.lastName}))) {
+        if(!(await Score.exists({studentName: writer.firstName+' '+writer.lastName,testName: test.name}))) {
           let score = new Score({
             studentName: writer.firstName + ' ' + writer.lastName,
             studentUsername: writer.username,

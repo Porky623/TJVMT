@@ -33,9 +33,9 @@ passport.use('ion', client=new OAuth2Strategy({
       clientID: keys.ion.clientID,
       clientSecret: keys.ion.clientSecret,
       //For the actual site
-      callbackURL: 'https://activities.tjhsst.edu/vmt/auth/ion/redirect',
+      // callbackURL: 'https://activities.tjhsst.edu/vmt/auth/ion/redirect',
       //For local usage
-      // callbackURL: 'http://localhost:3000/auth/ion/redirect',
+      callbackURL: 'http://localhost:3000/auth/ion/redirect',
     },async (accessToken, refreshToken, profile, cb) => {
       // check if user already exists in our own db
       let currentUser = await User.findOne({username: profile.ion_username});
