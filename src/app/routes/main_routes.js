@@ -12,6 +12,7 @@ const Announcement = require('../models/announcement');
 const Weighting = require('../models/testWeighting');
 const Handlebars = require('express-handlebars');
 const prefix = require('../../config/url-config').prefix;
+const fs = require('fs')
 
 const authCheck = (req, res, next) => {
   if(!req.user){
@@ -173,34 +174,63 @@ router.get('/rankings/contest/view', async (req, res) => {
   res.render('rankings_view_contest', {ranks: out, weights: outWeights, testName: req.query.name});
 });
 
-router.get('/custom', async (req, res) => {
-  res.locals.metaTags = {
-    title: 'Update Users',
-  };
-  res.render('custom');
+router.get('/custom', async(req, res) => {
+
+  res.render('officers');
 });
 
-router.post('/custom', async(req,res,next)=> {
-  let currentUser = await User.findOne({username: req.body.ion_username});
-  if(currentUser){
-    return req.flash({
-      type: "Warning",
-      message: "User already exists",
-      redirect: req.app.get('prefix')+'custom'
-    })
-  } else {
-    // if not, create user in our db
-    let newUser = new User({
-      firstName: req.body.first_name,
-      lastName: req.body.last_name,
-      gradYear: req.body.graduation_year,
-      email: req.body.tj_email,
-      username: req.body.ion_username,
-      isOfficer: false,
-    });
-    await newUser.save();
-    res.redirect(req.app.get('prefix')+'custom');
-  }
-});
+// router.get('/custom', async(req, res) => {
+//   const rows = [];
+//   let scores = await Score.find({testName: "2019duke2"});
+//   for(var i=0; i<scores.length; i++) {
+//     let user = await User.findOne({username: scores[i].studentUsername});
+//     let score = scores[i];
+//     let row = [user.firstName];
+//     row.push(user.lastName);
+//     row.push(score.scoreVal);
+//     row.push(score.scoreDist);
+//     rows.push(row);
+//   }
+//   let csvContent = "";
+//   rows.forEach(function(rowArray) {
+//     let row = rowArray.join(",");
+//     csvContent += row + "\r\n";
+//   });
+//   await fs.writeFile('2019duke2.csv', csvContent, (err)=> {
+//     if(err) throw err;
+//   });
+//   res.render('officers');
+// });
+
+
+// router.get('/custom', async (req, res) => {
+//   res.locals.metaTags = {
+//     title: 'Update Users',
+//   };
+//   res.render('custom');
+// });
+//
+// router.post('/custom', async(req,res,next)=> {
+//   let currentUser = await User.findOne({username: req.body.ion_username});
+//   if(currentUser){
+//     return req.flash({
+//       type: "Warning",
+//       message: "User already exists",
+//       redirect: req.app.get('prefix')+'custom'
+//     })
+//   } else {
+//     // if not, create user in our db
+//     let newUser = new User({
+//       firstName: req.body.first_name,
+//       lastName: req.body.last_name,
+//       gradYear: req.body.graduation_year,
+//       email: req.body.tj_email,
+//       username: req.body.ion_username,
+//       isOfficer: false,
+//     });
+//     await newUser.save();
+//     res.redirect(req.app.get('prefix')+'custom');
+//   }
+// });
 
 module.exports = router;

@@ -107,14 +107,19 @@ exports.contest_update_indices_post = async (req, res, next) => {
   await RankPage.deleteMany({testName: contest.name});
   await Ind.deleteMany({testName: contest.name});
   let conIndices = new Map();
+  let pumacInds = new Map();
   if(contest.name=="2019pumac") {
-    let pumacInds = [];
     for (var i = 0; i < contest.weighting.length; i++) {
       let weighting = await TestWeight.findById(contest.weighting[i]);
       let test = await Test.findById(weighting.testId);
-      if(test.name.substring(0,9)=="2019pumac"){
-        let index = await Ind.findById(test.indices[j]);
-        pumacInds.push(index.indexVal);
+      if(test.name.substring(0,9)=="2019pumac") {
+        for (var j = 0; j < test.indices.length; j++) {
+          let index = await Ind.findById(test.indices[j]);
+          if(!pumacInds.has(index.studentUsername)) {
+            pumacInds.set(index.studentUsername,[]);
+          }
+          pumacInds.get(index.studentUsername).push(index.indexVal);
+        }
       }
       else {
         for (var j = 0; j < test.indices.length; j++) {
@@ -128,15 +133,17 @@ exports.contest_update_indices_post = async (req, res, next) => {
         }
       }
     }
-    for(var i=pumacInds.length; i<4; i++) {
-      pumacInds.push(0);
+    for(var username,pumInds of pumacInds) {
+      for(var i=pumInds.length; i<4; i++) {
+        pumInds.push(0);
+      }
+      pumInds.sort();
+      if (!conIndices.has(username)) {
+        conIndices.set(username, 0);
+      }
+      conIndices.set(username,
+          conIndices.get(username) + .3*pumInds[3]+.3*pumInds[2]+.1*pumInds[1]);
     }
-    pumacInds.sort();
-    if (!conIndices.has(index.studentUsername)) {
-      conIndices.set(index.studentUsername, 0);
-    }
-    conIndices.set(index.studentUsername,
-        conIndices.get(index.studentUsername) + .3*pumacInds[3]+.3*pumacInds[2]+.1*pumacInds[1]);
   }
   else
     for (var i = 0; i < contest.weighting.length; i++) {
