@@ -131,7 +131,7 @@ exports.contest_update_indices_post = async (req, res, next) => {
                 }
             }
         }
-        for (var username, pumInds of pumacInds) {
+        for (var [username, pumInds] of pumacInds) {
             for (var i = pumInds.length; i < 4; i++) {
                 pumInds.push(0);
             }
