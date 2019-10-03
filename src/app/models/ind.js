@@ -8,7 +8,8 @@ var IndSchema = new Schema({
   testName: String,
   indexVal: {type: Number, required: true},
   rank: {type: Number},
-  scoreDist: String
+  scoreDist: String,
+  studentGrade: Number
 });
 
 //Export model

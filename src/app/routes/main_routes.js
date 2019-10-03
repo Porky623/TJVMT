@@ -226,6 +226,7 @@ router.get('/custom', async(req, res) => {
 //       gradYear: req.body.graduation_year,
 //       email: req.body.tj_email,
 //       username: req.body.ion_username,
+//       grade: req.body.grade,
 //       isOfficer: false,
 //     });
 //     await newUser.save();

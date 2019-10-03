@@ -5,6 +5,7 @@ var UserSchema = new Schema({
     firstName: {type: String, required: true},
     lastName: {type: String, required: true},
     gradYear: {type: Number, min: 2000, max: 3000},
+    grade: Number,
     email: String,
     username: {type: String, required: true},
     isOfficer: Boolean
