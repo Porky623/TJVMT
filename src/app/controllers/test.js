@@ -120,6 +120,7 @@ exports.test_update_score_post = async (req,res,next) => {
         studentName: student.firstName+' '+student.lastName,
         studentUsername: student.username,
         studentGradYear: student.gradYear,
+        studentGrade: student.grade,
         testName: test.name,
         scoreVal: req.body.scoreVal,
         scoreDist: req.body.scoreDist
@@ -178,6 +179,7 @@ exports.test_update_indices_post = async (req,res,next) => {
             studentName: writer.firstName + ' ' + writer.lastName,
             studentUsername: writer.username,
             studentGradYear: writer.gradYear,
+            studentGrade: writer.grade,
             testName: test.name,
             scoreVal: 0,
             scoreDist: 'Writer'
@@ -198,6 +200,7 @@ exports.test_update_indices_post = async (req,res,next) => {
             studentName: score.studentName,
             studentUsername: score.studentUsername,
             studentGradYear: score.studentGradYear,
+            studentGrade: score.studentGrade,
             testName: score.testName,
             scoreDist: score.scoreDist,
             indexVal: 2000
@@ -207,6 +210,7 @@ exports.test_update_indices_post = async (req,res,next) => {
             studentName: score.studentName,
             studentUsername: score.studentUsername,
             studentGradYear: score.studentGradYear,
+            studentGrade: score.studentGrade,
             testName: score.testName,
             indexVal: 2000 * score.scoreVal / topAvg,
             scoreDist: score.scoreDist
@@ -248,6 +252,7 @@ exports.test_update_indices_post = async (req,res,next) => {
           studentName: rank.studentName,
           indexVal: rank.indexVal,
           gradYear: rank.studentGradYear,
+          grade: rank.studentGrade,
           scoreDist: rank.scoreDist,
           rowClass: rowClass,
         });

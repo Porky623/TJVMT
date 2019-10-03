@@ -169,6 +169,7 @@ exports.contest_update_indices_post = async (req, res, next) => {
             studentName: student.firstName + ' ' + student.lastName,
             studentUsername: studentUsername,
             studentGradYear: student.gradYear,
+            studentGrade: student.grade,
             testName: req.body.contestName,
             indexVal: indValue/totalWeight
         });
@@ -203,6 +204,7 @@ exports.contest_update_indices_post = async (req, res, next) => {
             studentName: rank.studentName,
             indexVal: rank.indexVal,
             gradYear: rank.studentGradYear,
+            grade: rank.studentGrade,
             rowClass: rowClass,
         });
     }
