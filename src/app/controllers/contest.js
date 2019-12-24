@@ -139,7 +139,7 @@ exports.contest_update_indices_post = async (req, res, next) => {
             for (var i = pumInds.length; i < 4; i++) {
                 pumInds.push(0);
             }
-            pumInds.sort();
+            pumInds.sort(function(a, b){return a - b});
             if (!conIndices.has(username)) {
                 conIndices.set(username, 0);
             }
