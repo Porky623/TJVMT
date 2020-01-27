@@ -16,7 +16,7 @@ const flash = require('express-flash-notification');
 const prefix = require('./config/url-config').local_prefix;
 const siteKey = require('./config/url-config').siteKey;
 
-mongoose.connect(dbConfig.url, {
+mongoose.connect(dbConfig.local_url, {
   useNewUrlParser: true,
 }).then(() => {
   console.log('Successfully connected to the database');
