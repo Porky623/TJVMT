@@ -68,14 +68,6 @@ router.get('/tjimo', (req, res) => {
     res.render('tjimo');
 });
 
-//Puzzle Hunt
-router.get('/puzzle', (req, res) => {
-    res.locals.metaTags = {
-        title: 'Puzzle Hunt',
-    };
-    res.render('puzzle');
-});
-
 //About
 router.get('/news', async (req, res) => {
     res.locals.metaTags = {
