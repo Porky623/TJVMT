@@ -1,7 +1,7 @@
-exports.test_create = async(req,res) => {
+exports.load_puzzle = async(req,res) => {
     res.locals.metaTags = {
-        title: 'Add Test',
+        title: 'Puzzle Hunt',
     };
-    res.render('add_test');
+    res.render('puzzle');
 };export
 

@@ -3,7 +3,7 @@ const router = express.Router();
 const puzzleController = require('../controllers/puzzle');
 const officerCheck = require('../routes/officer').officerCheck;
 
-router.get('/puzzle/add', officerCheck, puzzleController.puzzle_create);
+router.get('/add', officerCheck, puzzleController.load_puzzle);
 
 // router.get('/puzzle', (req, res) => {
 //     res.locals.metaTags = {
