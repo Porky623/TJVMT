@@ -1,15 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const puzzleController = require('../controllers/puzzle');
-const officerCheck = require('../routes/officer').officerCheck;
 
-router.get('/add', officerCheck, puzzleController.load_puzzle);
+router.get('/', puzzleController.load_puzzle);
 
-// router.get('/puzzle', (req, res) => {
-//     res.locals.metaTags = {
-//         title: 'Puzzle Hunt',
-//     };
-//     res.render('puzzle');
-// });
+router.get('/rules', puzzleController.load_rules);
+
+router.get('/map', puzzleController.load_map);
 
 module.exports = router;
