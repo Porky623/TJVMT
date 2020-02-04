@@ -1,12 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var ARMLSchema = new Schema({
+var armlTestSchema = new Schema({
     name: {type: String, required: true},
-    scores: [{
-        type: Schema.ObjectId,
-        ref: 'ARMLScore'
-    }],
     teams: [{
         type: Schema.ObjectId,
         ref: 'ARMLTeam'
@@ -15,12 +11,15 @@ var ARMLSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'ARMLRelay'
     }],
+    scores: [{
+        type: Schema.ObjectId,
+        ref: 'ARMLScore'
+    }],
     indices: [{
         type: Schema.ObjectId,
         ref: 'Ind'
-    }],
-    numQuestions: Number
+    }]
 });
 
 //Export model
-module.exports = mongoose.model('ARMLTest', ARMLSchema);
+module.exports = mongoose.model('ARMLTest', armlTestSchema);
