@@ -3,6 +3,7 @@ const TestWeight = require('../models/testWeighting');
 const Test = require('../models/test');
 const Ind = require('../models/ind');
 const User = require('../models/user');
+const ARMLTest = require('../models/armlTest');
 const flash = require('express-flash-notification');
 const RankPage = require('../models/rankpage');
 
@@ -55,7 +56,11 @@ exports.contest_update_tests_add = async (req, res) => {
         });
     }
     var testNames = [];
-    let allTests = await Test.find({});
+    var allTests = await Test.find({});
+    for (var i = 0; i < allTests.length; i++) {
+        await testNames.push(allTests[i].name);
+    }
+    allTests = await ARMLTest.find({});
     for (var i = 0; i < allTests.length; i++) {
         await testNames.push(allTests[i].name);
     }
@@ -65,7 +70,13 @@ exports.contest_update_tests_add = async (req, res) => {
 
 exports.contest_update_tests_add_post = async (req, res, next) => {
     var weight;
-    var test = await Test.findOne({name: req.body.testName});
+    var test;
+    if(await Test.exists({name: req.body.testName})) {
+        test = await Test.findOne({name: req.body.testName});
+    }
+    else{
+        test=await ARMLTest.findOne({name: req.body.testName});
+    }
     weight = new TestWeight({
         contestName: req.query.name,
         testId: test._id,
@@ -74,7 +85,6 @@ exports.contest_update_tests_add_post = async (req, res, next) => {
     weight.save();
     weight.populate('testId');
     let contest = await Contest.findOne({name: req.query.name});
-    test = Test.findOne({name: req.body.testName});
     contest.tests.push(test._id);
     contest.populate('tests');
     contest.weighting.push(weight._id);
