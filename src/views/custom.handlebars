@@ -1,0 +1,19 @@
+<div class="container-fluid">
+    <h1>Add a user manually</h1>
+    <form name="custom" action="{{prefix}}custom" method="post">
+        <label for="first_name">First name</label>
+        <input class="form-control" type="text" required id="first_name" name="first_name" autofocus="autofocus">
+        <label for="last_name">Last name</label>
+        <input class="form-control" type="text" required id="last_name" name="last_name" autofocus="autofocus">
+        <label for="ion_username">Ion username</label>
+        <input class="form-control" type="text" required id="ion_username" name="ion_username">
+        <label for="tj_email">TJ email</label>
+        <input class="form-control" type="text" required id="tj_email" name="tj_email" autofocus="autofocus">
+        <label for="graduation_year">Gradyear</label>
+        <input class="form-control" type="text" required id="graduation_year" name="graduation_year" autofocus="autofocus">
+        <label for="grade">Grade</label>
+        <input class="form-control" type="text" required id="grade" name="grade" autofocus="autofocus">
+        <input class="btn btn-success" type="submit" value="Submit">
+    </form>
+    <a href="{{prefix}}officers"><button type="button" class="btn btn-secondary">Return to Officers Page</button></a>
+</div>

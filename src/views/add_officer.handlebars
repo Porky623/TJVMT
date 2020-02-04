@@ -1,6 +1,8 @@
-<form name="add_officer_form" action="/add_officer" method="post">
-    <label for="username">New officer's Ion username</label>
-    <input class="form-control" type="text" id="username" name="username" autofocus="autofocus">
-    <input class="btn btn-primary" type="submit" value="Submit">
-</form>
-<a href="/officers"><button type="button" class="btn btn-primary">Return to Officers Page</button></a>
+<div class="container-fluid">
+    <form name="add_officer_form" action="{{prefix}}add_officer" method="post">
+        <label for="username">New officer's Ion username</label>
+        <input class="form-control" type="text" required id="username" name="username" autofocus="autofocus">
+        <input class="btn btn-success" type="submit" value="Submit">
+    </form>
+    <a href="{{prefix}}officers"><button type="button" class="btn btn-secondary">Return to Officers Page</button></a>
+</div>

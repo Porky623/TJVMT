@@ -1,7 +1,13 @@
-<h1>Enter test name</h1>
-<form name="update_indices_form" action="/test/update/indices" method="post">
-    <label for="testName">Name of test</label>
-    <input class="form-control" type="text" required id="testName" name="testName" autofocus="autofocus">
-    <input class="btn btn-primary" type="submit" value="Update">
-</form>
-<a href="/officers"><button type="button" class="btn btn-primary">Return to Officers Page</button></a>
+<div class="container-fluid">
+    <h1>Enter test name</h1>
+    <form name="update_indices_form" action="{{prefix}}test/update/indices" method="post">
+        <label for="testName">Name of test</label>
+        <select class="form-control" required id="testName" name="testName" autofocus="autofocus">
+            {{#each testName}}
+                <option value="{{this}}">{{this}}</option>
+            {{/each}}
+        </select>
+        <input class="btn btn-success" type="submit" value="Update">
+    </form>
+    <a href="{{prefix}}officers"><button type="button" class="btn btn-secondary">Return to Officers Page</button></a>
+</div>

@@ -7,13 +7,14 @@ const path = require('path');
 const mongoose = require('mongoose');
 // Configuring the database
 const dbConfig = require('./config/database.config.js');
-// const port = 3000;
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const passportSetup = require('./config/passport-setup');
 const keys = require('./config/keys');
 const routes = require('./routes');
 const flash = require('express-flash-notification');
+const prefix = require('./config/url-config').prefix;
+const siteKey = require('./config/url-config').siteKey;
 
 mongoose.connect(dbConfig.url, {
   useNewUrlParser: true,
@@ -24,9 +25,6 @@ mongoose.connect(dbConfig.url, {
   process.exit();
 });
 mongoose.Promise = global.Promise;
-
-
-// const HOSTED_DOMAIN = 'http://localhost:3000';
 
 let app = express();
 
@@ -42,16 +40,22 @@ let urlencodedParser = bodyParser.urlencoded({
 });
 let jsonParser = bodyParser.json();
 
-app.set('views', path.join(path.resolve(__dirname), 'views'));
+app.set('views', path.join(path.resolve(__dirname), '/views'));
 let hbs = exphbs.create({
   defaultLayout: 'base',
   extname: '.handlebars',
-  layoutsDir: 'src/views/layouts',
-  partialsDir: 'src/views/partials',
+  //For actual site use
+  layoutsDir: './vmt_Node/src/views/layouts',
+  partialsDir: './vmt_Node/src/views/partials',
+
+  //For local use
+  // layoutsDir: './src/views/layouts',
+  // partialsDir: './src/views/partials',
   helpers: require('./helpers/helpers')
 });
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
+app.set('prefix', prefix);
 
 app.use(express.static(path.join(__dirname, 'static')));
 // parse requests of content-type - application/x-www-form-urlencoded
@@ -63,18 +67,38 @@ app.use(flash(app, {
   sessionName: 'flash',
   utilityName: 'flash',
   localsName: 'flash',
-  viewName: 'partials/flash',
-  beforeSingleRender: function(item, callback){ callback(null, item) },
+  viewName: 'elements/flash',
+  beforeSingleRender: function(item, callback){
+    if(item.type) {
+      switch(item.type) {
+        case 'Warning':
+          item.alert_class = 'alert-danger';
+          break;
+        case 'Success':
+          item.alert_class = 'alert-success';
+      }
+    }
+    callback(null, item);
+  },
   afterAllRender: function(htmlFragments, callback){ callback(null, htmlFragments.join('\n')) }
 }));
 
 app.use(function(req,res,next){
   res.locals.user = req.user;
+  res.locals.prefix = prefix;
+  res.locals.siteKey = siteKey;
   next();
 });
 
 app.use('/', routes);
 
-app.listen(3000, () => {
-  console.log('app running on port 3000');
+//For actual site use
+app.listen(process.env.PORT, function() {
+  console.log("Server listening on: " + process.env.PORT);
 });
+
+
+//For local use
+// app.listen(3000, () => {
+//     console.log("Server listening on: port 3000");
+// });

@@ -1,0 +1,17 @@
+<body>
+    <div class="container-fluid">
+        <div>
+            <h1>News</h1>
+            {{#each announcement}}
+                <div class="card bg-light border-primary mb-3" style="max-width: 50rem">
+                    <div class="card-header">{{date}}</div>
+                    <div class="card-body">
+                        <h4 class="card-title">{{title}}</h4>
+                <p class="card-text">{{{body}}}</p>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+</body>
+

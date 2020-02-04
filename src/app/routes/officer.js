@@ -5,14 +5,12 @@ const User = require('../models/user');
 
 const officerCheck = (req, res, next) =>{
   if(!req.user) {
-    res.redirect('/auth/login');
-  } else {
-    if (!req.user.isOfficer) {
-      res.redirect('/');
-    } else {
-      next();
-    }
+    return res.redirect(req.app.get('prefix')+'auth/login');
   }
+  if (!req.user.isOfficer) {
+    return res.redirect(req.app.get('prefix')+'');
+  }
+  next();
 };
 
 //Officers
@@ -33,23 +31,15 @@ router.get('/add_officer', officerCheck, (req, res) => {
 
 router.post('/add_officer', officerCheck, async (req, res)=> {
   if (!(await User.exists({username: req.body.username}))) {
-    req.flash({
+    return req.flash({
       type: 'Warning',
       message: 'Cannot find student with username '+req.body.username,
-      redirect: '/add_officer'
-    })
-  }
-  else {
-    User.updateOne({username: req.body.username}, {
-      isOfficer: true
-    }, function(err, stat) {
-      if (err) {
-        res.render(err);
-      } else {
-        res.render('add_officer', {user: req.user});
-      }
+      redirect: req.app.get('prefix')+'add_officer'
     });
   }
+  await User.updateOne({username: req.body.username},
+      {isOfficer: true});
+  res.render('add_officer', {user: req.user});
 });
 
 //Remove Officers
@@ -57,28 +47,20 @@ router.get('/remove_officer', officerCheck, (req, res) => {
   res.locals.metaTags = {
     title: 'Remove Officers',
   };
-  res.render('remove_officers', { user: req.user });
+  res.render('remove_officer', { user: req.user });
 });
 
 router.post('/remove_officer', officerCheck, async (req, res) => {
   if (!(await User.exists({username: req.body.username}))) {
-    req.flash({
+    return req.flash({
       type: 'Warning',
       message: 'Cannot find student with username '+req.body.username,
-      redirect: '/add_officer'
+      redirect: req.app.get('prefix')+'add_officer'
     })
   }
-  else {
-    User.updateOne({username: req.body.username}, {
-      isOfficer: false
-    }, function(err, stat) {
-      if (err) {
-        res.render(err);
-      } else {
-        res.render('remove_officer', {user: req.user});
-      }
-    });
-  }
+  await User.updateOne({username: req.body.username},
+      {isOfficer: false});
+  res.render('remove_officer', {user: req.user});
 });
 
 module.exports.router = router;

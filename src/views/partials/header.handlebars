@@ -22,23 +22,64 @@
     ul.nav li a:hover {
         background-color: #111;
     }
+    .topnav-right {
+        float: right;
+    }
 
     h1 {text-align: center}
 
 </style>
-<ul class="nav">
-    <li><a href="/">Home</a></li>
-    <li><a href="/about">About</a></li>
-    <li><a href="/calendar">Schedule</a></li>
-    <li><a href="/rankings">Rankings</a></li>
-    <li><a href="/archive">Archive</a></li>
-    <li><a href="/tjimo">TJIMO</a></li>
-    {{#if user}}
-        {{#if user.isOfficer}}
-            <li><a href="/officers">Officers</a></li>
-        {{/if}}
-        <li><a href="/auth/logout">Logout</a></li>
-    {{else}}
-        <li><a href="/auth/login">Login</a></li>
-    {{/if}}
-</ul>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="{{prefix}}">Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{prefix}}news">News</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{prefix}}calendar">Schedule</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Rankings</a>
+                <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 40px, 0px); top: 0px; left: 0px; will-change: transform;">
+                    <a class="dropdown-item" href="{{prefix}}rankings/test">Test</a>
+                    <a class="dropdown-item" href="{{prefix}}rankings/contest">Contest</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{prefix}}archive">Archive</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{prefix}}tjimo">TJIMO</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav mr-right">
+            {{#if user}}
+                {{#if user.isOfficer}}
+                    <li class="nav-item"><a class="nav-link" href="{{prefix}}officers">Officers</a></li>
+                {{/if}}
+                <li class="nav-item"><a class="nav-link" href="{{prefix}}auth/logout">Logout</a></li>
+            {{else}}
+                <li class="nav-item"><a class="nav-link" href="{{prefix}}auth/login">Login</a></li>
+            {{/if}}
+        </ul>
+    </div>
+<!--    <li><a href="{{prefix}}">Home</a></li>-->
+<!--    <li><a href="{{prefix}}about">About</a></li>-->
+<!--    <li><a href="{{prefix}}calendar">Schedule</a></li>-->
+<!--    <li><a href="{{prefix}}rankings">Rankings</a></li>-->
+<!--    <li><a href="{{prefix}}archive">Archive</a></li>-->
+<!--    <li><a href="{{prefix}}tjimo">TJIMO</a></li>-->
+<!--    {{#if user}}-->
+<!--        {{#if user.isOfficer}}-->
+<!--            <li><a href="{{prefix}}officers">Officers</a></li>-->
+<!--        {{/if}}-->
+<!--        <li><a href="{{prefix}}auth/logout">Logout</a></li>-->
+<!--    {{else}}-->
+<!--        <li><a href="{{prefix}}auth/login">Login</a></li>-->
+<!--    {{/if}}-->
+</nav>

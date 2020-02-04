@@ -10,27 +10,37 @@
         text-align: left;
         padding: 8px;
     }
-
-    tr:nth-child(even) {
-        background-color: #dddddd;
-    }
 </style>
-
-<h3>{{testName}}</h3>
-
-<table>
-    <tr>
-        <th>Rank</th>
-        <th>Name</th>
-        <th>Index</th>
-        <th>GradYear</th>
-    </tr>
-    {{#each ranks}}
+<div class="container-fluid">
+    <h3>{{testName}}</h3>
+    <table>
         <tr>
-            <td>{{rank}}</td>
-            <td>{{studentName}}</td>
-            <td>{{indexVal}}</td>
-            <td>{{gradYear}}</td>
+            <th>Name</th>
+            <th>Weighting</th>
         </tr>
-    {{/each}}
-</table>
+        {{#each weights}}
+            <tr class="{{rowClass}}">
+                <td>{{name}}</td>
+                <td>{{weight}}</td>
+            </tr>
+        {{/each}}
+    </table>
+    <table>
+        <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Index</th>
+            <th>GradYear</th>
+            <th>Grade</th>
+        </tr>
+        {{#each ranks}}
+            <tr class="{{rowClass}}">
+                <td>{{rank}}</td>
+                <td>{{studentName}}</td>
+                <td>{{indexVal}}</td>
+                <td>{{gradYear}}</td>
+                <td>{{grade}}</td>
+            </tr>
+        {{/each}}
+    </table>
+</div>
