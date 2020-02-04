@@ -7,6 +7,7 @@ const Test = require('../models/test');
 const User = require('../models/user');
 const Score = require('../models/score');
 const Contest = require('../models/contest');
+const ARMLTest = require('../models/armlTest');
 const RankPage = require('../models/rankpage');
 const Announcement = require('../models/announcement');
 const Weighting = require('../models/testWeighting');
@@ -99,7 +100,11 @@ router.get('/rankings/test', async (req, res) => {
         title: 'Test Rankings',
     };
     var testNames = [];
-    let allTests = await Test.find({});
+    var allTests = await Test.find({});
+    for (var i = 0; i < allTests.length; i++) {
+        await testNames.push(allTests[i].name);
+    }
+    allTests=await ARMLTest.find({});
     for (var i = 0; i < allTests.length; i++) {
         await testNames.push(allTests[i].name);
     }
@@ -110,10 +115,10 @@ router.get('/rankings/test/view', async (req, res) => {
     res.locals.metaTags = {
         title: 'Test Rankings',
     };
-    if (!(await Test.exists({name: req.query.name}))) {
+    if (!(await Test.exists({name: req.query.name}))&&!(await ARMLTest.exists({name: req.query.name}))) {
         return req.flash({
             type: 'Warning',
-            message: 'No test named ' + req.query.name,
+            message: 'No test or ARML test named ' + req.query.name,
             redirect: req.app.get('prefix') + 'rankings/test'
         })
     } else if (!(await RankPage.exists({testName: req.query.name}))) {
@@ -173,34 +178,34 @@ router.get('/rankings/contest/view', async (req, res) => {
     res.render('rankings_view_contest', {ranks: out, weights: outWeights, testName: req.query.name});
 });
 
-// router.get('/custom', async (req, res) => {
-//     res.render('officers');
-// });
-
-router.get('/custom', async(req, res) => {
-  const rows = [];
-  let scores = await Score.find({testName: "2019hmmtproof"});
-  for(var i=0; i<scores.length; i++) {
-    let user = await User.findOne({username: scores[i].studentUsername});
-    let score = scores[i];
-    let row = [user.lastName+", "+user.firstName];
-    row.push(user.grade);
-    row.push(score.scoreVal);
-    for(var j=0; j<6; j++) {
-      row.push(score.scoreDist.charAt(j));
-    }
-    rows.push(row);
-  }
-  let csvContent = "";
-  rows.forEach(function(rowArray) {
-    let row = rowArray.join(",");
-    csvContent += row + "\r\n";
-  });
-  await fs.writeFile('2019hmmtproof.csv', csvContent, (err)=> {
-    if(err) throw err;
-  });
-  res.render('officers');
+router.get('/custom', async (req, res) => {
+    res.render('officers');
 });
+
+// router.get('/custom', async(req, res) => {
+//   const rows = [];
+//   let scores = await Score.find({testName: "2019hmmtproof"});
+//   for(var i=0; i<scores.length; i++) {
+//     let user = await User.findOne({username: scores[i].studentUsername});
+//     let score = scores[i];
+//     let row = [user.lastName+", "+user.firstName];
+//     row.push(user.grade);
+//     row.push(score.scoreVal);
+//     for(var j=0; j<6; j++) {
+//       row.push(score.scoreDist.charAt(j));
+//     }
+//     rows.push(row);
+//   }
+//   let csvContent = "";
+//   rows.forEach(function(rowArray) {
+//     let row = rowArray.join(",");
+//     csvContent += row + "\r\n";
+//   });
+//   await fs.writeFile('2019hmmtproof.csv', csvContent, (err)=> {
+//     if(err) throw err;
+//   });
+//   res.render('officers');
+// });
 
 
 // router.get('/custom', async (req, res) => {
