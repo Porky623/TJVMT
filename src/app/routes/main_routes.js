@@ -7,7 +7,6 @@ const Test = require('../models/test');
 const User = require('../models/user');
 const Score = require('../models/score');
 const Contest = require('../models/contest');
-const ARMLTest = require('../models/armlTest');
 const RankPage = require('../models/rankpage');
 const Announcement = require('../models/announcement');
 const Weighting = require('../models/testWeighting');
@@ -100,11 +99,7 @@ router.get('/rankings/test', async (req, res) => {
         title: 'Test Rankings',
     };
     var testNames = [];
-    var allTests = await Test.find({});
-    for (var i = 0; i < allTests.length; i++) {
-        await testNames.push(allTests[i].name);
-    }
-    allTests=await ARMLTest.find({});
+    let allTests = await Test.find({});
     for (var i = 0; i < allTests.length; i++) {
         await testNames.push(allTests[i].name);
     }
@@ -115,10 +110,10 @@ router.get('/rankings/test/view', async (req, res) => {
     res.locals.metaTags = {
         title: 'Test Rankings',
     };
-    if (!(await Test.exists({name: req.query.name}))&&!(await ARMLTest.exists({name: req.query.name}))) {
+    if (!(await Test.exists({name: req.query.name}))) {
         return req.flash({
             type: 'Warning',
-            message: 'No test or ARML test named ' + req.query.name,
+            message: 'No test named ' + req.query.name,
             redirect: req.app.get('prefix') + 'rankings/test'
         })
     } else if (!(await RankPage.exists({testName: req.query.name}))) {
@@ -206,7 +201,6 @@ router.get('/custom', async (req, res) => {
 //   });
 //   res.render('officers');
 // });
-
 
 // router.get('/custom', async (req, res) => {
 //   res.locals.metaTags = {
