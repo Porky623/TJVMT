@@ -12,7 +12,7 @@ const Announcement = require('../models/announcement');
 const Weighting = require('../models/testWeighting');
 const Handlebars = require('express-handlebars');
 const prefix = require('../../config/url-config').prefix;
-const fs = require('fs')
+const fs = require('fs');
 
 const authCheck = (req, res, next) => {
     if (!req.user) {
@@ -201,7 +201,6 @@ router.get('/custom', async (req, res) => {
 //   });
 //   res.render('officers');
 // });
-
 
 // router.get('/custom', async (req, res) => {
 //   res.locals.metaTags = {

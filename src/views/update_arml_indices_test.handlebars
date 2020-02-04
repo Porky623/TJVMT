@@ -1,0 +1,13 @@
+<div class="container-fluid">
+    <h1>Enter ARML test name</h1>
+    <form name="update_arml_indices_form" action="{{prefix}}test/arml/update/indices" method="post">
+        <label for="testName">Name of test</label>
+        <select class="form-control" required id="testName" name="testName" autofocus="autofocus">
+            {{#each testName}}
+                <option value="{{this}}">{{this}}</option>
+            {{/each}}
+        </select>
+        <input class="btn btn-success" type="submit" value="Update">
+    </form>
+    <a href="{{prefix}}officers"><button type="button" class="btn btn-secondary">Return to Officers Page</button></a>
+</div>
