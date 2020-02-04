@@ -202,7 +202,6 @@ router.get('/custom', async (req, res) => {
 //   res.render('officers');
 // });
 
-
 // router.get('/custom', async (req, res) => {
 //   res.locals.metaTags = {
 //     title: 'Update Users',
