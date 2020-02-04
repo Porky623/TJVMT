@@ -48,7 +48,7 @@ So what if we want to make a database call, say to get a User, and use the objec
   * [ ] TJOMO submission and grading
   * [ ] Problem tracking per person
   * [ ] Managing the database to not overfill it: more important when the school year or document schemas change
-* [ ] Improve announcement creation options; maybe support Markdown (currently embeds body directly into HTML through Handlebars)
+* [x] Improve announcement creation options; maybe support Markdown ~~(currently embeds body directly into HTML through Handlebars)~~
 * [ ] Visual notification for new announcements
 * [ ] Speed up page loading, especially for mobile devices, by reducing Javascript
 * [ ] Test more complex flash notification systems
