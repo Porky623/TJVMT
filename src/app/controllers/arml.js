@@ -6,7 +6,7 @@ const ARMLTeam = require('../models/armlTeam');
 const User = require('../models/user');
 const Ind = require('../models/ind');
 const RankPage = require('../models/rankpage');
-const topAvgNum = 12;
+const topAvgNum = 15;
 
 let valid = function (scoreVal, scoreDist, numQuestions) {
     // if (numQuestions != scoreDist.length)
