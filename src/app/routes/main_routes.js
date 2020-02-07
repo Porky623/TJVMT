@@ -100,7 +100,7 @@ router.get('/rankings/test', async (req, res) => {
         title: 'Test Rankings',
     };
     var testNames = [];
-    let allTests = await Test.find({});
+    var allTests = await Test.find({});
     for (var i = 0; i < allTests.length; i++) {
         await testNames.push(allTests[i].name);
     }
