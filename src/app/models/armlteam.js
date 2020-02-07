@@ -1,13 +1,13 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var ARMLTeamSchema = new Schema({
-    name: {type: String, required: true},
+var armlTeamSchema = new Schema({
+    teamName: String,
+    usernames: [String],
     testName: String,
-    members: [{type: String}], //members' usernames
     scoreVal: {type: Number, required: true},
-    scoreDist: String,
+    scoreDist: String
 });
 
 //Export model
-module.exports = mongoose.model('ARMLTeam', ARMLTeamSchema);
+module.exports = mongoose.model('ARMLTeam', armlTeamSchema);

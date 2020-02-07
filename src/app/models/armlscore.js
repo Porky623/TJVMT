@@ -1,18 +1,18 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var ARMLScoreSchema = new Schema({
+var armlScoreSchema = new Schema({
     studentUsername: String,
     studentName: String,
     studentGradYear: String,
     studentGrade: Number,
     testName: String,
-    scoreVal: {type: Number, required: true},
-    indivScore: Number,
     teamScore: Number,
     relayScore: Number,
-    indivScoreDist: String
+    indScore: Number,
+    scoreVal: {type: Number, required: true},
+    scoreDist: String
 });
 
 //Export model
-module.exports = mongoose.model('ARMLScore', ARMLScoreSchema);
+module.exports = mongoose.model('ARMLScore', armlScoreSchema);

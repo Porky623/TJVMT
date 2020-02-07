@@ -1,13 +1,13 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var ARMLRelaySchema = new Schema({
-    name: {type: String, required: true},
+var armlRelaySchema = new Schema({
+    relayName: String,
+    usernames: [String],
     testName: String,
-    members: [{type: String}], //members' usernames
     scoreVal: {type: Number, required: true},
-    scoreDist: String,
+    scoreDist: String
 });
 
 //Export model
-module.exports = mongoose.model('ARMLRelay', ARMLRelaySchema);
+module.exports = mongoose.model('ARMLRelay', armlRelaySchema);
