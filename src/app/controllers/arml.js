@@ -9,8 +9,8 @@ const RankPage = require('../models/rankpage');
 const topAvgNum = 12;
 
 let valid = function (scoreVal, scoreDist, numQuestions) {
-    if (numQuestions != scoreDist.length)
-        return false;
+    // if (numQuestions != scoreDist.length)
+    //     return false;
     return true;
 };
 
