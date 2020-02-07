@@ -4,6 +4,7 @@ const passport = require('passport');
 const marked = require('marked');
 const Ind = require('../models/ind');
 const Test = require('../models/test');
+const ARMLTest=require('../models/armltest');
 const User = require('../models/user');
 const Score = require('../models/score');
 const Contest = require('../models/contest');
