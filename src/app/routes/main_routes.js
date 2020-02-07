@@ -173,9 +173,9 @@ router.get('/rankings/contest/view', async (req, res) => {
     res.render('rankings_view_contest', {ranks: out, weights: outWeights, testName: req.query.name});
 });
 
-router.get('/custom', async (req, res) => {
-    res.render('officers');
-});
+// router.get('/custom', async (req, res) => {
+//     res.render('officers');
+// });
 
 // router.get('/custom', async(req, res) => {
 //   const rows = [];
@@ -202,34 +202,34 @@ router.get('/custom', async (req, res) => {
 //   res.render('officers');
 // });
 
-// router.get('/custom', async (req, res) => {
-//   res.locals.metaTags = {
-//     title: 'Update Users',
-//   };
-//   res.render('custom');
-// });
-// router.post('/custom', async(req,res,next)=> {
-//   let currentUser = await User.findOne({username: req.body.ion_username});
-//   if(currentUser){
-//     return req.flash({
-//       type: "Warning",
-//       message: "User already exists",
-//       redirect: req.app.get('prefix')+'custom'
-//     })
-//   } else {
-//     // if not, create user in our db
-//     let newUser = new User({
-//       firstName: req.body.first_name,
-//       lastName: req.body.last_name,
-//       gradYear: req.body.graduation_year,
-//       email: req.body.tj_email,
-//       username: req.body.ion_username,
-//       grade: req.body.grade,
-//       isOfficer: false,
-//     });
-//     await newUser.save();
-//     res.redirect(req.app.get('prefix')+'custom');
-//   }
-// });
+router.get('/custom', async (req, res) => {
+  res.locals.metaTags = {
+    title: 'Update Users',
+  };
+  res.render('custom');
+});
+router.post('/custom', async(req,res,next)=> {
+  let currentUser = await User.findOne({username: req.body.ion_username});
+  if(currentUser){
+    return req.flash({
+      type: "Warning",
+      message: "User already exists",
+      redirect: req.app.get('prefix')+'custom'
+    })
+  } else {
+    // if not, create user in our db
+    let newUser = new User({
+      firstName: req.body.first_name,
+      lastName: req.body.last_name,
+      gradYear: req.body.graduation_year,
+      email: req.body.tj_email,
+      username: req.body.ion_username,
+      grade: req.body.grade,
+      isOfficer: false,
+    });
+    await newUser.save();
+    res.redirect(req.app.get('prefix')+'custom');
+  }
+});
 
 module.exports = router;
