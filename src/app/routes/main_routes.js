@@ -5,6 +5,7 @@ const marked = require('marked');
 const Ind = require('../models/ind');
 const Test = require('../models/test');
 const ARMLTest=require('../models/armlTest');
+const ARMLScore=require('../models/armlScore');
 const User = require('../models/user');
 const Score = require('../models/score');
 const Contest = require('../models/contest');
@@ -178,34 +179,33 @@ router.get('/rankings/contest/view', async (req, res) => {
     res.render('rankings_view_contest', {ranks: out, weights: outWeights, testName: req.query.name});
 });
 
-// router.get('/custom', async (req, res) => {
-//     res.render('officers');
-// });
-
-router.get('/custom', async(req, res) => {
-  const rows = [];
-  let scores = await Score.find({testName: "2019hmmtproof"});
-  for(var i=0; i<scores.length; i++) {
-    let user = await User.findOne({username: scores[i].studentUsername});
-    let score = scores[i];
-    let row = [user.lastName+", "+user.firstName];
-    row.push(user.grade);
-    row.push(score.scoreVal);
-    for(var j=0; j<6; j++) {
-      row.push(score.scoreDist.charAt(j));
-    }
-    rows.push(row);
-  }
-  let csvContent = "";
-  rows.forEach(function(rowArray) {
-    let row = rowArray.join(",");
-    csvContent += row + "\r\n";
-  });
-  await fs.writeFile('2019hmmtproof.csv', csvContent, (err)=> {
-    if(err) throw err;
-  });
-  res.render('officers');
+router.get('/custom', async (req, res) => {
+    res.render('officers');
 });
+
+// router.get('/custom', async(req, res) => {
+//   const rows = [];
+//   let scores = await ARMLScore.find({testName: "arml0206"});
+//   for(var i=0; i<scores.length; i++) {
+//     let user = await User.findOne({username: scores[i].studentUsername});
+//     let score = scores[i];
+//     let row = [user.lastName+", "+user.firstName];
+//     row.push(user.grade);
+//     row.push(score.indScore);
+//     row.push(score.teamScore);
+//     row.push(score.relayScore);
+//     rows.push(row);
+//   }
+//   let csvContent = "";
+//   rows.forEach(function(rowArray) {
+//     let row = rowArray.join(",");
+//     csvContent += row + "\r\n";
+//   });
+//   await fs.writeFile('arml0206.csv', csvContent, (err)=> {
+//     if(err) throw err;
+//   });
+//   res.render('officers');
+// });
 
 // router.get('/custom', async (req, res) => {
 //   res.locals.metaTags = {
