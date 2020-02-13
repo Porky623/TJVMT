@@ -28,6 +28,20 @@ exports.load_tree = async(req,res) => {
     res.render('puzzle_tree');
 };
 
+exports.load_abstractmeta = async(req,res) => {
+    res.locals.metaTags = {
+        title: 'METAPUZZLE: Abstracton',
+    };
+    res.render('puzzle_abstractmeta');
+};
+
+exports.load_genome = async(req,res) => {
+    res.locals.metaTags = {
+        title: 'PUZZLE: Johnway\'s Genome',
+    };
+    res.render('puzzle_genome');
+};
+
 exports.load_rings = async(req,res) => {
     res.locals.metaTags = {
         title: 'Deltopolis',
