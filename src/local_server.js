@@ -92,8 +92,10 @@ app.use(function(req,res,next){
 
 app.use('/', routes);
 
-app.use(express.static('/static/images'));
+//app.use(express.static('/static/images'));
 //app.use(express.static(__dirname + '/views'));
+//app.use(express.static(__dirname + 'public'));
+app.use(express.static('public'));
 
 app.listen(3000, () => {
     console.log("Server listening on: port 3000");
