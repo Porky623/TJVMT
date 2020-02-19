@@ -97,7 +97,7 @@ app.listen(process.env.PORT, function() {
   console.log("Server listening on: " + process.env.PORT);
 });
 
-
+app.use(express.static('/views/images'));
 //For local use
 // app.listen(3000, () => {
 //     console.log("Server listening on: port 3000");
