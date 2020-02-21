@@ -238,7 +238,7 @@ exports.arml_test_update_relay_score_post = async (req, res, next) => {
             if (await ARMLScore.exists({studentUsername: usernames[i], testName: req.body.name})) {
                 let sc = await ARMLScore.findOne({studentUsername: usernames[i], testName: req.body.name});
                 sc.relayScore = sv;
-                sc.scoreVal = sv * 0.1 + sc.teamScore * 0.1 + sc.indScore * 0.7;
+                sc.scoreVal = sv * 0.1 + sc.teamScore * 0.2 + sc.indScore * 0.7;
                 await sc.save();
             } else {
                 score = new ARMLScore({

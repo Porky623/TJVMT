@@ -160,6 +160,9 @@ exports.contest_update_indices_post = async (req, res, next) => {
         for (var i = 0; i < contest.weighting.length; i++) {
             let weighting = await TestWeight.findById(contest.weighting[i]);
             let test = await Test.findById(weighting.testId);
+            if(test==null){
+                test=await ARMLTest.findById(weighting.testId);
+            }
             if(test.indices.length>0) {
                 totalWeight+=weighting.weighting;
             }

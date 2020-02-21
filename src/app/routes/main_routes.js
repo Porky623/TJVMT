@@ -171,6 +171,8 @@ router.get('/rankings/contest/view', async (req, res) => {
     for (var i = 0; i < query.length; i++) {
         let weight = query[i];
         let test = await Test.findById(weight.testId);
+        if(test==null)
+            test=await ARMLTest.findById(weight.testId);
         await outWeights.push({
             name: test.name,
             weight: weight.weighting
@@ -185,7 +187,7 @@ router.get('/custom', async (req, res) => {
 
 // router.get('/custom', async(req, res) => {
 //   const rows = [];
-//   let scores = await ARMLScore.find({testName: "arml0206"});
+//   let scores = await ARMLScore.find({testName: "arml0220"});
 //   for(var i=0; i<scores.length; i++) {
 //     let user = await User.findOne({username: scores[i].studentUsername});
 //     let score = scores[i];
@@ -201,7 +203,7 @@ router.get('/custom', async (req, res) => {
 //     let row = rowArray.join(",");
 //     csvContent += row + "\r\n";
 //   });
-//   await fs.writeFile('arml0206.csv', csvContent, (err)=> {
+//   await fs.writeFile('arml0220.csv', csvContent, (err)=> {
 //     if(err) throw err;
 //   });
 //   res.render('officers');
