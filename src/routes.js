@@ -12,6 +12,6 @@ router.use('/', require('./app/routes/announcement'));
 
 router.use('/test', require('./app/routes/test'));
 
-router.use('/puzzle', require('./app/routes/puzzle'));
+router.use('/', require('./app/routes/puzzle'));
 
 module.exports = router;

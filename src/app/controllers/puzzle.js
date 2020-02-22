@@ -14,9 +14,9 @@ exports.load_rules = async(req,res) => {
     res.render('puzzle_rules');
 };
 
-exports.load_map = async(req,res) => {
+exports.load_map = function(req,res) {
     res.locals.metaTags = {
-        title: 'Mathematica',
+        title: 'Main Map',
     };
     res.render('puzzle_map');
 };
@@ -40,6 +40,20 @@ exports.load_genome = async(req,res) => {
         title: 'PUZZLE: Johnway\'s Genome',
     };
     res.render('puzzle_genome');
+};
+
+exports.load_supremelaw = async(req,res) => {
+    res.locals.metaTags = {
+        title: 'PUZZLE: The Supreme Law of the Land',
+    };
+    res.render('puzzle_supremelaw');
+};
+
+exports.load_sesame = async(req,res) => {
+    res.locals.metaTags = {
+        title: 'PUZZLE: Sesame\'s Travels',
+    };
+    res.render('puzzle_sesame');
 };
 
 exports.load_rings = async(req,res) => {
