@@ -4,6 +4,8 @@ const passport = require('passport');
 const marked = require('marked');
 const Ind = require('../models/ind');
 const Test = require('../models/test');
+const ARMLTest=require('../models/armlTest');
+const ARMLScore=require('../models/armlScore');
 const User = require('../models/user');
 const Score = require('../models/score');
 const Contest = require('../models/contest');
@@ -12,7 +14,7 @@ const Announcement = require('../models/announcement');
 const Weighting = require('../models/testWeighting');
 const Handlebars = require('express-handlebars');
 const prefix = require('../../config/url-config').prefix;
-const fs = require('fs')
+const fs = require('fs');
 
 const authCheck = (req, res, next) => {
     if (!req.user) {
@@ -99,7 +101,11 @@ router.get('/rankings/test', async (req, res) => {
         title: 'Test Rankings',
     };
     var testNames = [];
-    let allTests = await Test.find({});
+    var allTests = await Test.find({});
+    for (var i = 0; i < allTests.length; i++) {
+        await testNames.push(allTests[i].name);
+    }
+    allTests = await ARMLTest.find({});
     for (var i = 0; i < allTests.length; i++) {
         await testNames.push(allTests[i].name);
     }
@@ -110,7 +116,7 @@ router.get('/rankings/test/view', async (req, res) => {
     res.locals.metaTags = {
         title: 'Test Rankings',
     };
-    if (!(await Test.exists({name: req.query.name}))) {
+    if (!(await Test.exists({name: req.query.name}))&&!(await ARMLTest.exists({name: req.query.name}))) {
         return req.flash({
             type: 'Warning',
             message: 'No test named ' + req.query.name,
@@ -165,6 +171,8 @@ router.get('/rankings/contest/view', async (req, res) => {
     for (var i = 0; i < query.length; i++) {
         let weight = query[i];
         let test = await Test.findById(weight.testId);
+        if(test==null)
+            test=await ARMLTest.findById(weight.testId);
         await outWeights.push({
             name: test.name,
             weight: weight.weighting
@@ -179,16 +187,15 @@ router.get('/custom', async (req, res) => {
 
 // router.get('/custom', async(req, res) => {
 //   const rows = [];
-//   let scores = await Score.find({testName: "2019hmmtproof"});
+//   let scores = await ARMLScore.find({testName: "arml0220"});
 //   for(var i=0; i<scores.length; i++) {
 //     let user = await User.findOne({username: scores[i].studentUsername});
 //     let score = scores[i];
 //     let row = [user.lastName+", "+user.firstName];
 //     row.push(user.grade);
-//     row.push(score.scoreVal);
-//     for(var j=0; j<6; j++) {
-//       row.push(score.scoreDist.charAt(j));
-//     }
+//     row.push(score.indScore);
+//     row.push(score.teamScore);
+//     row.push(score.relayScore);
 //     rows.push(row);
 //   }
 //   let csvContent = "";
@@ -196,12 +203,11 @@ router.get('/custom', async (req, res) => {
 //     let row = rowArray.join(",");
 //     csvContent += row + "\r\n";
 //   });
-//   await fs.writeFile('2019hmmtproof.csv', csvContent, (err)=> {
+//   await fs.writeFile('arml0220.csv', csvContent, (err)=> {
 //     if(err) throw err;
 //   });
 //   res.render('officers');
 // });
-
 
 // router.get('/custom', async (req, res) => {
 //   res.locals.metaTags = {
