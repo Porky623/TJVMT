@@ -51,7 +51,7 @@ exports.load_supremelaw = async(req,res) => {
 
 exports.load_sesame = async(req,res) => {
     res.locals.metaTags = {
-        title: 'PUZZLE: Sesame\'s Travels',
+        title: 'PUZZLE: Sesame Sojourns',
     };
     res.render('puzzle_sesame');
 };
@@ -61,6 +61,27 @@ exports.load_rings = async(req,res) => {
         title: 'Deltopolis',
     };
     res.render('puzzle_rings');
+};
+
+exports.load_deltameta = async(req,res) => {
+    res.locals.metaTags = {
+        title: 'METAPUZZLE: Deltopolis',
+    };
+    res.render('puzzle_deltmeta');
+};
+
+exports.load_vacation = async(req,res) => {
+    res.locals.metaTags = {
+        title: 'PUZZLE: Vacation Season',
+    };
+    res.render('puzzle_vacation');
+};
+
+exports.load_wordsearch = async(req,res) => {
+    res.locals.metaTags = {
+        title: 'PUZZLE: The Beginning Begins',
+    };
+    res.render('puzzle_wordsearch');
 };
 
 exports.load_final = async(req,res) => {

@@ -20,6 +20,12 @@ router.get('/puzzle_abstractmeta', puzzleController.load_abstractmeta);
 
 router.get('/puzzle_deltopolis', puzzleController.load_rings);
 
+router.get('/puzzle_deltameta', puzzleController.load_deltameta);
+
+router.get('/puzzle_frobenius', puzzleController.load_vacation);
+
+router.get('/puzzle_laplace', puzzleController.load_wordsearch);
+
 router.get('/puzzle_capital', puzzleController.load_final);
 
 module.exports = router;
