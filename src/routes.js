@@ -12,6 +12,8 @@ router.use('/', require('./app/routes/announcement'));
 
 router.use('/test', require('./app/routes/test'));
 
+router.use('/', require('./app/routes/puzzle'));
+
 router.use('/test/arml', require('./app/routes/arml'));
 
 module.exports = router;

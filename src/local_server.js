@@ -16,7 +16,7 @@ const flash = require('express-flash-notification');
 const prefix = require('./config/url-config').local_prefix;
 const siteKey = require('./config/url-config').siteKey;
 
-mongoose.connect(dbConfig.url, {
+mongoose.connect(dbConfig.local_url, {
   useNewUrlParser: true,
 }).then(() => {
   console.log('Successfully connected to the database');
@@ -91,6 +91,11 @@ app.use(function(req,res,next){
 });
 
 app.use('/', routes);
+
+//app.use(express.static('/static/images'));
+//app.use(express.static(__dirname + '/views'));
+//app.use(express.static(__dirname + 'public'));
+app.use(express.static('public'));
 
 app.listen(3000, () => {
     console.log("Server listening on: port 3000");
