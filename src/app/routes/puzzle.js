@@ -16,6 +16,8 @@ router.get('/puzzle_pascal', puzzleController.load_sesame);
 
 router.get('/puzzle_noether', puzzleController.load_supremelaw);
 
+router.get('/puzzle_turing', puzzleController.load_madness);
+
 router.get('/puzzle_abstractmeta', puzzleController.load_abstractmeta);
 
 router.get('/puzzle_deltopolis', puzzleController.load_rings);
