@@ -56,6 +56,13 @@ exports.load_sesame = async(req,res) => {
     res.render('puzzle_sesame');
 };
 
+exports.load_madness = async(req,res) => {
+    res.locals.metaTags = {
+        title: 'PUZZLE: Mechanical Madness',
+    };
+    res.render('puzzle_madness');
+};
+
 exports.load_rings = async(req,res) => {
     res.locals.metaTags = {
         title: 'Deltopolis',
