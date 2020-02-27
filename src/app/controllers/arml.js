@@ -318,6 +318,8 @@ exports.arml_test_update_indices_post = async (req, res, next) => {
             query = await ARMLScore.find({testName: test.name}).sort("-scoreVal");
             for (var i = 0; i < scores.length; i++) {
                 let score = query[i];
+                if(query[i]==undefined)
+                    continue;
                 var index;
                 index = new Ind({
                     studentName: score.studentName,
