@@ -63,6 +63,13 @@ exports.load_madness = async(req,res) => {
     res.render('puzzle_madness');
 };
 
+exports.load_picture = async(req,res) => {
+    res.locals.metaTags = {
+        title: 'PUZZLE: Picture Imperfect',
+    };
+    res.render('puzzle_picture');
+};
+
 exports.load_rings = async(req,res) => {
     res.locals.metaTags = {
         title: 'Deltopolis',
@@ -89,6 +96,13 @@ exports.load_wordsearch = async(req,res) => {
         title: 'PUZZLE: The Beginning Begins',
     };
     res.render('puzzle_wordsearch');
+};
+
+exports.load_gallery = async(req,res) => {
+    res.locals.metaTags = {
+        title: 'PUZZLE: Spot the Difference',
+    };
+    res.render('puzzle_gallery');
 };
 
 exports.load_final = async(req,res) => {
