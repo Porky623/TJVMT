@@ -6,6 +6,7 @@ const User = require('../models/user');
 const ARMLTest = require('../models/armlTest');
 const flash = require('express-flash-notification');
 const RankPage = require('../models/rankpage');
+const numDrops=1;
 
 exports.contest_create = async (req, res) => {
     res.locals.metaTags = {
@@ -71,11 +72,10 @@ exports.contest_update_tests_add = async (req, res) => {
 exports.contest_update_tests_add_post = async (req, res, next) => {
     var weight;
     var test;
-    if(await Test.exists({name: req.body.testName})) {
+    if (await Test.exists({name: req.body.testName})) {
         test = await Test.findOne({name: req.body.testName});
-    }
-    else{
-        test=await ARMLTest.findOne({name: req.body.testName});
+    } else {
+        test = await ARMLTest.findOne({name: req.body.testName});
     }
     weight = new TestWeight({
         contestName: req.query.name,
@@ -122,8 +122,8 @@ exports.contest_update_indices_post = async (req, res, next) => {
         for (var i = 0; i < contest.weighting.length; i++) {
             let weighting = await TestWeight.findById(contest.weighting[i]);
             let test = await Test.findById(weighting.testId);
-            if(test.indices.length>0) {
-                totalWeight+=weighting.weighting;
+            if (test.indices.length > 0) {
+                totalWeight += weighting.weighting;
             }
             if (test.name.substring(0, 9) == "2019pumac") {
                 for (var j = 0; j < test.indices.length; j++) {
@@ -149,22 +149,55 @@ exports.contest_update_indices_post = async (req, res, next) => {
             for (var i = pumInds.length; i < 4; i++) {
                 pumInds.push(0);
             }
-            pumInds.sort(function(a, b){return a - b});
+            pumInds.sort(function (a, b) {
+                return a - b
+            });
             if (!conIndices.has(username)) {
                 conIndices.set(username, 0);
             }
             conIndices.set(username,
                 conIndices.get(username) + .3 * pumInds[3] + .3 * pumInds[2] + .1 * pumInds[1]);
         }
+    } else if (contest.name == "ARML") {
+        for (var i = 0; i < contest.weighting.length; i++) {
+            let weighting = await TestWeight.findById(contest.weighting[i]);
+            let test = await ARMLTest.findById(weighting.testId);
+            if (test.indices.length > 0) {
+                totalWeight += weighting.weighting;
+            }
+            for (var j = 0; j < test.indices.length; j++) {
+                let index = await Ind.findById(test.indices[j]);
+                if (!pumacInds.has(index.studentUsername)) {
+                    pumacInds.set(index.studentUsername, []);
+                }
+                pumacInds.get(index.studentUsername).push(index.indexVal);
+            }
+        }
+        totalWeight-=0.1*numDrops;
+        for (var [username, pumInds] of pumacInds) {
+            for (var i = pumInds.length; i < contest.weighting.length; i++) {
+                pumInds.push(0);
+            }
+            pumInds.sort(function (a, b) {
+                return a - b
+            });
+            if (!conIndices.has(username)) {
+                conIndices.set(username, 0);
+            }
+            var val=0;
+            for(var i=pumInds.length-1; i>=numDrops; i--)
+                val+=0.1*pumInds[i];
+            conIndices.set(username,val);
+        }
     } else
         for (var i = 0; i < contest.weighting.length; i++) {
             let weighting = await TestWeight.findById(contest.weighting[i]);
             let test = await Test.findById(weighting.testId);
-            if(test==null){
-                test=await ARMLTest.findById(weighting.testId);
+            if (test == null) {
+                test = await ARMLTest.findById(weighting.testId);
             }
-            if(test.indices.length>0) {
-                totalWeight+=weighting.weighting;
+            if (test.indices.length > 0) {
+                totalWeight += weighting.weighting;
             }
             for (var j = 0; j < test.indices.length; j++) {
                 let index = await Ind.findById(test.indices[j]);
@@ -184,7 +217,7 @@ exports.contest_update_indices_post = async (req, res, next) => {
             studentGradYear: student.gradYear,
             studentGrade: student.grade,
             testName: req.body.contestName,
-            indexVal: indValue/totalWeight
+            indexVal: indValue / totalWeight
         });
         await ind.save();
         contest.indices.push(ind._id);

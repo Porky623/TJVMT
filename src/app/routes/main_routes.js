@@ -188,7 +188,7 @@ router.get('/custom', async (req, res) => {
 
 // router.get('/custom', async(req, res) => {
 //   const rows = [];
-//   let scores = await ARMLScore.find({testName: "arml0227"});
+//   let scores = await ARMLScore.find({testName: "arml0305"});
 //   for(var i=0; i<scores.length; i++) {
 //     let user = await User.findOne({username: scores[i].studentUsername});
 //     let score = scores[i];
@@ -204,7 +204,7 @@ router.get('/custom', async (req, res) => {
 //     let row = rowArray.join(",");
 //     csvContent += row + "\r\n";
 //   });
-//   await fs.writeFile('arml0227.csv', csvContent, (err)=> {
+//   await fs.writeFile('arml0305.csv', csvContent, (err)=> {
 //     if(err) throw err;
 //   });
 //   res.render('officers');
