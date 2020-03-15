@@ -70,6 +70,13 @@ exports.load_picture = async(req,res) => {
     res.render('puzzle_picture');
 };
 
+exports.load_schoolhouse = async(req,res) => {
+    res.locals.metaTags = {
+        title: 'PUZZLE: Schoolhouse Rock',
+    };
+    res.render('puzzle_schoolhouse');
+};
+
 exports.load_rings = async(req,res) => {
     res.locals.metaTags = {
         title: 'Deltopolis',
@@ -103,6 +110,13 @@ exports.load_gallery = async(req,res) => {
         title: 'PUZZLE: Spot the Difference',
     };
     res.render('puzzle_gallery');
+};
+
+exports.load_conclusions = async(req,res) => {
+    res.locals.metaTags = {
+        title: 'PUZZLE: Drawing Conclusions',
+    };
+    res.render('puzzle_conclusions');
 };
 
 exports.load_final = async(req,res) => {
