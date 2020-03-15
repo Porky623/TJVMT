@@ -20,6 +20,8 @@ router.get('/puzzle_turing', puzzleController.load_madness);
 
 router.get('/puzzle_fermat', puzzleController.load_picture);
 
+router.get('/puzzle_cayley', puzzleController.load_schoolhouse);
+
 router.get('/puzzle_abstractmeta', puzzleController.load_abstractmeta);
 
 router.get('/puzzle_deltopolis', puzzleController.load_rings);
@@ -31,6 +33,8 @@ router.get('/puzzle_frobenius', puzzleController.load_vacation);
 router.get('/puzzle_laplace', puzzleController.load_wordsearch);
 
 router.get('/puzzle_lagrange', puzzleController.load_gallery);
+
+router.get('/puzzle_fourier', puzzleController.load_conclusions);
 
 router.get('/puzzle_capital', puzzleController.load_final);
 
