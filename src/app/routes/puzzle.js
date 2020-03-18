@@ -22,6 +22,8 @@ router.get('/puzzle_fermat', puzzleController.load_picture);
 
 router.get('/puzzle_cayley', puzzleController.load_schoolhouse);
 
+router.get('/puzzle_galois', puzzleController.load_redwhiteblue);
+
 router.get('/puzzle_abstractmeta', puzzleController.load_abstractmeta);
 
 router.get('/puzzle_deltopolis', puzzleController.load_rings);
