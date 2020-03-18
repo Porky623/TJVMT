@@ -77,6 +77,13 @@ exports.load_schoolhouse = async(req,res) => {
     res.render('puzzle_schoolhouse');
 };
 
+exports.load_redwhiteblue = async(req,res) => {
+    res.locals.metaTags = {
+        title: 'PUZZLE: Red, White, and Blue',
+    };
+    res.render('puzzle_redwhiteblue');
+};
+
 exports.load_rings = async(req,res) => {
     res.locals.metaTags = {
         title: 'Deltopolis',
