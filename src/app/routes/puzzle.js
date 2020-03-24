@@ -38,6 +38,10 @@ router.get('/puzzle_lagrange', puzzleController.load_gallery);
 
 router.get('/puzzle_fourier', puzzleController.load_conclusions);
 
+router.get('/puzzle_cauchy', puzzleController.load_primary);
+
+router.get('/puzzle_legendre', puzzleController.load_initiative);
+
 router.get('/puzzle_capital', puzzleController.load_final);
 
 module.exports = router;

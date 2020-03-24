@@ -126,6 +126,20 @@ exports.load_conclusions = async(req,res) => {
     res.render('puzzle_conclusions');
 };
 
+exports.load_primary = async(req,res) => {
+    res.locals.metaTags = {
+        title: 'PUZZLE: Primary',
+    };
+    res.render('puzzle_primary');
+};
+
+exports.load_initiative = async(req,res) => {
+    res.locals.metaTags = {
+        title: 'PUZZLE: Rolling Initiative',
+    };
+    res.render('puzzle_initiative');
+};
+
 exports.load_final = async(req,res) => {
     res.locals.metaTags = {
         title: 'Capital',
