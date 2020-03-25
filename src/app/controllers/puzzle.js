@@ -140,6 +140,13 @@ exports.load_initiative = async(req,res) => {
     res.render('puzzle_initiative');
 };
 
+exports.load_flow = async(req,res) => {
+    res.locals.metaTags = {
+        title: 'PUZZLE: Go With The Flow',
+    };
+    res.render('puzzle_flow');
+};
+
 exports.load_final = async(req,res) => {
     res.locals.metaTags = {
         title: 'Capital',

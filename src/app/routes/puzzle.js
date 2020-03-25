@@ -42,6 +42,8 @@ router.get('/puzzle_cauchy', puzzleController.load_primary);
 
 router.get('/puzzle_legendre', puzzleController.load_initiative);
 
+router.get('/puzzle_fibonacci', puzzleController.load_flow);
+
 router.get('/puzzle_capital', puzzleController.load_final);
 
 module.exports = router;
