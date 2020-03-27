@@ -6,6 +6,8 @@ router.get('/puzzle', puzzleController.load_puzzle);
 
 router.get('/puzzle_rules', puzzleController.load_rules);
 
+router.get('/puzzle_results', puzzleController.load_results);
+
 router.get('/puzzle_map', puzzleController.load_map);
 
 router.get('/puzzle_abstracton', puzzleController.load_tree);

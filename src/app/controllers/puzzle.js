@@ -14,6 +14,13 @@ exports.load_rules = async(req,res) => {
     res.render('puzzle_rules');
 };
 
+exports.load_results = async(req,res) => {
+    res.locals.metaTags = {
+        title: 'Puzzle Hunt Results',
+    };
+    res.render('puzzle_results');
+};
+
 exports.load_map = function(req,res) {
     res.locals.metaTags = {
         title: 'Main Map',
