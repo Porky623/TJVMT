@@ -77,7 +77,7 @@ router.get('/news', async (req, res) => {
     };
     let announcements = []
     let allAnnounce = await Announcement.find({});
-    for (var i = 0; i < allAnnounce.length; i++) {
+    for (var i = allAnnounce.length - 1; i >-1; i--) {
         announcements.push({
             title: allAnnounce[i].title,
             body: marked(allAnnounce[i].body),
