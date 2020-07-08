@@ -1,17 +1,28 @@
 <body>
-    <div class="container-fluid">
-        <div>
-            <h1>News</h1>
-            {{#each announcement}}
-                <div class="card bg-light border-primary mb-3" style="max-width: 50rem">
-                    <div class="card-header">{{date}}</div>
-                    <div class="card-body">
-                        <h4 class="card-title">{{title}}</h4>
-                <p class="card-text">{{{body}}}</p>
-                    </div>
-                </div>
-            {{/each}}
-        </div>
-    </div>
+    <h1>News</h1>
+    <section>
+        <h2>Calender</h2>
+        <iframe src="https://calendar.google.com/calendar/embed?src=vmtofficers%40gmail.com&ctz=America/New_York" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+        <p><small>If there are any questions concerning the calendar, please email <a href="mailto:vmtofficers@gmail.com">vmtofficers@gmail.com</a>.</small></p>
+    </section>
+    <section>
+        <h2>Announcements</h2>
+        {{!-- {{#if isOfficer}} --}}
+            <button>Add Annoucement</button>
+            <form action="{{ prefix }}announcement" method="POST">
+                <input name="title" type="text" placeholder="Title"/>
+                <textarea name="body" cols="30" rows="10" placeholder="Announcement Body"></textarea>
+                <label for="send_email"><input id="send_email" name="sendEmail" type="checkbox"/> Send in Weekly Email</label>
+                <input type="submit" value="Post Annoucement">
+            </form>
+        {{!-- {{/if}} --}}
+        {{#each announcement}}
+            <div>
+                <p>{{date}}</p>
+                <h4>{{title}}</h4>
+                <p>{{{body}}}</p>
+            </div>
+        {{/each}}
+    </section>
 </body>
 

@@ -1,52 +1,37 @@
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <h1 class="text-center"><img alt="TJ VMT" src="images/vmt_banner.png" class="img-responsive center-block"></h1>
+    <section>
+        <h1>TJHSST Varsity Math Team</h1>
+    </section>
+    <section>
+        <h2>About</h2>
+        <p>
+            The Thomas Jefferson High School for Science and Technology Varsity Math Team is one of the most successful math teams in the nation. VMT members participate in many different events throughout the year.
+        </p>
+        <p>
+            The majority of our events occur during the school day. We meet every Wednesday 8th period, plus certain days after school. At meetings we give lectures, hold practices, and participate in regional and national math contests. We also travel to compete in many prestigious math competitions. Any TJ student who enjoys math is welcome to join the team, regardless of skill level.
+        </p>
+        <p>
+            If you have any questions, complaints, or suggestions regarding the website, please contact the statistician.
+        </p>
+    </section>
+    <section>
+        <h2>Officers</h2>
+        {{#each officers}}
+            <div>
+                <img src="/images/i.png" alt="{{ name }}">
+                <div class="officer-text">
+                    <p>{{ position }}</p>
+                    <p>{{ name }}</p>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <p>
-                    The Thomas Jefferson High School for Science and Technology Varsity Math Team is one of the most successful math teams in the nation. VMT members participate in many different events throughout the year.
-                </p>
-
-                <p>
-                    The majority of our events occur during the school day. We meet every Wednesday 8th period, plus certain days after school. At meetings we give lectures, hold practices, and participate in regional and national math contests. We also travel to compete in many prestigious math competitions. Any TJ student who enjoys math is welcome to join the team, regardless of skill level.
-                </p>
-                <p>
-                    If you have any questions, complaints, or suggestions regarding the website, please contact the statistician.
-                </p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <h3>
-                    Announcements
-                </h3>
-                <p>
-                    Welcome to the new and improved VMT Website!
-                </p>
-                <p>
-                    Please log into the site; this is necessary for your test scores to be added and counted!
-                </p>
-                <p>
-                    This year, we will be using the <b> News </b> tab for announcements and updates, and not the Facebook group. Make sure to check that page regularly!
-                </p>
-                <h4>
-                    ARML 2019
-                </h4>
-                <p>
-                    Congratulations to our A-team for placing 1st in the nation for the second time in a row!
-                </p>
-                <p>
-                    Special congratulations to David Chen (grade 11) for placing 1st in the nation individually!
-                </p>
-                <p>
-                    Please contact the officers at vmtofficers@gmail.com if you have any questions.
-                </p>
-            </div>
-        </div>
-    </div>
+        {{/each}}
+    </section>
+    <section>
+        <h2>Contact Us</h2>
+        <form action="" method="POST">
+            <input type="text" placeholder="Name"/>
+            <input type="email" placeholder="Email"/>
+            <textarea cols="30" rows="10" placeholder="Message"></textarea>
+        </form>
+    </section>
 </body>
-

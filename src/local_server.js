@@ -15,6 +15,7 @@ const routes = require('./routes');
 const flash = require('express-flash-notification');
 const prefix = require('./config/url-config').local_prefix;
 const siteKey = require('./config/url-config').siteKey;
+const multipart = require('connect-multiparty');
 
 mongoose.connect(dbConfig.url, {
   useNewUrlParser: true,
@@ -51,7 +52,6 @@ let hbs = exphbs.create({
   //For local use
   layoutsDir: './src/views/layouts',
   partialsDir: './src/views/partials',
-  helpers: require('./helpers/helpers')
 });
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
@@ -62,6 +62,16 @@ app.use(express.static(path.join(__dirname, 'static')));
 app.use(bodyParser.urlencoded({extended: true}));
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
+
+app.use(express.json());
+app.use(express.urlencoded());
+app.use(multipart());
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 app.use(flash(app, {
   sessionName: 'flash',

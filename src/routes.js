@@ -8,7 +8,7 @@ router.use('/', require('./app/routes/officer').router);
 
 router.use('/', require('./app/routes/contest'));
 
-router.use('/', require('./app/routes/announcement'));
+router.use('/', require('./app/routes/news'));
 
 router.use('/test', require('./app/routes/test'));
 

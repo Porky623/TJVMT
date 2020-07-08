@@ -10,11 +10,11 @@ const User = require('../models/user');
 const Score = require('../models/score');
 const Contest = require('../models/contest');
 const RankPage = require('../models/rankpage');
-const Announcement = require('../models/announcement');
 const Weighting = require('../models/testWeighting');
 const Handlebars = require('express-handlebars');
 const prefix = require('../../config/url-config').prefix;
 const fs = require('fs');
+const { officerCheck } = require('./officer');
 
 const authCheck = (req, res, next) => {
     if (!req.user) {
@@ -51,15 +51,17 @@ router.get('/', (req, res) => {
     res.locals.metaTags = {
         title: 'TJ VMT',
     };
-    res.render('index');
-});
-
-//Calendar
-router.get('/calendar', (req, res) => {
-    res.locals.metaTags = {
-        title: 'Schedule',
-    };
-    res.render('calendar');
+    res.render('index', {officers: [
+            {picture: '', position: "Captain", name: "Derek Dong"},
+            {picture: '', position: "Co-Captain", name: "Kevin Son"},
+            {picture: '', position: "Co-Captain", name: "Andrew Kim"},
+            {picture: '', position: "Statistician", name: "Garrett Heller"},
+            {picture: '', position: "Statistician", name: "Pranav Mathur"},
+            {picture: '', position: "Finance Officer", name: "Hilal Hussain"},
+            {picture: '', position: "Finance Officer", name: "Shyla Bisht"},
+            {picture: '', position: "Secretary", name: "Aarav Bajaj"},
+            {picture: '', position: "Historian", name: "Zia Sun"}
+    ]});
 });
 
 //TJIMO
@@ -68,23 +70,6 @@ router.get('/tjimo', (req, res) => {
         title: 'TJIMO',
     };
     res.render('tjimo');
-});
-
-//About
-router.get('/news', async (req, res) => {
-    res.locals.metaTags = {
-        title: 'Announcements',
-    };
-    let announcements = []
-    let allAnnounce = await Announcement.find({});
-    for (var i = 0; i < allAnnounce.length; i++) {
-        announcements.push({
-            title: allAnnounce[i].title,
-            body: marked(allAnnounce[i].body),
-            date: allAnnounce[i].date
-        })
-    }
-    res.render('news', {announcement: announcements});
 });
 
 //Archive

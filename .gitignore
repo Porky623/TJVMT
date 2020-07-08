@@ -1,6 +1,7 @@
 # folders
 .idea
 node_modules
+src/static/scss
 
 # files
 db.json
