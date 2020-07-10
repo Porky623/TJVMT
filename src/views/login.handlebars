@@ -1,3 +1,10 @@
 <div class="container-fluid">
-    <a class="btn btn-primary btn-lrg" href="{{prefix}}auth/ion">Login with Ion</a>
+    <h2>Login</h2>
+    <form action="{{ prefix }}auth/login" method="POST">
+        <input type="text" placeholder="Ion Username" name="ionUsername"/>
+        <input type="password" placeholder="Password" name="password"/>
+        <input type="submit" value="Log in">
+    </form>
+    <p>Don't have an account?</p>
+    <a href="{{ prefix }}auth/register">Register Here</a>
 </div>

@@ -6,7 +6,7 @@ const Ind = require('../models/ind');
 const Test = require('../models/test');
 const ARMLTest=require('../models/armlTest');
 const ARMLScore=require('../models/armlScore');
-const User = require('../models/user');
+const User2 = require('../models/userv2');
 const Score = require('../models/score');
 const Contest = require('../models/contest');
 const RankPage = require('../models/rankpage');
@@ -17,33 +17,65 @@ const fs = require('fs');
 const { officerCheck } = require('./officer');
 
 const authCheck = (req, res, next) => {
-    if (!req.user) {
-        res.redirect(req.app.get('prefix') + 'auth/login');
+    if (req.user) {
+        res.redirect(req.app.get('prefix'));
     } else {
         next();
     }
 };
 
 // auth login
-router.get('/auth/login', (req, res) => {
+router.get('/auth/login', authCheck, (req, res) => {
     res.render('login');
+});
+
+router.post('/auth/login', authCheck, (req, res, next) => {
+     passport.authenticate("ion", function(err, user) {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.status(400).json({ errors: "No user found" });
+        }
+        req.login(user, function(err) {
+            if (err) {
+                return next(err);
+            }
+            res.redirect(req.app.get('prefix'));
+        });
+     })(req, res, next);
 });
 
 // auth logout
 router.get('/auth/logout', (req, res) => {
     req.logout();
-    res.redirect(req.app.get('prefix') + '');
+    res.redirect(req.app.get('prefix'));
 });
 
-// auth with Ion
-router.get('/auth/ion', passport.authenticate('ion', {
-    scope: 'read'
-}));
+// auth register
+router.get('/auth/register', (req, res) => {
+    res.render('register');
+});
 
-// callback route for Ion to redirect to
-// hand control to passport to use code to grab profile info
-router.get('/auth/ion/redirect', passport.authenticate('ion', {failureRedirect: prefix + 'auth/login'}), (req, res) => {
-    res.redirect(req.app.get('prefix') + '');
+router.post('/auth/register', async (req, res) => {
+    if (await User2.exists({ionUsername: req.body.ionUsername})) {
+        return req.flash({
+            type: "Warning",
+            message: "An user with that ION id already exists.",
+            redirect: req.app.get('prefix') + 'auth/login'
+        });
+    }
+
+    await new User2({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        gradYear: req.body.gradYear,
+        email: req.body.email,
+        ionUsername: req.body.ionUsername,
+        password: req.body.password
+    }).save();
+
+    res.redirect(req.app.get('prefix'));
 });
 
 //Home page

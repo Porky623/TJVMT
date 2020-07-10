@@ -7,7 +7,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 // Configuring the database
 const dbConfig = require('./config/database.config.js');
-const cookieSession = require('cookie-session');
+const session = require('express-session');
 const passport = require('passport');
 const passportSetup = require('./config/passport-setup');
 const keys = require('./config/keys');
@@ -29,10 +29,8 @@ mongoose.Promise = global.Promise;
 
 let app = express();
 
-app.use(cookieSession({
-  maxAge: 24 * 60 * 60 * 1000,
-  keys: [keys.session.cookieKey]
-}));
+app.use(session({ secret: [keys.session.cookieKey] }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -63,8 +61,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
 
-app.use(express.json());
-app.use(express.urlencoded());
 app.use(multipart());
 
 app.use(function(req, res, next) {
@@ -101,11 +97,6 @@ app.use(function(req,res,next){
 });
 
 app.use('/', routes);
-
-//app.use(express.static('/static/images'));
-//app.use(express.static(__dirname + '/views'));
-//app.use(express.static(__dirname + 'public'));
-app.use(express.static('public'));
 
 app.listen(3000, () => {
     console.log("Server listening on: port 3000");

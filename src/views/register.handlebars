@@ -1,0 +1,13 @@
+<div>
+    <h2>Register</h2>
+    <form action="{{ prefix }}auth/register" method="POST">
+        <input type="text" name="firstName" placeholder="First Name" required/>
+        <input type="text" name="lastName" placeholder="Last Name" required/>
+        <input type="email" name="email" placeholder="Email" required/>
+        <input type="number" name="gradYear" placeholder="Graduating Year" required/>
+        <input type="text" name="ionUsername" placeholder="ION Username" required/>
+        <input type="password" name="password" placeholder="Password" required/>
+        <label for="emailList"><input id="emailList" type="checkbox" name="emailList"/> Add me to the email list</label> 
+        <input type="submit" value="Register"/>
+    </form>
+</div>

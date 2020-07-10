@@ -17,7 +17,8 @@ let transporter = nodemailer.createTransport({
         user: mailAuth.user,
         clientId: mailAuth.clientID,
         clientSecret: mailAuth.clientSecret,
-        refreshToken: mailAuth.refreshToken
+        refreshToken: mailAuth.refreshToken,
+        accessToken: mailAuth.accessToken
     }
 });
 
@@ -53,17 +54,17 @@ router.post('/announcement', async (req, res) => {
     
     var curDate = new Date();
     curDate = months[curDate.getMonth()] + ' ' + curDate.getDay() + ', ' + curDate.getFullYear();
-    // await new Announcement({
-    //     title: req.body.title,
-    //     body: req.body.body,
-    //     date: curDate
-    // }).save();
+    await new Announcement({
+        title: req.body.title,
+        body: reœq.body.body,
+        date: curDate
+    }).save();
 
     if (req.body.sendEmail) {
         let mailOptions = {
             from: 'vmtofficers@gmail.com',
             to: 'pranavmathur001@gmail.com',
-            subect: req.body.title,
+            subject: req.body.title,
             text: req.body.body
         }
 
