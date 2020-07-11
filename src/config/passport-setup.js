@@ -20,7 +20,7 @@ passport.use('ion', new LocalStrategy({ usernameField: "ionUsername"}, async (io
             if (!user) {
                 return done(null, false, { message: 'Username not found.' });
             }
-            if (user.password != password) {
+            if (!user.validPassword(password)) {
                 return done(null, false, {message: 'Incorrect password.'});
             }
             return done(null, user);

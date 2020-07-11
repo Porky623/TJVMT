@@ -90,10 +90,10 @@ app.use(flash(app, {
 }));
 
 app.use(function(req,res,next){
-  res.locals.user = req.user;
-  res.locals.prefix = prefix;
-  res.locals.siteKey = siteKey;
-  next();
+    res.locals.user = req.user;
+    res.locals.prefix = prefix;
+    res.locals.siteKey = siteKey;
+    next();
 });
 
 app.use('/', routes);

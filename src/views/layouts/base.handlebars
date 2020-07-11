@@ -20,7 +20,11 @@
             <a href="{{ prefix }}rankings">Rankings</a>
             <a href="{{ prefix }}">Archive</a>
             <a href="">TJIMO</a>
-            <a href="{{ prefix }}auth/login">Login</a>
+            {{#if user }}
+                <a href="{{ prefix }}auth/logout">Logout</a>
+            {{else}}
+                <a href="{{ prefix }}auth/login">Login</a>
+            {{/if}}
         </nav>
     </header>
 

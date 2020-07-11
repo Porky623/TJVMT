@@ -15,6 +15,7 @@ const Handlebars = require('express-handlebars');
 const prefix = require('../../config/url-config').prefix;
 const fs = require('fs');
 const { officerCheck } = require('./officer');
+const user = require('../models/user');
 
 const authCheck = (req, res, next) => {
     if (req.user) {
@@ -30,12 +31,12 @@ router.get('/auth/login', authCheck, (req, res) => {
 });
 
 router.post('/auth/login', authCheck, (req, res, next) => {
-     passport.authenticate("ion", function(err, user) {
+     passport.authenticate("ion", function(err, user, info) {
         if (err) {
             return next(err);
         }
         if (!user) {
-            return res.status(400).json({ errors: "No user found" });
+            return next(err);
         }
         req.login(user, function(err) {
             if (err) {
@@ -66,14 +67,14 @@ router.post('/auth/register', async (req, res) => {
         });
     }
 
-    await new User2({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        gradYear: req.body.gradYear,
-        email: req.body.email,
-        ionUsername: req.body.ionUsername,
-        password: req.body.password
-    }).save();
+    let user = await new User2();
+    user.firstName = req.body.firstName;
+    user.lastName = req.body.lastName;
+    user.gradYear = req.body.gradYear;
+    user.email = req.body.email;
+    user.ionUsername = req.body.ionUsername;
+    user.password = user.generateHash(req.body.password);
+    await user.save();
 
     res.redirect(req.app.get('prefix'));
 });
