@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<head>
+    <h1>TST</h1>
+        <!-- {{#if isOfficer}} -->
+        <h2>Create TST</h2>
+        <p>Make sure to add and double check all the rounds!</p>
+        <button onclick="openForm()">TST Creator</button>
+        <!--{{!-- {{/if}} --}} -->
+        <br> <br>
+        <style>
+            .formHide {
+                display: none;
+            }
+        </style>
+        <div id="tstform" class="formHide">
+        	<fieldset id="Round">
+            <legend>Create TST</legend>
+            <div id="innerform">
+            <div><label for = "name"><h4>TST Name</h4></label><input type="text" name = "name" id="name" minlength="1"></div>
+            <br>
+            </div>
+            <br>
+            <div><button onclick="addRound()">Add Round</button></div>
+            <br>
+            <div><button id="removeButton">Remove Last Round</button></div>
+            </fieldset>
+            <div>
+                <form action="submitForm()">
+                  <input type="submit" value="Submit TST">
+                </form>
+            </div>
+        </div>
+        <script>
+        	
+        	function openForm() {
+                var form = document.getElementById("tstform");
+  			    if (form.style.display != "block") {
+   			        form.style.display = "block";
+  			    } 
+           }
+           
+           var count = 0; 
+           var durations = [];
+           var subdurs = [];
+           var numqs = [];
+           var tsizes = [];
+           var weights = [];
+           
+           function submitForm() {
+                //Form fields fed to backend
+                var durationVals = []; 
+                var subdurVals = [];
+                var numQVals = [];
+                var tstSizeVals = [];
+                var weightVals = [];
+
+                for(var i = 0; i < count; i++)
+                {
+                    durationVals.push(durations[i].value);
+                    //console.log(durationVals[i]); 
+                    subdurVals.push(subdurs[i].value);
+                    numQVals.push(numqs[i].value);
+                    tstSizeVals.push(tsizes[i].value);
+                    weightVals.push(weights[i].value); 
+                }
+
+                const Http = new XMLHttpRequest();
+                const url='{{ prefix }}taketst';
+                Http.open("POST", url);
+                Http.send();
+
+                Http.onreadystatechange = (e) => {
+                console.log(Http.responseText); 
+                }
+           }
+
+           function addRound() {
+               var roundDiv = document.getElementById("innerform");
+               count++;
+               var index = count
+              
+               var newForm = document.createElement("FORM");
+               newForm.setAttribute('id', "newForm" + index);
+               roundDiv.appendChild(newForm);
+
+               var str = "<br>" + "Round " + index + "<br>";
+               var formtitle = str.bold();
+               document.getElementById("newForm" + index).innerHTML = formtitle;  
+
+               var roundDurationText = document.createTextNode("Round Duration (min): ");
+               var roundDuration = document.createElement("input"); //input element, text
+               roundDuration.setAttribute('type',"number");
+               roundDuration.setAttribute('name',"roundDuration" + index);
+               roundDuration.setAttribute('label',"Round Duration");
+               roundDuration.setAttribute('id', "roundDuration" + index);
+               roundDuration.setAttribute('minlength', "1"); 
+               durations.push(roundDuration);
+               newForm.appendChild(roundDurationText);
+               newForm.appendChild(roundDuration);
+
+               var subDurationText = document.createTextNode(" Submit Duration (min): ");
+               var subDuration = document.createElement("input"); //input element, text
+               subDuration.setAttribute('type',"number");
+               subDuration.setAttribute('name',"subDuration" + index);
+               subDuration.setAttribute('label',"Submit Duration");
+               subDuration.setAttribute('id', "subDuration" + index);
+               subDuration.setAttribute('minlength', "1"); 
+               subdurs.push(subDuration);
+               newForm.appendChild(subDurationText);
+               newForm.appendChild(subDuration);
+
+               var numQText = document.createTextNode(" Number of Questions: ");
+               var numQ = document.createElement("input"); //input element, text
+               numQ.setAttribute('type',"number");
+               numQ.setAttribute('name',"numQ" + index);
+               numQ.setAttribute('label',"Number Questions");
+               numQ.setAttribute('id', "numQ" + index);
+               numQ.setAttribute('minlength', "1"); 
+               numqs.push(numQ);
+               newForm.appendChild(numQText);
+               newForm.appendChild(numQ);
+
+               var teamSizeText = document.createTextNode(" People Per Team: ");
+               var teamSize = document.createElement("input"); //input element, text
+               teamSize.setAttribute('type',"number");
+               teamSize.setAttribute('name',"teamSize" + index);
+               teamSize.setAttribute('label',"Number Questions");
+               teamSize.setAttribute('id', "numQ" + index);
+               teamSize.setAttribute('minlength', "1"); 
+               tsizes.push(teamSize);
+               newForm.appendChild(teamSizeText);
+               newForm.appendChild(teamSize);
+
+               var tstweightText = document.createTextNode(" TST Weight ");
+               var tstweight = document.createElement("input"); //input element, text
+               tstweight.setAttribute('type',"number");
+               tstweight.setAttribute('name',"teamSize" + index);
+               tstweight.setAttribute('label',"Number Questions");
+               tstweight.setAttribute('id', "numQ" + index);
+               tstweight.setAttribute('minlength', "1"); 
+               weights.push(tstweight);
+               newForm.appendChild(tstweightText);
+               newForm.appendChild(tstweight);
+
+               var removeButton = document.getElementById("removeButton");
+               removeButton.onclick = function() {
+                   if(count > 0)
+                   {
+                    var innerForm = document.getElementById("innerform");
+                    var form = document.getElementById("newForm" + count);
+                    innerForm.removeChild(form);
+                    durations.splice(count, 1); 
+                    subdurs.splice(count, 1);
+                    numqs.splice(count, 1);
+                    tsizes.splice(count, 1);
+                    weights.splice(count, 1); 
+                    count = count - 1;
+                   }
+                };
+           }
+  	      </script>
+</head>
+    <h2>Upcoming TSTs</h2>
+    <body>
+        <p>This section will display TSTs and give officers the ability to edit and start them</p>
+    </body>
+    
