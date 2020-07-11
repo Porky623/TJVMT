@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<body>
+    <h1>TST</h1>
+    <section>
+        <!-- {{#if isOfficer}} -->
+        <h2>Create TST</h2>
+        <p>Make sure to add and double check all the rounds!</p>
+        <button onclick="openForm()">TST Creator</button>
+        <!--{{!-- {{/if}} --}} -->
+        <br> <br>
+        <style>
+            .formHide {
+                display: none;
+            }
+        </style>
+        <div id="tstform" class="formHide">
+        	<fieldset id="Round">
+            <legend>Create TST</legend>
+            <div id="innerform">
+            <div><label for = "name"><h4>TST Name</h4></label><input type="text" name = "name" id="name" minlength="1"></div>
+            <br>
+            </div>
+            <br>
+            <div><button onclick="addRound()">Add Round</button></div>
+            <br>
+            <div><button id="removeButton">Remove Last Round</button></div>
+            </fieldset>
+            <div>
+                <form action="submitForm()">
+                  <input type="submit" value="Submit TST">
+                </form>
+            </div>
+        </div>
+        <script>
+        	
+        	function openForm() {
+                var form = document.getElementById("tstform");
+  			    if (form.style.display != "block") {
+   			        form.style.display = "block";
+  			    } 
+           }
+           
+           var count = 0; 
+           var durations = [];
+           var subdurs = [];
+           var numqs = [];
+           var tsizes = [];
+           
+           function submitForm(){
+               console.log("count = " + count);
+               console.log("duration = " + durations);
+           }
+
+           function addRound() {
+               var roundDiv = document.getElementById("innerform");
+               count++;
+               var index = count
+              
+               var newForm = document.createElement("FORM");
+               newForm.setAttribute('id', "newForm" + index);
+               roundDiv.appendChild(newForm);
+
+               var str = "<br>" + "Round " + index + "<br>";
+               var formtitle = str.bold();
+               document.getElementById("newForm" + index).innerHTML = formtitle;  
+
+               var roundDurationText = document.createTextNode("Round Duration (min): ");
+               var roundDuration = document.createElement("input"); //input element, text
+               roundDuration.setAttribute('type',"number");
+               roundDuration.setAttribute('name',"roundDuration" + index);
+               roundDuration.setAttribute('label',"Round Duration");
+               roundDuration.setAttribute('id', "roundDuration" + index);
+               roundDuration.setAttribute('minlength', "1"); 
+               durations.push(roundDuration);
+               newForm.appendChild(roundDurationText);
+               newForm.appendChild(roundDuration);
+
+               var subDurationText = document.createTextNode(" Submit Duration (min): ");
+               var subDuration = document.createElement("input"); //input element, text
+               subDuration.setAttribute('type',"number");
+               subDuration.setAttribute('name',"subDuration" + index);
+               subDuration.setAttribute('label',"Submit Duration");
+               subDuration.setAttribute('id', "subDuration" + index);
+               subDuration.setAttribute('minlength', "1"); 
+               subdurs.push(subDuration);
+               newForm.appendChild(subDurationText);
+               newForm.appendChild(subDuration);
+
+               var numQText = document.createTextNode(" Number of Questions: ");
+               var numQ = document.createElement("input"); //input element, text
+               numQ.setAttribute('type',"number");
+               numQ.setAttribute('name',"numQ" + index);
+               numQ.setAttribute('label',"Number Questions");
+               numQ.setAttribute('id', "numQ" + index);
+               numQ.setAttribute('minlength', "1"); 
+               numqs.push(numQ);
+               newForm.appendChild(numQText);
+               newForm.appendChild(numQ);
+
+               var teamSizeText = document.createTextNode(" People Per Team: ");
+               var teamSize = document.createElement("input"); //input element, text
+               teamSize.setAttribute('type',"number");
+               teamSize.setAttribute('name',"teamSize" + index);
+               teamSize.setAttribute('label',"Number Questions");
+               teamSize.setAttribute('id', "numQ" + index);
+               teamSize.setAttribute('minlength', "1"); 
+               tsizes.push(teamSize);
+               newForm.appendChild(teamSizeText);
+               newForm.appendChild(teamSize);
+
+               var removeButton = document.getElementById("removeButton");
+               removeButton.onclick = function() {
+                    var innerForm = document.getElementById("innerform");
+                    var form = document.getElementById("newForm" + count);
+                    innerForm.removeChild(form);
+                    durations.splice(count, 1); 
+                    subdurs.splice(count, 1);
+                    numqs.splice(count, 1);
+                    tsizes.splice(count, 1);
+                    count = count - 1;
+                };
+           }
+  	      </script>
+        
+    </section>
+    <h2>Upcoming TSTs</h2>
+    <section>
+        <p>This section will display TSTs and give officers the ability to edit and start them</p>
+    </section>
+    
+</body>
