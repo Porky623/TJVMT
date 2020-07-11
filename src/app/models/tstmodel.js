@@ -5,7 +5,8 @@ var round = ({
     roundDuration: {type: Number, required: true},
     submitDuration: {type: Number, required: true},
     numQuestions: {type: Number, required: true}, 
-    teamSize: {type: Number}, 
+    teamSize: {type: Number, required true}, 
+    weight: {type: Number, required: true}, 
     teams: {type: [Array]}
 }); 
 
