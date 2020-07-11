@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<body>
+<head>
     <h1>TST</h1>
-    <section>
         <!-- {{#if isOfficer}} -->
         <h2>Create TST</h2>
         <p>Make sure to add and double check all the rounds!</p>
@@ -45,10 +44,34 @@
            var subdurs = [];
            var numqs = [];
            var tsizes = [];
+           var weights = [];
            
-           function submitForm(){
-               console.log("count = " + count);
-               console.log("duration = " + durations);
+           function submitForm() {
+                //Form fields fed to backend
+                var durationVals = []; 
+                var subdurVals = [];
+                var numQVals = [];
+                var tstSizeVals = [];
+                var weightVals = [];
+
+                for(var i = 0; i < count; i++)
+                {
+                    durationVals.push(durations[i].value);
+                    //console.log(durationVals[i]); 
+                    subdurVals.push(subdurs[i].value);
+                    numQVals.push(numqs[i].value);
+                    tstSizeVals.push(tsizes[i].value);
+                    weightVals.push(weights[i].value); 
+                }
+
+                const Http = new XMLHttpRequest();
+                const url='{{ prefix }}taketst';
+                Http.open("POST", url);
+                Http.send();
+
+                Http.onreadystatechange = (e) => {
+                console.log(Http.responseText); 
+                }
            }
 
            function addRound() {
@@ -108,8 +131,21 @@
                newForm.appendChild(teamSizeText);
                newForm.appendChild(teamSize);
 
+               var tstweightText = document.createTextNode(" TST Weight ");
+               var tstweight = document.createElement("input"); //input element, text
+               tstweight.setAttribute('type',"number");
+               tstweight.setAttribute('name',"teamSize" + index);
+               tstweight.setAttribute('label',"Number Questions");
+               tstweight.setAttribute('id', "numQ" + index);
+               tstweight.setAttribute('minlength', "1"); 
+               weights.push(tstweight);
+               newForm.appendChild(tstweightText);
+               newForm.appendChild(tstweight);
+
                var removeButton = document.getElementById("removeButton");
                removeButton.onclick = function() {
+                   if(count > 0)
+                   {
                     var innerForm = document.getElementById("innerform");
                     var form = document.getElementById("newForm" + count);
                     innerForm.removeChild(form);
@@ -117,15 +153,15 @@
                     subdurs.splice(count, 1);
                     numqs.splice(count, 1);
                     tsizes.splice(count, 1);
+                    weights.splice(count, 1); 
                     count = count - 1;
+                   }
                 };
            }
   	      </script>
-        
-    </section>
+</head>
     <h2>Upcoming TSTs</h2>
-    <section>
+    <body>
         <p>This section will display TSTs and give officers the ability to edit and start them</p>
-    </section>
+    </body>
     
-</body>
