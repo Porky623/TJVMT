@@ -1,14 +1,17 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var ScoreRedesignSchema = new Schema({
-    TSTName: {type: String, required: true},
-    Index: {type: Number, required: true},
-    Participant: {
+var ScoreSchema = new Schema({
+    tstName: {
         type: Schema.ObjectId,
-        ref: User2
+        ref: TST
     },
-    RoundPerformance: [[false]]
+    participant: {
+        type: Schema.ObjectId,
+        ref: User
+    },
+    roundScore: {type: Number, required: true},
+    roundPerformance: [[false]]
 });
 
-module.exports = mongoose.model('Score2', ScoreRedesignSchema);
+module.exports = mongoose.model('Score', ScoreSchema);

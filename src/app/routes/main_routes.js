@@ -6,7 +6,7 @@ const Ind = require('../models/ind');
 const Test = require('../models/test');
 const ARMLTest=require('../models/armlTest');
 const ARMLScore=require('../models/armlScore');
-const User2 = require('../models/userv2');
+const User = require('../models/user');
 const Score = require('../models/score');
 const Contest = require('../models/contest');
 const RankPage = require('../models/rankpage');
@@ -59,7 +59,7 @@ router.get('/auth/register', (req, res) => {
 });
 
 router.post('/auth/register', async (req, res) => {
-    if (await User2.exists({ionUsername: req.body.ionUsername})) {
+    if (await User.exists({ionUsername: req.body.ionUsername})) {
         return req.flash({
             type: "Warning",
             message: "An user with that ION id already exists.",
@@ -67,7 +67,7 @@ router.post('/auth/register', async (req, res) => {
         });
     }
 
-    let user = await new User2();
+    let user = await new User();
     user.firstName = req.body.firstName;
     user.lastName = req.body.lastName;
     user.gradYear = req.body.gradYear;
