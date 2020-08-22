@@ -1,12 +1,11 @@
 var mongoose = require('mongoose');
+const tstmodel = require('./src/app/models/tstmodel');
 var Schema = mongoose.Schema;
 
-var ContestSchema = new Schema({
-    name: {type: String, required: true},
-    tsts: [{
-        type: Schema.objectId,
-        ref: 'TSTModel',
-        weighting: Number
-    }]
+var Contest = new Schema({
+    rounds: {type: [tstmodel]}, 
+    name:{type: String, required: true},
+    weighting: {type: [Decimal]}
 });
-module.exports = mongoose.model('Contest', ContestSchema);
+
+module.exports = mongoose.model('Contest', Contest);
