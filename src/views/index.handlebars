@@ -1,37 +1,62 @@
-<body>
-    <section>
-        <h1>TJHSST Varsity Math Team</h1>
-    </section>
-    <section>
-        <h2>About</h2>
-        <p>
-            The Thomas Jefferson High School for Science and Technology Varsity Math Team is one of the most successful math teams in the nation. VMT members participate in many different events throughout the year.
-        </p>
-        <p>
-            The majority of our events occur during the school day. We meet every Wednesday 8th period, plus certain days after school. At meetings we give lectures, hold practices, and participate in regional and national math contests. We also travel to compete in many prestigious math competitions. Any TJ student who enjoys math is welcome to join the team, regardless of skill level.
-        </p>
-        <p>
-            If you have any questions, complaints, or suggestions regarding the website, please contact the statistician.
-        </p>
-    </section>
-    <section>
-        <h2>Officers</h2>
+<section id="particles-js" class="h-screen flex items-center bg-gradient-to-br from-red-400 to-blue-400">
+    <img src="images/header_image.png" alt="TJHSST Varsity Math Team" class="w-1/2 absolute left-1/4">
+</section>
+<section class="py-10 text-center">
+    <h2 class="font-adam text-6xl gradient-text">Who Are We?</h2>
+    <p class="m-auto my-10 text-2xl text-justify max-w-1/2">The TJHSST Varsity Math Team is one of the most successful math teams in the nation. We compete in college math competitions across the east coast, as well as prepare students for AMC Series competitions, catering to students with all kinds of math backgrounds. We also have pie eating contests, plank countdowns, guest lectures, and more, so be sure to sign up for VMT Wednesday A and B block!</p>
+    <img src="images/i.png" alt="VMT About" class="m-auto">
+</section>
+<section class="text-center py-10 px-20">
+    <h2 class="font-adam text-6xl text-center gradient-text m-auto">Activities</h2>
+    <div class="flex flex-row flex-wrap items-center my-5">
+        <img src="/images/i.png" alt="TJIMO" class="w-2/5">
+        <div class="w-3/5">
+            <h3 class="text-4xl">TJIMO</h3>
+            <p class="text-xl text-justify my-8 mx-10">The Thomas Jefferson Intermediate Math Open (TJIMO) is our annual math competition for middle schoolers. TJIMO aims to foster math interest in young students through competiton and fun activities. Students spend a day at TJHSST working through problems with their friends, led by VMT student coaches.</p>
+        </div>
+    </div>
+    <div class="flex flex-row flex-wrap my-5 items-center">
+        <div class="w-3/5">
+            <h3 class="text-4xl">TJAIME/TJUSAJMO</h3>
+            <p class="text-xl text-justify my-8 mx-10">TJAIME and TJUSAJMO are our year-long prepatory courses for national competitions in the AMC series. We hold online lectures weekly on topics covered on the AMCs, AIME, and USA(J)MO, taught by experienced VMT vetrans.</p>
+        </div>
+        <img src="/images/i.png" alt="TJIMO" class="w-2/5">
+    </div>
+    <div class="flex flex-row flex-wrap my-5 items-center">
+        <img src="/images/i.png" alt="TJIMO" class="">
+        <div class="w-3/5">
+            <h3 class="text-4xl">8th Period</h3>
+            <p class="text-xl text-justify my-8 mx-10">During 8th period, we do all kinds of fun activities, including pie eating contests, plank countdowns, guest lectures, and more!</p>
+        </div>
+    </div>
+</section>
+<section class="bg-gradient-to-br from-red-400 to-blue-400 py-10 px-40">
+    <h2 class="font-adam text-white text-center text-6xl">Officers</h2>
+    <div class="flex flex-row flex-wrap justify-center px-20">
         {{#each officers}}
-            <div>
-                <img src="/images/i.png" alt="{{ name }}">
-                <div class="officer-text">
-                    <p>{{ position }}</p>
-                    <p>{{ name }}</p>
+            <div class="m-4">
+                <img class="rounded-full w-40 m-auto" src="{{ picture }}" alt="{{ name }}">
+                <div class="text-center">
+                    <p class="text-white text-2xl">{{ name }}</p>
+                    <p class="text-white">{{ position }}</p>
                 </div>
             </div>
         {{/each}}
-    </section>
-    <section>
-        <h2>Contact Us</h2>
-        <form action="" method="POST">
-            <input type="text" placeholder="Name"/>
-            <input type="email" placeholder="Email"/>
-            <textarea cols="30" rows="10" placeholder="Message"></textarea>
-        </form>
-    </section>
-</body>
+    </div>
+</section>
+<section class="text-center py-10">
+    <h2 class="font-adam text-6xl gradient-text">Contact Us</h2>
+    <form action="" method="POST">
+        <input type="text" placeholder="Name" class="block m-auto my-5 p-4 text-xl bg-gray-100 focus:bg-gray-200 w-1/2 transition duration-300 ease-in-out"/>
+        <input type="email" placeholder="Email" class="block m-auto my-5 p-4  text-xl bg-gray-100 focus:bg-gray-200  w-1/2 transition duration-300 ease-in-out"/>
+        <textarea cols="30" rows="10" placeholder="Message" class="block m-auto my-5 p-4 text-xl bg-gray-100 focus:bg-gray-200 w-1/2 transition duration-300 ease-in-out"></textarea>
+        <input type="submit" value="Send" class="block m-auto my-5 pt-5 pb-4 px-10 font-adam text-xl text-white rounded-full bg-gradient-to-br from-red-300 to-blue-300"/>
+    </form>
+</section>
+
+<script src="/js/particles.js" type="text/javascript"></script>
+<script>
+    particlesJS.load('particles-js', '/js/particles.json', function () {
+        console.log('particles json loaded...');
+    });
+</script>

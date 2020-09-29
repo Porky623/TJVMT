@@ -9,13 +9,17 @@ var round = ({
     numQuestions: {type: Number, required: true},    
 }); 
 
-var TstModel = new Schema({
-    participants: [String], 
+var tst = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    writers: [String],
+    participants: [String],
     rounds: {type: [round]}, 
-    name:{type: String, required: true},
     submissionTimes: [Number],
     scores: [Number]
 });
 
 //export model
-module.exports = mongoose.model('TST', Tst);
+module.exports = mongoose.model('TST', tst);

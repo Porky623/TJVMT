@@ -50,7 +50,13 @@ let hbs = exphbs.create({
   //For local use
   layoutsDir: './src/views/layouts',
   partialsDir: './src/views/partials',
+  helpers: {
+      json: function(context) {
+          return JSON.stringify(context);
+      }
+  }
 });
+
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 app.set('prefix', prefix);

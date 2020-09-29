@@ -6,9 +6,11 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "local": "nodemon src/local_server.js"
+    "local": "nodemon src/local_server.js",
+    "build": "postcss src/static/css/master.css -o src/static/css/masterBuild.css"
   },
   "dependencies": {
+    "autoprefixer": "^9.8.6",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "bootswatch": "^4.4.1",
@@ -26,10 +28,13 @@
     "marked": "^0.7.0",
     "mongoose": "^5.9.6",
     "nodemailer": "^6.4.10",
+    "particles.js": "^2.0.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "passport-oauth2": "^1.5.0",
-    "popper": "^1.0.1"
+    "popper": "^1.0.1",
+    "postcss-cli": "^8.0.0",
+    "tailwindcss": "^1.7.3"
   },
   "devDependencies": {
     "nodemon": "^1.19.4"

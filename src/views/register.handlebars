@@ -1,13 +1,15 @@
-<div>
-    <h2>Register</h2>
-    <form action="{{ prefix }}auth/register" method="POST">
-        <input type="text" name="firstName" placeholder="First Name" required/>
-        <input type="text" name="lastName" placeholder="Last Name" required/>
-        <input type="email" name="email" placeholder="Email" required/>
-        <input type="number" name="gradYear" placeholder="Graduating Year" required/>
-        <input type="text" name="ionUsername" placeholder="ION Username" required/>
-        <input type="password" name="password" placeholder="Password" required/>
-        <label for="emailList"><input id="emailList" type="checkbox" name="emailList"/> Add me to the email list</label> 
-        <input type="submit" value="Register"/>
-    </form>
-</div>
+<section class="flex h-screen items-center justify-center">
+    <div class="w-1/3 text-center">
+        <h2 class="m-auto font-adam text-5xl gradient-text text-center">Register</h2>
+        <form action="{{ prefix }}auth/register" method="POST">
+            <input type="text" name="firstName" placeholder="First Name" required class="block m-auto my-5 p-4 w-full text-xl bg-gray-100 focus:bg-gray-200 transition duration-300 ease-in-out"/>
+            <input type="text" name="lastName" placeholder="Last Name" required/ class="block m-auto my-5 p-4 w-full text-xl bg-gray-100 focus:bg-gray-200 transition duration-300 ease-in-out">
+            <input type="email" name="email" placeholder="Email" required/ class="block m-auto my-5 p-4 w-full text-xl bg-gray-100 focus:bg-gray-200 transition duration-300 ease-in-out">
+            <input type="number" name="gradYear" placeholder="Graduating Year" required/ class="block m-auto my-5 p-4 w-full text-xl bg-gray-100 focus:bg-gray-200 transition duration-300 ease-in-out">
+            <input type="text" name="ionUsername" placeholder="ION Username" required/ class="block m-auto my-5 p-4 w-full text-xl bg-gray-100 focus:bg-gray-200 transition duration-300 ease-in-out"> 
+            <input type="password" name="password" placeholder="Password" required class="block m-auto my-5 p-4 w-full text-xl bg-gray-100 focus:bg-gray-200 transition duration-300 ease-in-out">
+            <label for="emailList" class="text-lg"><input id="emailList" type="checkbox" name="emailList" class="mr-2"/> Add me to the email list</label> 
+            <input type="submit" value="Register" class="block m-auto my-5 pt-3 pb-2 px-10 font-adam text-xl rounded-full bg-white border-solid border-black border-2 hover:bg-gray-100 transition duration-300 ease-in-out/>
+        </form>
+    </div>
+</section>

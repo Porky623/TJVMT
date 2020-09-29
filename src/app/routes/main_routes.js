@@ -1,21 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const marked = require('marked');
-const Ind = require('../models/ind');
 const Test = require('../models/test');
-const ARMLTest=require('../models/armlTest');
-const ARMLScore=require('../models/armlScore');
 const User = require('../models/user');
-const Score = require('../models/score');
 const Contest = require('../models/contest');
-const RankPage = require('../models/rankpage');
-const Weighting = require('../models/testWeighting');
 const Handlebars = require('express-handlebars');
 const prefix = require('../../config/url-config').prefix;
 const fs = require('fs');
 const { officerCheck } = require('./officer');
-const user = require('../models/user');
 
 const authCheck = (req, res, next) => {
     if (req.user) {
@@ -24,6 +16,31 @@ const authCheck = (req, res, next) => {
         next();
     }
 };
+
+//Home page
+router.get('/', (req, res) => {
+    res.locals.metaTags = {
+        title: 'TJ VMT',
+    };
+    res.render('index', {officers: [
+            {picture: '/images/derek.jpg', position: "Captain", name: "Derek Dong"},
+            {picture: '/images/kevin.jpg', position: "Co-Captain", name: "Kevin Son"},
+            {picture: '/images/drew.jpg', position: "Co-Captain", name: "Andrew Kim"},
+            {picture: '/images/garrett.jpg', position: "Statistician", name: "Garrett Heller"},
+            {picture: '/images/pranav.jpg', position: "Statistician", name: "Pranav Mathur"},
+            {picture: '/images/hilal.png', position: "Finance Officer", name: "Hilal Hussain"},
+            {picture: '/images/shyla.jpg', position: "Finance Officer", name: "Shyla Bisht"},
+            {picture: '/images/aarav.jpg', position: "Secretary", name: "Aarav Bajaj"},
+            {picture: '/images/zia.jpg', position: "Historian", name: "Zia Sun"}
+    ], pageName: "home"});
+});
+
+router.get('/under_construction', (req, res) => {
+    res.locals.metaTags = {
+        title: "TJVMT - Page under construction",
+    }
+    res.render('under_construction');
+});
 
 // auth login
 router.get('/auth/login', authCheck, (req, res) => {
@@ -77,24 +94,6 @@ router.post('/auth/register', async (req, res) => {
     await user.save();
 
     res.redirect(req.app.get('prefix'));
-});
-
-//Home page
-router.get('/', (req, res) => {
-    res.locals.metaTags = {
-        title: 'TJ VMT',
-    };
-    res.render('index', {officers: [
-            {picture: '', position: "Captain", name: "Derek Dong"},
-            {picture: '', position: "Co-Captain", name: "Kevin Son"},
-            {picture: '', position: "Co-Captain", name: "Andrew Kim"},
-            {picture: '', position: "Statistician", name: "Garrett Heller"},
-            {picture: '', position: "Statistician", name: "Pranav Mathur"},
-            {picture: '', position: "Finance Officer", name: "Hilal Hussain"},
-            {picture: '', position: "Finance Officer", name: "Shyla Bisht"},
-            {picture: '', position: "Secretary", name: "Aarav Bajaj"},
-            {picture: '', position: "Historian", name: "Zia Sun"}
-    ]});
 });
 
 //TJIMO

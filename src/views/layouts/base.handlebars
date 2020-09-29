@@ -6,25 +6,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="google-site-verification" content="{{siteKey}}" />
-    <!--  Standard bootstrap  -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/css/master.css"/>
+
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet"/> 
+    <link rel="stylesheet" href="/css/masterBuild.css"/>
     <title>{{ metaTags.title }}</title>
 </head>
 
 <body>
-    <header>
-        <nav>
-            <a href="{{ prefix }}">Varsity Math Team</a>
-            <a href="{{ prefix }}news">News</a>
-            <a href="{{ prefix }}rankings">Rankings</a>
-            <a href="{{ prefix }}">Archive</a>
-            <a href="">TJIMO</a>
-            {{#if user }}
-                <a href="{{ prefix }}auth/logout">Logout</a>
-            {{else}}
-                <a href="{{ prefix }}auth/login">Login</a>
-            {{/if}}
+    <header class="fixed w-full z-50">
+        <nav id="navbar" class="flex items-center justify-between py-4 px-16 flex-row transition duration-300 ease-in-out">
+            <div>
+                <a href="{{ prefix }}"><img src="/images/logo.png" alt="VMT Logo" class="mr-5 w-20 inline-block"/></a>
+                <a id="home_link" href="{{ prefix }}" class="font-adam mr-5 text-lg hover:gradient-underline transition-all duration-300 ease-in-out">Home</a>
+                <a href="{{ prefix }}under_construction" class="font-adam mr-5 text-lg hover:gradient-underline transition-all duration-200 ease-in-out">News</a>
+                <a href="{{ prefix }}under_construction" class="font-adam mr-5 text-lg hover:gradient-underline transition-all duration-200 ease-in-out">Rankings</a>
+                <a href="{{ prefix }}under_construction" class="font-adam mr-5 text-lg hover:gradient-underline transition-all duration-200 ease-in-out">Archive</a>
+            </div>
+            <div>
+                {{#if user}}
+                    <a href="{{ prefix }}under_construction" class="font-adam mr-5 text-lg hover:gradient-underline transition-all duration-200 ease-in-out">Profile</a>
+                    <a href="{{ prefix }}auth/logout" class="font-adam pt-5 pb-4 px-6 text-lg text-white rounded-full bg-gradient-to-br from-red-300 to-blue-300">Logout</a>
+                {{else}}
+                    <a href="{{ prefix }}auth/login" class="font-adam text-black pt-4 pb-3 px-6 text-lg border-solid border-black border-2 rounded-full hover:bg-gray-100 transition duration-300 ease-in-out">Login</a>
+                {{/if}}
+            </div>
         </nav>
     </header>
 
@@ -36,12 +41,27 @@
         {{{body}}}
     </div>
 
-    <div id="footer">
-        {{ footer }}
-    </div>
+    <footer class="mt-5 p-5 text-center">
+        <hr class="m-auto w-4/5"/>
+        <p class="m-2">TJHSST Varsity Math Team</p>
+        <a href="http://www.facebook.com/groups/tjvmt/" target="_blank"><img src="/images/facebook_logo.png" alt="facebook" class="m-auto w-10"></a>
+        <p class="m-2">Website by Derek Dong and Pranav Mathur</p>
+    </footer>
+
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script>
+        $(function () {
+            $(document).scroll(function() {
+                let nav = $("#navbar");
+                nav.toggleClass('bg-white', $(this).scrollTop() > 0);
+            });
+        });
+
+        $("#{{ pageName }}_link").addClass("gradient-underline");
+    </script>
 </body>
 
 </html>
