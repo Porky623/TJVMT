@@ -7,7 +7,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 // Configuring the database
 const dbConfig = require('./config/database.config.js');
-const session = require('express-session');
+const cookieSession = require('cookie-session');
 const passport = require('passport');
 const passportSetup = require('./config/passport-setup');
 const keys = require('./config/keys');
@@ -29,7 +29,10 @@ mongoose.Promise = global.Promise;
 
 let app = express();
 
-app.use(session({ secret: [keys.session.cookieKey] }));
+app.use(cookieSession({
+    maxAge: 24 * 60 * 60 * 1000,
+    keys: [keys.session.cookieKey]
+}));
 
 app.use(passport.initialize());
 app.use(passport.session());
