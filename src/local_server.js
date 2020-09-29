@@ -7,7 +7,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 // Configuring the database
 const dbConfig = require('./config/database.config.js');
-const cookieSession = require('cookie-session');
+const session = require('express-session');
 const passport = require('passport');
 const passportSetup = require('./config/passport-setup');
 const keys = require('./config/keys');
