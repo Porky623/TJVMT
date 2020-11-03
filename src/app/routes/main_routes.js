@@ -23,15 +23,15 @@ router.get('/', (req, res) => {
         title: 'TJ VMT',
     };
     res.render('index', {officers: [
-            {picture: 'images/derek.jpg', position: "Captain", name: "Derek Dong"},
-            {picture: 'images/kevin.jpg', position: "Co-Captain", name: "Kevin Son"},
-            {picture: 'images/drew.jpg', position: "Co-Captain", name: "Andrew Kim"},
-            {picture: 'images/garrett.jpg', position: "Statistician", name: "Garrett Heller"},
-            {picture: 'images/pranav.jpg', position: "Statistician", name: "Pranav Mathur"},
-            {picture: 'images/hilal.png', position: "Finance Officer", name: "Hilal Hussain"},
-            {picture: 'images/shyla.jpg', position: "Finance Officer", name: "Shyla Bisht"},
-            {picture: 'images/aarav.jpg', position: "Secretary", name: "Aarav Bajaj"},
-            {picture: 'images/zia.jpg', position: "Historian", name: "Zia Sun"}
+            {picture: req.app.get('prefix') + 'images/derek.jpg', position: "Captain", name: "Derek Dong"},
+            {picture: req.app.get('prefix') + 'images/kevin.jpg', position: "Co-Captain", name: "Kevin Son"},
+            {picture: req.app.get('prefix') + 'images/drew.jpg', position: "Co-Captain", name: "Andrew Kim"},
+            {picture: req.app.get('prefix') + 'images/garrett.jpg', position: "Statistician", name: "Garrett Heller"},
+            {picture: req.app.get('prefix') + 'images/pranav.jpg', position: "Statistician", name: "Pranav Mathur"},
+            {picture: req.app.get('prefix') + 'images/hilal.png', position: "Finance Officer", name: "Hilal Hussain"},
+            {picture: req.app.get('prefix') + 'images/shyla.jpg', position: "Finance Officer", name: "Shyla Bisht"},
+            {picture: req.app.get('prefix') + 'images/aarav.jpg', position: "Secretary", name: "Aarav Bajaj"},
+            {picture: req.app.get('prefix') + 'images/zia.jpg', position: "Historian", name: "Zia Sun"}
     ], pageName: "home"});
 });
 

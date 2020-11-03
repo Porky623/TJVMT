@@ -1,15 +1,15 @@
 <section id="particles-js" class="h-screen flex items-center bg-gradient-to-br from-red-400 to-blue-400">
-    <img src="images/header_image.png" alt="TJHSST Varsity Math Team" class="w-1/2 absolute left-1/4">
+    <img src="{{ prefix }}images/header_image.png" alt="TJHSST Varsity Math Team" class="w-1/2 absolute left-1/4">
 </section>
 <section class="py-10 text-center">
     <h2 class="font-adam text-6xl gradient-text">Who Are We?</h2>
     <p class="m-auto my-10 text-2xl text-justify max-w-1/2">The TJHSST Varsity Math Team is one of the most successful math teams in the nation. We compete in college math competitions across the east coast, as well as prepare students for AMC Series competitions, catering to students with all kinds of math backgrounds. We also have pie eating contests, plank countdowns, guest lectures, and more, so be sure to sign up for VMT Wednesday A and B block!</p>
-    <img src="images/i.png" alt="VMT About" class="m-auto">
+    <img src="{{ prefix }}images/i.png" alt="VMT About" class="m-auto">
 </section>
 <section class="text-center py-10 px-20">
     <h2 class="font-adam text-6xl text-center gradient-text m-auto">Activities</h2>
     <div class="flex flex-row flex-wrap items-center my-5">
-        <img src="images/i.png" alt="TJIMO" class="w-2/5">
+        <img src="{{ prefix }}images/i.png" alt="TJIMO" class="w-2/5">
         <div class="w-3/5">
             <h3 class="text-4xl">TJIMO</h3>
             <p class="text-xl text-justify my-8 mx-10">The Thomas Jefferson Intermediate Math Open (TJIMO) is our annual math competition for middle schoolers. TJIMO aims to foster math interest in young students through competiton and fun activities. Students spend a day at TJHSST working through problems with their friends, led by VMT student coaches.</p>
@@ -20,10 +20,10 @@
             <h3 class="text-4xl">TJAIME/TJUSAJMO</h3>
             <p class="text-xl text-justify my-8 mx-10">TJAIME and TJUSAJMO are our year-long prepatory courses for national competitions in the AMC series. We hold online lectures weekly on topics covered on the AMCs, AIME, and USA(J)MO, taught by experienced VMT vetrans.</p>
         </div>
-        <img src="images/i.png" alt="TJIMO" class="w-2/5">
+        <img src="{{ prefix }}images/i.png" alt="TJIMO" class="w-2/5">
     </div>
     <div class="flex flex-row flex-wrap my-5 items-center">
-        <img src="images/i.png" alt="TJIMO" class="">
+        <img src="{{ prefix }}images/i.png" alt="TJIMO" class="">
         <div class="w-3/5">
             <h3 class="text-4xl">8th Period</h3>
             <p class="text-xl text-justify my-8 mx-10">During 8th period, we do all kinds of fun activities, including pie eating contests, plank countdowns, guest lectures, and more!</p>
@@ -54,7 +54,7 @@
     </form>
 </section>
 
-<script src="js/particles.js" type="text/javascript"></script>
+<script src="{{ prefix }}js/particles.js" type="text/javascript"></script>
 <script>
     particlesJS.load('particles-js', 'js/particles.json', function () {
         console.log('particles json loaded...');
