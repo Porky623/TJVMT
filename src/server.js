@@ -47,8 +47,8 @@ let hbs = exphbs.create({
   defaultLayout: 'base',
   extname: '.handlebars',
   //For actual site use
-  layoutsDir: './vmt_Node/src/views/layouts',
-  partialsDir: './vmt_Node/src/views/partials',
+  layoutsDir: './TJVMT/src/views/layouts',
+  partialsDir: './TJVMT/src/views/partials',
 
   //For local use
   // layoutsDir: './src/views/layouts',
