@@ -1,24 +1,18 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var round = ({
-    roundStart: {type: Date, required: true},
-    roundDuration: {type: Number, required: true},
-    submitDuration: {type: Number, required: true},
-    submitStart: {type: Date, required: true},
-    numQuestions: {type: Number, required: true},    
-}); 
-
 var tst = new Schema({
     name: {
         type: String,
         required: true
     },
+    participants: {
+        type: [Schema.Types.ObjectId],
+        ref: 'User'
+    },
     writers: [String],
-    participants: [String],
-    rounds: {type: [round]}, 
     submissionTimes: [Number],
-    scores: [Number]
+    indices: [Number]
 });
 
 //export model

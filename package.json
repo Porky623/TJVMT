@@ -10,7 +10,7 @@
     "build": "postcss src/static/css/master.css -o src/static/css/masterBuild.css"
   },
   "dependencies": {
-    "autoprefixer": "^9.8.6",
+    "autoprefixer": "^10.2.4",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "bootswatch": "^4.4.1",
@@ -22,6 +22,7 @@
     "express-flash-notification": "^0.5.0",
     "express-handlebars": "^3.0.2",
     "express-session": "^1.17.1",
+    "express-validator": "^6.8.1",
     "googleapis": "^39.2.0",
     "http-status": "^1.4.2",
     "jsonwebtoken": "^8.5.1",
@@ -33,8 +34,9 @@
     "passport-local": "^1.0.0",
     "passport-oauth2": "^1.5.0",
     "popper": "^1.0.1",
+    "postcss": "^8.2.6",
     "postcss-cli": "^8.0.0",
-    "tailwindcss": "^1.7.3"
+    "tailwindcss": "^2.0.3"
   },
   "devDependencies": {
     "nodemon": "^1.19.4"

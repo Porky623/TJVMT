@@ -6,6 +6,7 @@ const User = require('../models/user');
 const Contest = require('../models/contest');
 const Handlebars = require('express-handlebars');
 const prefix = require('../../config/url-config').prefix;
+const { body, validationResult } = require('express-validator');
 const fs = require('fs');
 const { officerCheck } = require('./officer');
 
@@ -50,10 +51,18 @@ router.get('/auth/login', authCheck, (req, res) => {
 router.post('/auth/login', authCheck, (req, res, next) => {
      passport.authenticate("ion", function(err, user, info) {
         if (err) {
-            return next(err);
+            return req.flash({
+                type: "Warning",
+                message: "An error occured while logging in.",
+                redirect: req.app.get("prefix") + "auth/login"
+            });
         }
         if (!user) {
-            return next(err);
+            return req.flash({
+                type: "Warning",
+                message: "User " + req.body.ionUsername + " does not exist.",
+                redirect: req.app.get("prefix") + "auth/login"
+            });
         }
         req.login(user, function(err) {
             if (err) {
@@ -75,13 +84,27 @@ router.get('/auth/register', (req, res) => {
     res.render('register');
 });
 
-router.post('/auth/register', async (req, res) => {
+router.post('/auth/register', [
+    body("firstName").toLowerCase(),
+    body("lastName").toLowerCase(),
+    body("email").isEmail().normalizeEmail(),
+    body("gradYear", "Please do not make an account if you are not a current high school student.").isNumeric().custom((value, { req }) => value >= 2021 && value <= 2024),
+    body("ionUsername", "Invalid ION Username format.").toLowerCase().matches(/\d{4}\w+/, "i"),
+    body("password", "Please provide a password that is at least 6 characters long.").isLength({ min: 6 }),
+    body("confirmPassword", "The provided passwords do not match.").custom((value, { req }) => value == req.body.password)
+], async (req, res) => {
     if (await User.exists({ionUsername: req.body.ionUsername})) {
         return req.flash({
             type: "Warning",
-            message: "An user with that ION id already exists.",
+            message: "A user with that ION ID already exists.",
             redirect: req.app.get('prefix') + 'auth/login'
         });
+    }
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log(errors.array());
+        res.render('register', {errors: errors.array()});
     }
 
     let user = await new User();
@@ -91,9 +114,14 @@ router.post('/auth/register', async (req, res) => {
     user.email = req.body.email;
     user.ionUsername = req.body.ionUsername;
     user.password = user.generateHash(req.body.password);
+    user.onEmailList = req.body.emailList == "on";
     await user.save();
 
-    res.redirect(req.app.get('prefix'));
+    return req.flash({
+        type: "Success",
+        message: "Created an account for " + req.body.ionUsername + ".",
+        redirect: req.app.get('prefix') + 'auth/login'
+    })
 });
 
 //TJIMO
@@ -198,63 +226,5 @@ router.get('/rankings/contest/view', async (req, res) => {
     }
     res.render('rankings_view_contest', {ranks: out, weights: outWeights, testName: req.query.name});
 });
-
-router.get('/custom', async (req, res) => {
-    res.render('officers');
-});
-
-// router.get('/custom', async(req, res) => {
-//   const rows = [];
-//   let scores = await ARMLScore.find({testName: "arml0305"});
-//   for(var i=0; i<scores.length; i++) {
-//     let user = await User.findOne({username: scores[i].studentUsername});
-//     let score = scores[i];
-//     let row = [user.lastName+", "+user.firstName];
-//     row.push(user.grade);
-//     row.push(score.indScore);
-//     row.push(score.teamScore);
-//     row.push(score.relayScore);
-//     rows.push(row);
-//   }
-//   let csvContent = "";
-//   rows.forEach(function(rowArray) {
-//     let row = rowArray.join(",");
-//     csvContent += row + "\r\n";
-//   });
-//   await fs.writeFile('arml0305.csv', csvContent, (err)=> {
-//     if(err) throw err;
-//   });
-//   res.render('officers');
-// });
-
-// router.get('/custom', async (req, res) => {
-//   res.locals.metaTags = {
-//     title: 'Update Users',
-//   };
-//   res.render('custom');
-// });
-// router.post('/custom', async(req,res,next)=> {
-//   let currentUser = await User.findOne({username: req.body.ion_username});
-//   if(currentUser){
-//     return req.flash({
-//       type: "Warning",
-//       message: "User already exists",
-//       redirect: req.app.get('prefix')+'custom'
-//     })
-//   } else {
-//     // if not, create user in our db
-//     let newUser = new User({
-//       firstName: req.body.first_name,
-//       lastName: req.body.last_name,
-//       gradYear: req.body.graduation_year,
-//       email: req.body.tj_email,
-//       username: req.body.ion_username,
-//       grade: req.body.grade,
-//       isOfficer: false,
-//     });
-//     await newUser.save();
-//     res.redirect(req.app.get('prefix')+'custom');
-//   }
-// });
 
 module.exports = router;

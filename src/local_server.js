@@ -2,6 +2,7 @@
 
 const express = require('express');
 const exphbs = require('express-handlebars');
+const expressValidator = require('express-validator');
 const bodyParser = require('body-parser');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -99,7 +100,8 @@ app.use(flash(app, {
 }));
 
 app.use(function(req,res,next){
-    res.locals.user = req.user;
+    res.locals.user = (req.user ? req.user.toObject() : req.user);
+    res.locals.siteURL = keys.SITE_URL;
     res.locals.prefix = prefix;
     res.locals.siteKey = siteKey;
     next();

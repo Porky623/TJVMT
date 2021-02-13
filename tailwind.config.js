@@ -9,12 +9,18 @@ module.exports = {
         },
         inset: {
             '1/4': '25%',
+            '1/10': '10%',
             '1/2': '50%',
         },
         maxWidth: {
             '1/2': '50%',
+            '2/3': '66%',
         },
-        extend: {},
+        extend: {
+            backgroundImage: theme => ({
+                'tjbg': "url('/images/tjbg_blur.jpg')",
+            })
+        },
     },
     variants: {},
     plugins: [],
