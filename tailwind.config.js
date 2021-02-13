@@ -16,11 +16,7 @@ module.exports = {
             '1/2': '50%',
             '2/3': '66%',
         },
-        extend: {
-            backgroundImage: theme => ({
-                'tjbg': "url('/images/tjbg_blur.jpg')",
-            })
-        },
+        extend: {},
     },
     variants: {},
     plugins: [],
