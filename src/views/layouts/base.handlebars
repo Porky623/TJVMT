@@ -66,12 +66,12 @@
 
 <body>
     <header class="fixed w-full z-50">
-        <nav id="navbar" class="transition duration-300 ease-in-out">
-            <div class="flex items-center justify-between px-4 py-3">
+        <nav id="navbar" class="transition duration-300 ease-in-out md:flex">
+            <div class="flex md:inline-block items-center justify-between px-4 py-3">
                 <div>
                     <a href="{{ prefix }}"><img src="{{ prefix }}images/logo.png" alt="Varsity Math Team" class="h-12"/></a>
                 </div>
-                <div>
+                <div class="md:hidden">
                     <button id="nav-toggle" class="text-gray-700">
                         <svg id="nav-toggle-graphics" width="50" height="50" viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                             <g id="layer1" transform="translate(0 -270.54)">
@@ -83,23 +83,48 @@
                     </button>
                 </div>
             </div>
-            <div id="nav-links" class="relative hidden">
-                <div class="px-2 pb-4">
-                    <a href="{{ prefix }}" class="block hover:bg-gray-100 rounded px-2 py-1 mt-1">Home</a>
-                    <a href="{{ prefix }}under_construction" class="block hover:bg-gray-100 rounded px-2 py-1 mt-1">News</a>
-                    <a href="{{ prefix }}under_construction" class="block hover:bg-gray-100 rounded px-2 py-1 mt-1">Rankings</a>
-                    <a href="{{ prefix }}archive" class="block hover:bg-gray-100 rounded px-2 py-1 mt-1">Archive</a>
+            <div id="nav-links" class="relative hidden md:inline-flex md:flex-grow md:justify-between">
+                <div class="px-2 pb-4 md:p-0 md:pt-6">
+                    <a 
+                        id="home_link"
+                        href="{{ prefix }}"
+                        class="block hover:bg-gray-100 rounded px-2 py-1 mt-1 md:inline-block md:font-adam md:p-0 md:my-0 md:mx-4 md:rounded-none md:hover:bg-transparent md:hover:gradient-underline md:transition-all md:duration-300 md:ease-in-out"
+                    >Home</a>
+                    <a
+                        href="{{ prefix }}under_construction"
+                        class="block hover:bg-gray-100 rounded px-2 py-1 mt-1 md:inline-block md:font-adam md:p-0 md:my-0 md:mx-4 md:rounded-none md:hover:bg-transparent md:hover:gradient-underline md:transition-all md:duration-300 md:ease-in-out"
+                    >News</a>
+                    <a
+                        href="{{ prefix }}under_construction"
+                        class="block hover:bg-gray-100 rounded px-2 py-1 mt-1 md:inline-block md:font-adam md:p-0 md:my-0 md:mx-4 md:rounded-none md:hover:bg-transparent md:hover:gradient-underline md:transition-all md:duration-300 md:ease-in-out"
+                    >Rankings</a>
+                    <a
+                        href="{{ prefix }}archive"
+                        class="block hover:bg-gray-100 rounded px-2 py-1 mt-1 md:inline-block md:font-adam md:p-0 md:my-0 md:mx-4 md:rounded-none md:hover:bg-transparent md:hover:gradient-underline md:transition-all md:duration-300 md:ease-in-out"
+                    >Archive</a>
                 </div>
-                <div class="px-2 pb-4">
-                    <hr/>
+                <div class="px-2 pb-4 md:p-0 md:pt-3">
+                    <hr class="md:hidden"/>
                     {{#if user }}
                         {{#if user.isOfficer }}
-                            <a href="{{ prefix }}officer" class="block hover:bg-gray-100 rounded px-2 py-1 mt-1">Officer</a>
+                            <a
+                                href="{{ prefix }}officer"
+                                class="block hover:bg-gray-100 rounded px-2 py-1 mt-1 md:inline-block md:font-adam md:p-0 md:my-0 md:mx-4 md:rounded-none md:hover:bg-transparent md:hover:gradient-underline md:transition-all md:duration-300 md:ease-in-out"
+                            >Officer</a>
                         {{/if}}
-                        <a href="{{ prefix }}under_construction" class="block hover:bg-gray-100 rounded px-2 py-1 mt-1">Profile</a>
-                        <a href="{{ prefix }}auth/logout" class="block hover:bg-gray-100 rounded px-2 py-1 mt-1">Logout</a>
+                        <a
+                            href="{{ prefix }}under_construction"
+                            class="block hover:bg-gray-100 rounded px-2 py-1 mt-1 md:inline-block md:font-adam md:p-0 md:my-0 md:mx-4 md:rounded-none md:hover:bg-transparent md:hover:gradient-underline md:transition-all md:duration-300 md:ease-in-out"
+                        >Profile</a>
+                        <a
+                            href="{{ prefix }}auth/logout"
+                            class="block hover:bg-gray-100 rounded px-2 py-1 mt-1 md:inline-block md:font-adam md:text-center md:text-l md:my-0 md:pt-3 md:pb-2 md:px-5 md:mx-4 md:rounded-full md:border-solid md:border-black md:border-2"
+                        >Logout</a>
                     {{else}}
-                        <a href="{{ prefix }}auth/login" class="block hover:bg-gray-100 rounded px-2 py-1 mt-1">Login</a>
+                        <a
+                            href="{{ prefix }}auth/login"
+                            class="block hover:bg-gray-100 rounded px-2 py-1 mt-1 md:inline-block md:font-adam md:text-center md:text-l md:my-0 md:pt-3 md:pb-2 md:px-5 md:mx-4 md:rounded-full md:border-solid md:border-black md:border-2"
+                        >Login</a>
                     {{/if}}
                 </div>
             </div>
@@ -175,7 +200,7 @@
             });
         });
 
-        $("#{{ pageName }}_link").addClass("gradient-underline");
+        $("#{{ pageName }}_link").addClass("md:gradient-underline");
     </script>
 </body>
 

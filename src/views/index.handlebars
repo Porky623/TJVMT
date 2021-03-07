@@ -1,27 +1,30 @@
-<section id="particles-js" class="h-screen relative -top-20 flex items-center bg-gradient-to-br from-red-400 to-blue-400">
-    <img src="{{ prefix }}images/header_image.png" alt="TJHSST Varsity Math Team" class="w-4/5 absolute left-1/10">
+<section id="particles-js" class="h-screen relative -top-20 flex items-center justify-center bg-gradient-to-br from-red-400 to-blue-400">
+    <img src="{{ prefix }}images/header_image.png" alt="TJHSST Varsity Math Team" class="w-4/5 md:w-1/2 absolute left-1/10 md:left-1/4">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke="black" fill="black" style="top: 95%" class="absolute top-44 animate-bounce">
+        <path d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"/>
+    </svg>
 </section>
 <section class="py-10 text-center">
     <h2 class="font-adam text-4xl gradient-text">Who Are We?</h2>
-    <p class="m-auto mt-6 mb-10 text-lg text-justify w-4/5">The TJHSST Varsity Math Team is one of the most successful math teams in the nation. We compete in college math competitions across the east coast, as well as prepare students for AMC Series competitions, catering to students with all kinds of math backgrounds. We also have pie eating contests, plank countdowns, guest lectures, and more, so be sure to sign up for VMT Wednesday A and B block!</p>
-    <img src="{{ prefix }}images/team_pic.jpg" alt="VMT About" class="m-auto w-4/5">
+    <p class="m-auto mt-6 mb-10 text-lg text-justify w-4/5 sm:w-2/3">The TJHSST Varsity Math Team is one of the most successful math teams in the nation. We compete in college math competitions across the east coast, as well as prepare students for AMC Series competitions, catering to students with all kinds of math backgrounds. We also have pie eating contests, plank countdowns, guest lectures, and more, so be sure to sign up for VMT Wednesday A and B block!</p>
+    <img src="{{ prefix }}images/team_pic.jpg" alt="VMT About" class="m-auto w-4/5 sm:w-2/3">
 </section>
-<section class="text-center px-5 py-10">
+<section class="text-center px-5 md:px-10 py-10">
     <h2 class="font-adam text-5xl text-center gradient-text m-auto">Activities</h2>
-    <div>
-        <div class="flex flex-row flex-wrap justify-center my-5 p-3 shadow-md rounded-lg">
+    <div class="flex flex-wrap justify-center m-auto sm:w-4/5">
+        <div class="my-5 p-3 shadow-md rounded-lg lg:mx-3 lg:w-2/5">
             <h3 class="text-4xl text-center">TJAIME/TJUSAJMO</h3>
             <p class="text-lg text-left my-4">TJAIME and TJUSAJMO are our year-long prepatory courses for national competitions in the AMC series. We hold online lectures weekly on topics and strategies covered on the AMCs, AIME, and USA(J)MO, taught by experienced VMT vetrans.</p>
             <a href="{{ prefix }}under_construction" class="text-blue-500 hover:text-blue-600">Learn More</a>
         </div>
-        <div class="flex flex-row flex-wrap justify-center my-5 p-3 shadow-md rounded-lg">
-            <h3 class="text-4xl">TJIMO</h3>
+        <div class="my-5 p-3 shadow-md rounded-lg lg:mx-3 lg:w-2/5">
+            <h3 class="text-4xl text-center">TJIMO</h3>
             <p class="text-lg text-left my-4">The Thomas Jefferson Intermediate Math Open (TJIMO) is our annual math competition for middle schoolers. TJIMO aims to foster math interest in young students through competiton and fun activities. Students spend a day at TJHSST working through problems with their friends, led by VMT student coaches.</p>
             <a href="{{ prefix }}tjimo" class="text-blue-500 hover:text-blue-600">Learn More</a>
         </div>
-        <div class="flex flex-row flex-wrap justify-center my-5 p-3 shadow-md rounded-lg">
-            <h3 class="text-4xl">8th Period</h3>
-            <p class="text-xl text-left my-4">During 8th period, we do all kinds of fun activities, including pie eating contests, plank countdowns, guest lectures, and more!</p>
+        <div class="my-5 p-3 shadow-md rounded-lg lg:mx-3 lg:w-2/5">
+            <h3 class="text-4xl text-center">8th Period</h3>
+            <p class="text-lg text-left my-4">During 8th period, we do all kinds of fun activities, including pie eating contests, plank countdowns, guest lectures, and more!</p>
             <a href="{{ prefix }}under_construction" class="text-blue-500 hover:text-blue-600">Learn More</a>
         </div>
     </div>
@@ -30,7 +33,7 @@
     <h2 class="font-adam text-white text-center text-5xl">Officers</h2>
     <div class="flex flex-row flex-wrap justify-center">
         {{#each officers}}
-            <div class="w-2/5 m-2">
+            <div class="w-2/5 m-2 sm:w-48">
                 <img class="rounded-full w-11/12 m-auto" src="{{ picture }}" alt="{{ name }}">
                 <div class="text-center">
                     <p class="text-white text-md">{{ name }}</p>
@@ -42,7 +45,7 @@
 </section>
 <section class="text-center py-10">
     <h2 class="font-adam text-5xl gradient-text">Contact Us</h2>
-    <form action="" method="POST">
+    <form action="" method="POST" class="m-auto md:w-2/3 xl:w-1/2">
         <input type="text" placeholder="Name" class="block m-auto my-5 p-4 text-lg bg-gray-100 focus:bg-gray-200 w-4/5 focus:outline-none transition duration-300 ease-in-out"/>
         <input type="email" placeholder="Email" class="block m-auto my-5 p-4 text-lg bg-gray-100 focus:bg-gray-200 w-4/5 focus:outline-none transition duration-300 ease-in-out"/>
         <textarea cols="30" rows="10" placeholder="Message" class="block m-auto my-5 p-4 text-lg bg-gray-100 focus:bg-gray-200 w-4/5 focus:outline-none transition duration-300 ease-in-out"></textarea>
