@@ -94,6 +94,36 @@
                         href="{{ prefix }}under_construction"
                         class="block hover:bg-gray-100 rounded px-2 py-1 mt-1 md:inline-block md:font-adam md:p-0 md:my-0 md:mx-4 md:rounded-none md:hover:bg-transparent md:hover:gradient-underline md:transition-all md:duration-300 md:ease-in-out"
                     >News</a>
+                    <div class="pr-5 flex md:p-0 md:inline-block">
+                        <a
+                            href="{{ prefix }}#activities"
+                            class="flex-grow hover:bg-gray-100 rounded px-2 py-1 mt-1 md:inline-block md:font-adam md:p-0 md:my-0 md:mx-3 md:rounded-none md:hover:bg-transparent md:hover:gradient-underline md:transition-all md:duration-300 md:ease-in-out"
+                        >Activities</a>
+                        <button id="activities-toggle" style="top: 0.15rem;" class="relative">
+                            <svg id="activities-down" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" stroke="black" fill="black"><path d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"/></svg>
+                            <svg id="activities-up" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" stroke="black" fill="black" class="hidden"><path d="M0 16.67l2.829 2.83 9.175-9.339 9.167 9.339 2.829-2.83-11.996-12.17z"/></svg>
+                        </button>
+                    </div>
+                    <div id="activities-dropdown" style="left: 10rem;" class="pl-5 hidden md:absolute md:p-0 md:bg-white">
+                        <a
+                            href="https://drive.google.com/drive/u/2/folders/1E7PQlJUGO_CTwUJUiebjO7lHvDiXmbAe"
+                            target="_blank"
+                            class="block hover:bg-gray-100 rounded px-2 py-1 mt-1 md:px-4 md:py-2 md:my-0 md:rounded-none md:transition-all md:duration-300 md:ease-in-out"
+                        >TJAIME/TJUSAJMO</a>
+                        <a
+                            href="{{ prefix }}tjimo"
+                            class="block hover:bg-gray-100 rounded px-2 py-1 mt-1 md:px-4 md:py-2 md:my-0 md:rounded-none md:transition-all md:duration-300 md:ease-in-out"
+                        >TJIMO</a>
+                        <a
+                            href="https://tinyurl.com/WelcomeTJPuzzleHunt2021"
+                            target="_blank"
+                            class="block hover:bg-gray-100 rounded px-2 py-1 mt-1 md:px-4 md:py-2 md:my-0 md:rounded-none md:transition-all md:duration-300 md:ease-in-out"
+                        >Puzzle Hunt</a>
+                        <a
+                            href="{{ prefix }}under_construction"
+                            class="block hover:bg-gray-100 rounded px-2 py-1 mt-1 md:px-4 md:py-2 md:my-0 md:rounded-none md:transition-all md:duration-300 md:ease-in-out"
+                        >8th Period</a>
+                    </div>
                     <a
                         href="{{ prefix }}under_construction"
                         class="block hover:bg-gray-100 rounded px-2 py-1 mt-1 md:inline-block md:font-adam md:p-0 md:my-0 md:mx-4 md:rounded-none md:hover:bg-transparent md:hover:gradient-underline md:transition-all md:duration-300 md:ease-in-out"
@@ -176,10 +206,21 @@
     </footer>
 
     <script>
+        function collapseActivities() {
+                let actv = $("#activities-dropdown");
+                if (actv.hasClass("block")) {
+                    actv.toggleClass("hidden");
+                    actv.toggleClass("block");
+                    $("#activities-down").toggleClass("hidden");
+                    $("#activities-up").toggleClass("hidden");
+                }
+        }
+        
         $(function () {
             $(document).scroll(function() {
                 let nav = $("#navbar");
                 nav.toggleClass('bg-white', $(this).scrollTop() > 0 || $("#nav-toggle-graphics").hasClass("opened"));
+                collapseActivities();
             });
 
             $('#flash_notifications').delay(4000).fadeOut(300);
@@ -198,6 +239,15 @@
                 let graphics = $("#nav-toggle-graphics");
                 graphics.toggleClass("opened");
             });
+
+            $("#activities-toggle").click(function() {
+                let actv = $("#activities-dropdown");
+                actv.toggleClass("block");
+                actv.toggleClass("hidden");
+
+                $("#activities-down").toggleClass("hidden");
+                $("#activities-up").toggleClass("hidden");
+            })
         });
 
         $("#{{ pageName }}_link").addClass("md:gradient-underline");
