@@ -1,46 +1,6 @@
-<section class="pt-24">
-    <h1 class="m-auto font-adam text-5xl gradient-text text-center">Officer</h1>
-    <div class="w-4/5">
-        <h2 class="text-3xl">Add/Edit TST Scores</h2>
-    </div>
-    <div class="w-4/5">
-        <h2 class="text-3xl">Manage Contests</h2>
-        <div id="contest_list">
-            {{#each contests}}
-                <h3>{{ this.name }}</h3>
-                <table>
-                    <thead>
-                        <th>TST</th>
-                        <th>Weighting</th>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            {{/each}}
-        </div>
-        <form id="create_contest_form" action="{{ prefix }}officer/contest" method="POST" class="hidden">
-            <input id="new_contest_name" type="text" name="new_contest_name" required placeholder="Contest Name"/>
-            <input type="submit" id="create_contest" value="Create Contest">
-            <button type="button" id="create_contest_cancel">Cancel</button>
-        </form>
-        <button id="create_contest_button">Create Contest</button>
-    </div>
+<div class="pt-24">
+    <h1 class="m-auto pl-4 font-adam text-5xl gradient-text text-center">Officer</h1>
+    <div id="react-container"></div>
 
-    <script>
-        $(function() {
-            let create_contest_button = $("#create_contest_button");
-            let create_contest_form = $("#create_contest_form");
-            let create_contest_cancel = $("#create_contest_cancel");
-
-            create_contest_button.click(function() {
-                create_contest_form.toggleClass("hidden");
-                create_contest_button.toggleClass("hidden");
-            })
-
-            create_contest_cancel.click(function() {
-                create_contest_form.toggleClass("hidden");
-                create_contest_button.toggleClass("hidden");
-            })
-        });
-    </script>
-</section>
+    <script type="text/javascript" src="{{ prefix }}js/officer.js"></script>
+</div>

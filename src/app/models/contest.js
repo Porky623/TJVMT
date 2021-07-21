@@ -7,6 +7,10 @@ var Contest = new Schema({
         type: String, 
         required: true
     },
+    year: {
+        type: Number,
+        required: true,
+    },
     tsts: {
         type: [Schema.Types.ObjectId],
         ref: 'TST'

@@ -4,15 +4,26 @@ var Schema = mongoose.Schema;
 var tst = new Schema({
     name: {
         type: String,
+        required: true,
+        unique: true
+    },
+    year: {
+        type: Number,
         required: true
     },
-    participants: {
-        type: [Schema.Types.ObjectId],
-        ref: 'User'
+    numProblems: {
+        type: Number,
+        required: true,
     },
-    writers: [String],
-    submissionTimes: [Number],
-    indices: [Number]
+    scoreWeighted: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    writers: {
+        type: [String],
+        default: []
+    }
 });
 
 //export model
