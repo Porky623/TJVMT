@@ -1,8 +1,8 @@
 const passport = require('passport');
+const OAuth2Strategy = require('passport-oauth2').Strategy;
 const mongoose = require('mongoose');
-const LocalStrategy = require('passport-local').Strategy;
+const keys = require("./keys");
 const User = require('../app/models/user');
-const bcrypt = require('bcryptjs');
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -14,16 +14,43 @@ passport.deserializeUser((id, done) => {
     });
 });
 
-passport.use('ion', new LocalStrategy({ usernameField: "ionUsername"}, async (ionUsername, password, done) => {
-        await User.findOne({ionUsername: ionUsername}, function(err, user) {
-            if (err) { return done(err) }
-            if (!user) {
-                return done(null, false, { message: 'Username not found.' });
-            }
-            if (!user.validPassword(password)) {
-                return done(null, false, {message: 'Incorrect password.'});
-            }
-            return done(null, user);
+OAuth2Strategy.prototype.userProfile = function(accessToken, done) {
+    this._oauth2.get('https://ion.tjhsst.edu/api/profile', accessToken, (err, body, res) => {
+        if (err) {
+            return done(new InternalOAuthError('failed to fetch user profile', err));
+        }
+        try {
+            let json = JSON.parse(body);
+            done(null, json);
+        }
+        catch (e) {
+            done(e);
+        }
+    });
+};
+
+passport.use('ion', new OAuth2Strategy({
+    authorizationURL: 'https://ion.tjhsst.edu/oauth/authorize/',
+    tokenURL: 'https://ion.tjhsst.edu/oauth/token/',
+    clientID: keys.ion.clientID,
+    clientSecret: keys.ion.clientSecret,
+    callbackURL: "https://activities.tjhsst.edu/vmt/auth/ion/redirect"
+}, async (accessToken, refreshToken, profile, done) => {
+    let curUser = await User.findOne({ionUsername: profile.ion_username});
+    if (curUser) {
+        done(null, curUser);
+    }
+    else {
+        let newUser = new User({
+            firstName: profile.first_name,
+            lastName: profile.last_name,
+            ionUsername: profile.ion_username,
+            gradYear: profile.graduation_year,
+            email: profile.tj_email,
+            onEmailList: false,
+            isOffier: false,
         });
-    })
-);
+        await newUser.save();
+        done(null, newUser);
+    }
+}));

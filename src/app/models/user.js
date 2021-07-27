@@ -8,7 +8,6 @@ let UserSchema = new Schema({
     firstName: {type: String, required: true},
     lastName: {type: String, required: true},
     gradYear: {type: Number, required: true, min: 2000, max: 3000},
-    password: String,
     isOfficer: {type: Boolean, default: false},
     onEmailList: {type: Boolean, default: false}
 });

@@ -4,6 +4,8 @@ const passport = require('passport');
 
 router.use('/', require('./app/routes/main_routes'));
 
+router.use('/auth', require('./app/routes/auth_routes'));
+
 router.use('/', require('./app/routes/officer').router);
 
 // router.use('/', require('./app/routes/contest'));
