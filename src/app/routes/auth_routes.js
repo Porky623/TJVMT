@@ -9,13 +9,13 @@ router.get('/ion', passport.authenticate('ion', {
     scope: "read",
 }));
 
-router.get('/ion/redirect', passport.authenticate('ion', { failureRedirect: '/auth/login' }), (req, res) => {
-    res.redirect('/');
+router.get('/ion/redirect', passport.authenticate('ion', { failureRedirect: 'https://activities.tjhsst.edu/vmt/auth/login' }), (req, res) => {
+    res.redirect(req.app.get('prefix'));
 });
 
 router.get('/logout', (req, res) => {
     req.logout();
-    res.redirect('/');
+    res.redirect(req.app.get('prefix'));
 });
 
 module.exports = router;
