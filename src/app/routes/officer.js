@@ -1,10 +1,7 @@
 const express = require('express');
 const router = express.Router();
-// const passport = require('passport');
-// const User = require('../models/user');
 const Contest = require('../models/contest');
 const officerCtl = require('../controllers/officer');
-// const { restart } = require('nodemon');
 
 const officerCheck = function officerCheck(req, res, next) {
   if(!req.user) {
