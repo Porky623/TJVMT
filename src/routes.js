@@ -6,16 +6,8 @@ router.use('/', require('./app/routes/main_routes'));
 
 router.use('/auth', require('./app/routes/auth_routes'));
 
-router.use('/', require('./app/routes/officer').router);
-
-// router.use('/', require('./app/routes/contest'));
+router.use('/officer', require('./app/routes/officer_routes').router);
 
 router.use('/', require('./app/routes/news'));
-
-// router.use('/test', require('./app/routes/test'));
-
-// router.use('/', require('./app/routes/puzzle'));
-
-// router.use('/test/arml', require('./app/routes/arml'));
 
 module.exports = router;

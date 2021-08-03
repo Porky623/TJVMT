@@ -1,13 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const passport = require('passport');
 const User = require('../models/user');
 const Contest = require('../models/contest');
 const Handlebars = require('express-handlebars');
 const prefix = require('../../config/url-config').prefix;
 const { body, validationResult } = require('express-validator');
 const fs = require('fs');
-const { officerCheck } = require('./officer');
 
 const authCheck = (req, res, next) => {
     if (!req.user) {

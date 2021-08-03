@@ -5,7 +5,7 @@ const marked = require('marked');
 
 // models
 const Announcement = require('../models/announcement');
-const officerCheck = require('./officer').officerCheck;
+const officerCheck = require('./officer_routes').officerCheck;
 
 const nodemailer = require('nodemailer');
 const mailAuth = require('../../config/keys').gmail;

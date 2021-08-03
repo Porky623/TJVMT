@@ -12,10 +12,13 @@ var Contest = new Schema({
         required: true,
     },
     tsts: {
-        type: [Schema.Types.ObjectId],
-        ref: 'TST'
+        type: [String],
+        default: []
     },
-    weighting: {type: [Number]}
+    weightings: {
+        type: [Number],
+        default: []
+    }
 });
 
 module.exports = mongoose.model('Contest', Contest);
