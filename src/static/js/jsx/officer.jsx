@@ -1,14 +1,18 @@
+// const sitePrefix = "http://localhost:3000";
+const sitePrefix = "https://activities.tjhsst.edu/vmt/";
+
 const OfficerContext = React.createContext();
 
 function OfficerProvider({ children }) {
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState();
     const [tsts, setTsts] = React.useState([]);
+    const [scores, setScores] = React.useState([]);
     const [contests, setContests] = React.useState([]);
 
     React.useEffect(() => {
         setLoading(true);
-        fetch("/officer/tst", { method: "GET" })
+        fetch(`${sitePrefix}/officer/tst`, { method: "GET" })
             .then(tstData => tstData.json())
             .then(tstData => setTsts(tstData.tsts))
             .then(() => setLoading(false))
@@ -17,9 +21,18 @@ function OfficerProvider({ children }) {
 
     React.useEffect(() => {
         setLoading(true);
-        fetch("/officer/contest", { method: "GET"})
+        fetch(`${sitePrefix}/officer/contest`, { method: "GET"})
             .then(contestData => contestData.json())
             .then(contestData => setContests(contestData.contests))
+            .then(() => setLoading(false))
+            .catch(setError);
+    }, []);
+
+    React.useEffect(() => {
+        setLoading(true);
+        fetch(`${sitePrefix}/officer/score`, { method: "GET"})
+            .then(scoreData => scoreData.json())
+            .then(scoreData => setScores(scoreData.scores))
             .then(() => setLoading(false))
             .catch(setError);
     }, []);
@@ -30,7 +43,7 @@ function OfficerProvider({ children }) {
             alert("A TST with that name already exists. Please choose another name.");
         }
         else {
-            fetch("/officer/tst", {
+            fetch(`${sitePrefix}/officer/tst`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({newTst: newTst})
@@ -45,7 +58,7 @@ function OfficerProvider({ children }) {
     };
 
     const editTst = editedTst => {
-        fetch("/officer/tst", {
+        fetch(`${sitePrefix}/officer/tst`, {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({editedTst: editedTst})
@@ -55,6 +68,8 @@ function OfficerProvider({ children }) {
             else throw new Error(res.statusText);
         })
         .then(res => {
+            const oldTst = tsts.find(tst => tst._id === res.editedTst._id);
+            setScores(scores.map(score => score.tst === oldTst.name ? {...score, tst: res.editedTst.name } : score));
             setTsts(tsts.map(tst => tst._id === res.editedTst._id ? res.editedTst : tst));
             alert(`Changes to TST ${res.editedTst.name} successfully saved.`);
         })
@@ -62,7 +77,7 @@ function OfficerProvider({ children }) {
     };
 
     const deleteTst = tstId => {
-        fetch(`/officer/tst?tstId=${tstId}`, {method: "DELETE"})
+        fetch(`${sitePrefix}/officer/tst?tstId=${tstId}`, {method: "DELETE"})
             .then(res => {
                 if (res.ok) setTsts(tsts.filter(tst => tst._id !== tstId));
                 else throw new Error(res.statusText);
@@ -76,7 +91,7 @@ function OfficerProvider({ children }) {
             alert("A contest with that name already exists. Please choose another name.");
         }
         else {
-            fetch("/officer/contest", {
+            fetch(`${sitePrefix}/officer/contest`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({newContest: newContest})
@@ -91,7 +106,7 @@ function OfficerProvider({ children }) {
     };
 
     const editContest = editedContest => {
-        fetch("/officer/contest", {
+        fetch(`${sitePrefix}/officer/contest`, {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({editedContest: editedContest})
@@ -105,12 +120,58 @@ function OfficerProvider({ children }) {
             alert(`Changes to contest ${res.editedContest.name} successfully saved.`);
         })
         .catch(err => console.log(`ERROR: ${err.message}`));
-    }
+    };
 
     const deleteContest = contestId => {
-        fetch(`/officer/contest?contestId=${contestId}`, {method: "DELETE"})
+        fetch(`${sitePrefix}/officer/contest?contestId=${contestId}`, {method: "DELETE"})
             .then(res => {
                 if (res.ok) setContests(contests.filter(contest => contest._id !== contestId));
+                else throw new Error(res.statusText);
+            })
+            .catch(err => console.log(`ERROR: ${err.message}`));
+    };
+
+    const addScore = newScore => {
+        let exists = scores.reduce((acc, cur) => acc ? acc : newScore.userIonUsername === cur.userIonUsername && newScore.tst === cur.tst, false);
+        if (exists) {
+            alert("A score for that user for that tst already exists.");
+        }
+        else {
+            fetch(`${sitePrefix}/officer/score`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({newScore: newScore})
+            })
+            .then(res => {
+                if (res.ok) return res.json();
+                else throw new Error(res.statusText);
+            })
+            .then(res => setScores([...scores, res.scoreObj]))
+            .catch(err => console.log(`ERROR: ${err.message}`));
+        }
+    };
+
+    const editScore = editedScore => {
+        fetch(`${sitePrefix}/officer/score`, {
+            method: "PUT",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({editedScore: editedScore})
+        })
+        .then(res => {
+            if (res.ok) return res.json();
+            else throw new Error(res.statusText);
+        })
+        .then(res => {
+            setScores(scores.map(score => score._id === res.editedScore._id ? res.editedScore : score));
+            alert(`Changes to ${res.editedScore.userIonUsername}'s score for TST ${res.editedScore.tst} successfully saved.`);
+        })
+        .catch(err => console.log(`ERROR: ${err.message}`));
+    };
+
+    const deleteScore = scoreId => {
+        fetch(`${sitePrefix}/officer/score?scoreId=${scoreId}`, {method: "DELETE"})
+            .then(res => {
+                if (res.ok) setScores(scores.filter(score => score._id !== scoreId));
                 else throw new Error(res.statusText);
             })
             .catch(err => console.log(`ERROR: ${err.message}`));
@@ -129,12 +190,18 @@ function OfficerProvider({ children }) {
             else if (action.type === "delete") deleteContest(action.data);
             else console.log("Invalid option. Please choose among options {add, edit, delete}");
         }
+        else if (action.target === "score") {
+            if (action.type === "add") addScore(action.data);
+            else if (action.type === "edit") editScore(action.data);
+            else if (action.type === "delete") deleteScore(action.data);
+            else console.log("Invalid option. Please choose among options {add, edit, delete}");
+        }
     };
 
     if (loading) return (<p>Loading</p>);
     if (error) return (<pre>{JSON.stringify(error, null, 4)}</pre>);
     return (
-        <OfficerContext.Provider value={{ tsts, contests, updateServer }}>
+        <OfficerContext.Provider value={{ tsts, contests, scores, updateServer }}>
             {children}
         </OfficerContext.Provider>
     );
@@ -243,6 +310,83 @@ function TstEditForm({ dataEntry = {_id: "", writers: []}, submitAction = f => f
                     onClick={cancelAction}>
                 Close</button>
             </div>
+        </form>
+    );
+}
+
+function ScoreEditForm({ dataEntry = {_id: "", correct: []}, submitAction = f => f, cancelAction = f => f, submitText }) {
+    const [userIonUsername, setUserIonUsername] = React.useState(dataEntry._id ? dataEntry.userIonUsername : "");
+    const [tstName, setTstName] = React.useState(dataEntry._id ? dataEntry.tst : "");
+    const [correct, setCorrect] =  React.useState(dataEntry._id ? dataEntry.correct : []);
+    const [userTstLocked] = React.useState(dataEntry._id !== "");
+    const allTsts = React.useContext(OfficerContext).tsts;
+
+    return (
+        <form onSubmit={(e) => { e.preventDefault(); return false; }}>
+            <div>
+                <label htmlFor="userIonUsername" className="mb-1 text-sm">User Ion Username</label>
+                <input
+                    name="userIonUsername"
+                    type="text"
+                    value={userIonUsername}
+                    className="p-1 bg-gray-100 focus:bg-gray-200 focus:outline-none transition duration-300 ease-in-out"
+                    onChange={e => setUserIonUsername(e.target.value)}
+                    readOnly={userTstLocked}
+                    required/>
+            </div>
+            <div>
+                <label htmlFor="tstName" className="mb-1 text-sm">TST</label>
+                <select
+                    value={tstName}
+                    onChange={e => {
+                        setTstName(e.target.value);
+                        const selectedTst = allTsts.find(tst => tst.name === e.target.value);
+
+                        if (selectedTst) {
+                            let newCorrect = []
+                            newCorrect.length = selectedTst.numProblems;
+                            newCorrect.fill(0);
+                            setCorrect(newCorrect);
+                        }
+                        else setCorrect([]);
+                    }}
+                    disabled={userTstLocked}
+                >
+                    <option value=""></option>
+                    {allTsts.map((tst, i) => <option key={i} value={tst.name}>{tst.name}</option>)}
+                </select>
+            </div>
+            {tstName !== "" &&
+                <fieldset>
+                    <legend className="mb-1 text-sm">Correct Answers</legend>
+                    <div>
+                        {correct.map((problemCorrect, i) => {
+                            return (
+                                <div key={i}>
+                                    <label htmlFor={`problem_${i}`} className="text-sm">{i + 1}.</label>
+                                    <input 
+                                        name={`problem_${i}`}
+                                        type="checkbox"
+                                        checked={problemCorrect === 1}
+                                        onChange={() => setCorrect(correct.map((p, j) => i === j ? (p + 1) % 2 : p))}
+                                        />
+                                </div>
+                            );
+                        })}
+                    </div>
+                </fieldset>}
+                <div className="flex flex-row justify-center mt-2">
+                    <button 
+                        type="button"
+                        className="mx-1 py-2 w-1/5 text-sm uppercase rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none transition duration-300 ease-in-out"
+                        onClick={() => submitAction({ _id: dataEntry._id, userIonUsername, tst: tstName, correct})}>
+                    {submitText}</button>
+                    <button
+                        type="button"
+                        className="mx-1 py-2 w-1/5 text-sm uppercase rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none transition duration-300 ease-in-out"
+                        onClick={cancelAction}>
+                    Close</button>
+                </div>
         </form>
     );
 }
@@ -386,7 +530,7 @@ function DataEditTableRow({ dataEntry = {}, meta = {}, editFunc = f => f, delete
                         type="button"
                         className="mr-1 p-2 w-11/24 text-sm uppercase rounded-full text-white bg-red-600 hover:bg-red-700 focus:outline-none transition duration-300 ease-in-out"
                         onClick={() => {
-                            if (confirm(`Are you sure you want to delete ${dataEntry.name}?`))
+                            if (confirm(`Are you sure you want to delete this entry?`))
                                 deleteFunc(dataEntry._id);
                         }}>
                         Delete</button>
@@ -396,8 +540,9 @@ function DataEditTableRow({ dataEntry = {}, meta = {}, editFunc = f => f, delete
     }
 }
 
-function DataEditTable({ meta = {}, editFunc = f => f, deleteFunc = f => f, DataEditForm = null }) {
-    const data = React.useContext(OfficerContext)[`${meta.dataTarget}s`];
+function DataEditTable({ meta = {}, filters = {}, editFunc = f => f, deleteFunc = f => f, DataEditForm = null }) {
+    let data = React.useContext(OfficerContext)[`${meta.dataTarget}s`];
+    const matchesFilters = (dataEntry) => filters.reduce((acc, filter) => !acc ? acc : !filter.value || dataEntry[filter.propName] === filter.value, true);
 
     if (data.length === 0) return <p>No data.</p>;
     return (
@@ -411,15 +556,19 @@ function DataEditTable({ meta = {}, editFunc = f => f, deleteFunc = f => f, Data
                 </tr>
             </thead>
             <tbody className="divide-y">
-                {data.map((dataEntry, i) => 
-                    <DataEditTableRow
-                        key={i}
-                        dataEntry={dataEntry}
-                        meta={meta} 
-                        editFunc={editFunc}
-                        deleteFunc={deleteFunc}
-                        DataEditForm={DataEditForm}/>)
-                }
+                {data.map((dataEntry, i) => {
+                    if (matchesFilters(dataEntry)) {
+                        return (
+                            <DataEditTableRow
+                                key={i}
+                                dataEntry={dataEntry}
+                                meta={meta} 
+                                editFunc={editFunc}
+                                deleteFunc={deleteFunc}
+                                DataEditForm={DataEditForm}/>
+                        );
+                    }
+                })}
             </tbody>
         </table>
     )
@@ -427,12 +576,37 @@ function DataEditTable({ meta = {}, editFunc = f => f, deleteFunc = f => f, Data
 
 function DataEditContainer({ meta = {}, updateFunc = f => f, DataEditForm = null }) {
     const [addToggled, setAddToggled] = React.useState(false);
+    const [filters, setFilters] = React.useState(meta.filters.map(filter => { return {propName: filter.propName, value: ""}; }));
+
+    const filtersElement = (
+        <div>
+            {meta.filters.map((filter, i) => {
+                if (filter.type === "select") {
+                    return (
+                        <div key={i} className="flex items-center">
+                            <label className="text-sm mr-2">Filter {filter.displayName}</label>
+                            <select 
+                                value={filters.find(f => f.propName === filter.propName).value}
+                                className="p-1 text-sm bg-gray-100 focus:bg-gray-200"
+                                onChange={e => setFilters(filters.map(f => f.propName === filter.propName ? {...f, value: e.target.value} : f))}
+                            >
+                                <option value=""></option>
+                                {filter.options.map((option, j) => <option key={j} value={option}>{option}</option>)}
+                            </select>
+                        </div>
+                    );
+                }
+            })}
+        </div>
+    );
 
     return (
         <div className="mb-5 px-5 max-w-lg">
             <h1 className="text-2xl">{meta.dataDisplayName}</h1>
+            {meta.filters.length === 0 ? "" : filtersElement}
             <DataEditTable
                 meta={meta}
+                filters={filters}
                 editFunc={(editedData) => updateFunc({target: meta.dataTarget, type: "edit", data: editedData})}
                 deleteFunc={(dataId) => updateFunc({target: meta.dataTarget, type: "delete", data: dataId})}
                 DataEditForm={DataEditForm}/>
@@ -455,13 +629,14 @@ function DataEditContainer({ meta = {}, updateFunc = f => f, DataEditForm = null
 }
 
 function OfficerPage() {
-    const { updateServer } = React.useContext(OfficerContext);
+    const { tsts, updateServer } = React.useContext(OfficerContext);
     return (
         <React.Fragment>
             <DataEditContainer
                 meta={{
                     dataDisplayName: "TST",
                     dataTarget: "tst",
+                    filters: [],
                     columnNames: [
                         {propName: "name", displayName: "TST Name", width: "1/3"},
                         {propName: "year", displayName: "Year", width: "1/5"}
@@ -471,8 +646,23 @@ function OfficerPage() {
                 DataEditForm={TstEditForm}/>
             <DataEditContainer
                 meta={{
+                    dataDisplayName: "Score",
+                    dataTarget: "score",
+                    filters: [
+                        {propName: "tst", displayName: "TST", type: "select", options: tsts.map(tst => tst.name)}
+                    ],
+                    columnNames: [
+                        {propName: "userIonUsername", displayName: "User Ion ID", width: "1/3"},
+                        {propName: "tst", displayName: "TST", width: "1/5"}
+                    ],
+                }}
+                updateFunc={updateServer}
+                DataEditForm={ScoreEditForm}/>
+            <DataEditContainer
+                meta={{
                     dataDisplayName: "Contest",
                     dataTarget: "contest",
+                    filters: [],
                     columnNames: [
                         {propName: "name", displayName: "Contest Name", width: "1/3"},
                         {propName: "year", displayName: "Year", width: "1/5"}

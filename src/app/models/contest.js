@@ -1,8 +1,8 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const TST = require('./tst');
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var Contest = new Schema({
+const Contest = new Schema({
     name: {
         type: String, 
         required: true

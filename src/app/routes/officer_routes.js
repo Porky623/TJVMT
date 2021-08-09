@@ -1,14 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const Contest = require('../models/contest');
 const officerCtl = require('../controllers/officer');
 
 const officerCheck = function officerCheck(req, res, next) {
   if(!req.user) {
-    return res.redirect(req.app.get('prefix')+'auth/login');
+    return res.redirect(`${req.app.get('prefix')}auth/login`);
   }
   if (!req.user.isOfficer) {
-    return res.redirect(req.app.get('prefix')+'');
+    return res.redirect(req.app.get('prefix'));
   }
   next();
 };
@@ -28,7 +27,7 @@ router.get('/', officerCheck, async (req, res) => {
 });
 
 // tst routes
-router.get('/tst', officerCheck, async (req, res) => {
+router.get('/tst', async (req, res) => {
     officerCtl.getTsts()
         .then(msg => sendCtlResult(msg, res))
         .catch(err => console.log(err));
@@ -52,8 +51,33 @@ router.delete('/tst/', officerCheck, async (req, res) => {
         .catch(err => console.log(err));
 });
 
+// score routes
+router.get('/score', async (req, res) => {
+    officerCtl.getScores(req.query.tst)
+        .then(msg => sendCtlResult(msg, res))
+        .catch(err => console.log(err));
+});
+
+router.post('/score', officerCheck, async (req, res) => {
+    officerCtl.createScore(req.body.newScore)
+        .then(msg => sendCtlResult(msg, res))
+        .catch(err => console.log(err));
+});
+
+router.put('/score', officerCheck, async (req, res) => {
+    officerCtl.editScore(req.body.editedScore)
+        .then(msg => sendCtlResult(msg, res))
+        .catch(err => console.log(err));
+});
+
+router.delete('/score', officerCheck, async (req, res) => {
+    officerCtl.deleteScore(req.query.scoreId)
+        .then(msg => sendCtlResult(msg, res))
+        .catch(err => console.log(err));
+});
+
 // contest routes
-router.get('/contest', officerCheck, async (req, res) => {
+router.get('/contest', async (req, res) => {
     officerCtl.getContests()
         .then(msg => sendCtlResult(msg, res))
         .catch(err => console.log(err));

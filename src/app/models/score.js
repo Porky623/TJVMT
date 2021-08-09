@@ -1,15 +1,25 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-var score = new Schema({
-    user: {
-        type: Schema.Types.ObjectId,
+const score = new Schema({
+    userIonUsername: {
+        type: String,
         required: true
     },
     tst: {
-        type: Schema.Types.ObjectId,
+        type: String,
         required: true
+    },
+    correct: {
+        type: [Number],
+        required: true,
+        default: []
+    },
+    index: {
+        type: Number,
+        required: true,
+        default: 2000
     }
 });
 
-module.exports = mongoose.Model('Score', score);
+module.exports = mongoose.model('Score', score);

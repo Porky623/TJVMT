@@ -2,6 +2,9 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
+// const sitePrefix = "http://localhost:3000";
+var sitePrefix = "https://activities.tjhsst.edu/vmt/";
+
 var OfficerContext = React.createContext();
 
 function OfficerProvider(_ref) {
@@ -24,12 +27,17 @@ function OfficerProvider(_ref) {
 
     var _React$useState7 = React.useState([]),
         _React$useState8 = _slicedToArray(_React$useState7, 2),
-        contests = _React$useState8[0],
-        setContests = _React$useState8[1];
+        scores = _React$useState8[0],
+        setScores = _React$useState8[1];
+
+    var _React$useState9 = React.useState([]),
+        _React$useState10 = _slicedToArray(_React$useState9, 2),
+        contests = _React$useState10[0],
+        setContests = _React$useState10[1];
 
     React.useEffect(function () {
         setLoading(true);
-        fetch("/officer/tst", { method: "GET" }).then(function (tstData) {
+        fetch(sitePrefix + "/officer/tst", { method: "GET" }).then(function (tstData) {
             return tstData.json();
         }).then(function (tstData) {
             return setTsts(tstData.tsts);
@@ -40,10 +48,21 @@ function OfficerProvider(_ref) {
 
     React.useEffect(function () {
         setLoading(true);
-        fetch("/officer/contest", { method: "GET" }).then(function (contestData) {
+        fetch(sitePrefix + "/officer/contest", { method: "GET" }).then(function (contestData) {
             return contestData.json();
         }).then(function (contestData) {
             return setContests(contestData.contests);
+        }).then(function () {
+            return setLoading(false);
+        }).catch(setError);
+    }, []);
+
+    React.useEffect(function () {
+        setLoading(true);
+        fetch(sitePrefix + "/officer/score", { method: "GET" }).then(function (scoreData) {
+            return scoreData.json();
+        }).then(function (scoreData) {
+            return setScores(scoreData.scores);
         }).then(function () {
             return setLoading(false);
         }).catch(setError);
@@ -56,7 +75,7 @@ function OfficerProvider(_ref) {
         if (exists) {
             alert("A TST with that name already exists. Please choose another name.");
         } else {
-            fetch("/officer/tst", {
+            fetch(sitePrefix + "/officer/tst", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ newTst: newTst })
@@ -71,13 +90,19 @@ function OfficerProvider(_ref) {
     };
 
     var editTst = function editTst(editedTst) {
-        fetch("/officer/tst", {
+        fetch(sitePrefix + "/officer/tst", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ editedTst: editedTst })
         }).then(function (res) {
             if (res.ok) return res.json();else throw new Error(res.statusText);
         }).then(function (res) {
+            var oldTst = tsts.find(function (tst) {
+                return tst._id === res.editedTst._id;
+            });
+            setScores(scores.map(function (score) {
+                return score.tst === oldTst.name ? Object.assign({}, score, { tst: res.editedTst.name }) : score;
+            }));
             setTsts(tsts.map(function (tst) {
                 return tst._id === res.editedTst._id ? res.editedTst : tst;
             }));
@@ -88,7 +113,7 @@ function OfficerProvider(_ref) {
     };
 
     var deleteTst = function deleteTst(tstId) {
-        fetch("/officer/tst?tstId=" + tstId, { method: "DELETE" }).then(function (res) {
+        fetch(sitePrefix + "/officer/tst?tstId=" + tstId, { method: "DELETE" }).then(function (res) {
             if (res.ok) setTsts(tsts.filter(function (tst) {
                 return tst._id !== tstId;
             }));else throw new Error(res.statusText);
@@ -104,7 +129,7 @@ function OfficerProvider(_ref) {
         if (exists) {
             alert("A contest with that name already exists. Please choose another name.");
         } else {
-            fetch("/officer/contest", {
+            fetch(sitePrefix + "/officer/contest", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ newContest: newContest })
@@ -119,7 +144,7 @@ function OfficerProvider(_ref) {
     };
 
     var editContest = function editContest(editedContest) {
-        fetch("/officer/contest", {
+        fetch(sitePrefix + "/officer/contest", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ editedContest: editedContest })
@@ -136,9 +161,57 @@ function OfficerProvider(_ref) {
     };
 
     var deleteContest = function deleteContest(contestId) {
-        fetch("/officer/contest?contestId=" + contestId, { method: "DELETE" }).then(function (res) {
+        fetch(sitePrefix + "/officer/contest?contestId=" + contestId, { method: "DELETE" }).then(function (res) {
             if (res.ok) setContests(contests.filter(function (contest) {
                 return contest._id !== contestId;
+            }));else throw new Error(res.statusText);
+        }).catch(function (err) {
+            return console.log("ERROR: " + err.message);
+        });
+    };
+
+    var addScore = function addScore(newScore) {
+        var exists = scores.reduce(function (acc, cur) {
+            return acc ? acc : newScore.userIonUsername === cur.userIonUsername && newScore.tst === cur.tst;
+        }, false);
+        if (exists) {
+            alert("A score for that user for that tst already exists.");
+        } else {
+            fetch(sitePrefix + "/officer/score", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ newScore: newScore })
+            }).then(function (res) {
+                if (res.ok) return res.json();else throw new Error(res.statusText);
+            }).then(function (res) {
+                return setScores([].concat(_toConsumableArray(scores), [res.scoreObj]));
+            }).catch(function (err) {
+                return console.log("ERROR: " + err.message);
+            });
+        }
+    };
+
+    var editScore = function editScore(editedScore) {
+        fetch(sitePrefix + "/officer/score", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ editedScore: editedScore })
+        }).then(function (res) {
+            if (res.ok) return res.json();else throw new Error(res.statusText);
+        }).then(function (res) {
+            setScores(scores.map(function (score) {
+                return score._id === res.editedScore._id ? res.editedScore : score;
+            }));
+            alert("Changes to " + res.editedScore.userIonUsername + "'s score for TST " + res.editedScore.tst + " successfully saved.");
+        }).catch(function (err) {
+            return console.log("ERROR: " + err.message);
+        });
+    };
+
+    var deleteScore = function deleteScore(scoreId) {
+        fetch(sitePrefix + "/officer/score?scoreId=" + scoreId, { method: "DELETE" }).then(function (res) {
+            if (res.ok) setScores(scores.filter(function (score) {
+                return score._id !== scoreId;
             }));else throw new Error(res.statusText);
         }).catch(function (err) {
             return console.log("ERROR: " + err.message);
@@ -150,6 +223,8 @@ function OfficerProvider(_ref) {
             if (action.type === "add") addTst(action.data);else if (action.type === "edit") editTst(action.data);else if (action.type === "delete") deleteTst(action.data);else console.log("Invalid option. Please choose among options {add, edit, delete}");
         } else if (action.target === "contest") {
             if (action.type === "add") addContest(action.data);else if (action.type === "edit") editContest(action.data);else if (action.type === "delete") deleteContest(action.data);else console.log("Invalid option. Please choose among options {add, edit, delete}");
+        } else if (action.target === "score") {
+            if (action.type === "add") addScore(action.data);else if (action.type === "edit") editScore(action.data);else if (action.type === "delete") deleteScore(action.data);else console.log("Invalid option. Please choose among options {add, edit, delete}");
         }
     };
 
@@ -165,7 +240,7 @@ function OfficerProvider(_ref) {
     );
     return React.createElement(
         OfficerContext.Provider,
-        { value: { tsts: tsts, contests: contests, updateServer: updateServer } },
+        { value: { tsts: tsts, contests: contests, scores: scores, updateServer: updateServer } },
         children
     );
 }
@@ -236,20 +311,20 @@ function TstEditForm(_ref3) {
     } : _ref3$cancelAction,
         submitText = _ref3.submitText;
 
-    var _React$useState9 = React.useState(dataEntry._id ? dataEntry.name : ""),
-        _React$useState10 = _slicedToArray(_React$useState9, 2),
-        tstName = _React$useState10[0],
-        setTstName = _React$useState10[1];
-
-    var _React$useState11 = React.useState(dataEntry._id ? dataEntry.year : ""),
+    var _React$useState11 = React.useState(dataEntry._id ? dataEntry.name : ""),
         _React$useState12 = _slicedToArray(_React$useState11, 2),
-        year = _React$useState12[0],
-        setYear = _React$useState12[1];
+        tstName = _React$useState12[0],
+        setTstName = _React$useState12[1];
 
-    var _React$useState13 = React.useState(dataEntry._id ? dataEntry.numProblems : ""),
+    var _React$useState13 = React.useState(dataEntry._id ? dataEntry.year : ""),
         _React$useState14 = _slicedToArray(_React$useState13, 2),
-        numProblems = _React$useState14[0],
-        setNumProblems = _React$useState14[1];
+        year = _React$useState14[0],
+        setYear = _React$useState14[1];
+
+    var _React$useState15 = React.useState(dataEntry._id ? dataEntry.numProblems : ""),
+        _React$useState16 = _slicedToArray(_React$useState15, 2),
+        numProblems = _React$useState16[0],
+        setNumProblems = _React$useState16[1];
 
     var _React$useReducer = React.useReducer(function (state) {
         return !state;
@@ -378,18 +453,173 @@ function TstEditForm(_ref3) {
     );
 }
 
-function ContestTstField(_ref4) {
-    var _ref4$tsts = _ref4.tsts,
-        tsts = _ref4$tsts === undefined ? [] : _ref4$tsts,
-        _ref4$updateTsts = _ref4.updateTsts,
-        updateTsts = _ref4$updateTsts === undefined ? function (f) {
+function ScoreEditForm(_ref4) {
+    var _ref4$dataEntry = _ref4.dataEntry,
+        dataEntry = _ref4$dataEntry === undefined ? { _id: "", correct: [] } : _ref4$dataEntry,
+        _ref4$submitAction = _ref4.submitAction,
+        submitAction = _ref4$submitAction === undefined ? function (f) {
         return f;
-    } : _ref4$updateTsts;
+    } : _ref4$submitAction,
+        _ref4$cancelAction = _ref4.cancelAction,
+        cancelAction = _ref4$cancelAction === undefined ? function (f) {
+        return f;
+    } : _ref4$cancelAction,
+        submitText = _ref4.submitText;
 
-    var _React$useState15 = React.useState(""),
-        _React$useState16 = _slicedToArray(_React$useState15, 2),
-        selectedTst = _React$useState16[0],
-        setSelectedTst = _React$useState16[1];
+    var _React$useState17 = React.useState(dataEntry._id ? dataEntry.userIonUsername : ""),
+        _React$useState18 = _slicedToArray(_React$useState17, 2),
+        userIonUsername = _React$useState18[0],
+        setUserIonUsername = _React$useState18[1];
+
+    var _React$useState19 = React.useState(dataEntry._id ? dataEntry.tst : ""),
+        _React$useState20 = _slicedToArray(_React$useState19, 2),
+        tstName = _React$useState20[0],
+        setTstName = _React$useState20[1];
+
+    var _React$useState21 = React.useState(dataEntry._id ? dataEntry.correct : []),
+        _React$useState22 = _slicedToArray(_React$useState21, 2),
+        correct = _React$useState22[0],
+        setCorrect = _React$useState22[1];
+
+    var _React$useState23 = React.useState(dataEntry._id !== ""),
+        _React$useState24 = _slicedToArray(_React$useState23, 1),
+        userTstLocked = _React$useState24[0];
+
+    var allTsts = React.useContext(OfficerContext).tsts;
+
+    return React.createElement(
+        "form",
+        { onSubmit: function onSubmit(e) {
+                e.preventDefault();return false;
+            } },
+        React.createElement(
+            "div",
+            null,
+            React.createElement(
+                "label",
+                { htmlFor: "userIonUsername", className: "mb-1 text-sm" },
+                "User Ion Username"
+            ),
+            React.createElement("input", {
+                name: "userIonUsername",
+                type: "text",
+                value: userIonUsername,
+                className: "p-1 bg-gray-100 focus:bg-gray-200 focus:outline-none transition duration-300 ease-in-out",
+                onChange: function onChange(e) {
+                    return setUserIonUsername(e.target.value);
+                },
+                readOnly: userTstLocked,
+                required: true })
+        ),
+        React.createElement(
+            "div",
+            null,
+            React.createElement(
+                "label",
+                { htmlFor: "tstName", className: "mb-1 text-sm" },
+                "TST"
+            ),
+            React.createElement(
+                "select",
+                {
+                    value: tstName,
+                    onChange: function onChange(e) {
+                        setTstName(e.target.value);
+                        var selectedTst = allTsts.find(function (tst) {
+                            return tst.name === e.target.value;
+                        });
+
+                        if (selectedTst) {
+                            var newCorrect = [];
+                            newCorrect.length = selectedTst.numProblems;
+                            newCorrect.fill(0);
+                            setCorrect(newCorrect);
+                        } else setCorrect([]);
+                    },
+                    disabled: userTstLocked
+                },
+                React.createElement("option", { value: "" }),
+                allTsts.map(function (tst, i) {
+                    return React.createElement(
+                        "option",
+                        { key: i, value: tst.name },
+                        tst.name
+                    );
+                })
+            )
+        ),
+        tstName !== "" && React.createElement(
+            "fieldset",
+            null,
+            React.createElement(
+                "legend",
+                { className: "mb-1 text-sm" },
+                "Correct Answers"
+            ),
+            React.createElement(
+                "div",
+                null,
+                correct.map(function (problemCorrect, i) {
+                    return React.createElement(
+                        "div",
+                        { key: i },
+                        React.createElement(
+                            "label",
+                            { htmlFor: "problem_" + i, className: "text-sm" },
+                            i + 1,
+                            "."
+                        ),
+                        React.createElement("input", {
+                            name: "problem_" + i,
+                            type: "checkbox",
+                            checked: problemCorrect === 1,
+                            onChange: function onChange() {
+                                return setCorrect(correct.map(function (p, j) {
+                                    return i === j ? (p + 1) % 2 : p;
+                                }));
+                            }
+                        })
+                    );
+                })
+            )
+        ),
+        React.createElement(
+            "div",
+            { className: "flex flex-row justify-center mt-2" },
+            React.createElement(
+                "button",
+                {
+                    type: "button",
+                    className: "mx-1 py-2 w-1/5 text-sm uppercase rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none transition duration-300 ease-in-out",
+                    onClick: function onClick() {
+                        return submitAction({ _id: dataEntry._id, userIonUsername: userIonUsername, tst: tstName, correct: correct });
+                    } },
+                submitText
+            ),
+            React.createElement(
+                "button",
+                {
+                    type: "button",
+                    className: "mx-1 py-2 w-1/5 text-sm uppercase rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none transition duration-300 ease-in-out",
+                    onClick: cancelAction },
+                "Close"
+            )
+        )
+    );
+}
+
+function ContestTstField(_ref5) {
+    var _ref5$tsts = _ref5.tsts,
+        tsts = _ref5$tsts === undefined ? [] : _ref5$tsts,
+        _ref5$updateTsts = _ref5.updateTsts,
+        updateTsts = _ref5$updateTsts === undefined ? function (f) {
+        return f;
+    } : _ref5$updateTsts;
+
+    var _React$useState25 = React.useState(""),
+        _React$useState26 = _slicedToArray(_React$useState25, 2),
+        selectedTst = _React$useState26[0],
+        setSelectedTst = _React$useState26[1];
 
     var allTsts = React.useContext(OfficerContext).tsts;
 
@@ -502,28 +732,28 @@ function ContestTstField(_ref4) {
     );
 }
 
-function ContestEditForm(_ref5) {
-    var _ref5$dataEntry = _ref5.dataEntry,
-        dataEntry = _ref5$dataEntry === undefined ? { _id: "", tsts: [] } : _ref5$dataEntry,
-        _ref5$submitAction = _ref5.submitAction,
-        submitAction = _ref5$submitAction === undefined ? function (f) {
+function ContestEditForm(_ref6) {
+    var _ref6$dataEntry = _ref6.dataEntry,
+        dataEntry = _ref6$dataEntry === undefined ? { _id: "", tsts: [] } : _ref6$dataEntry,
+        _ref6$submitAction = _ref6.submitAction,
+        submitAction = _ref6$submitAction === undefined ? function (f) {
         return f;
-    } : _ref5$submitAction,
-        _ref5$cancelAction = _ref5.cancelAction,
-        cancelAction = _ref5$cancelAction === undefined ? function (f) {
+    } : _ref6$submitAction,
+        _ref6$cancelAction = _ref6.cancelAction,
+        cancelAction = _ref6$cancelAction === undefined ? function (f) {
         return f;
-    } : _ref5$cancelAction,
-        submitText = _ref5.submitText;
+    } : _ref6$cancelAction,
+        submitText = _ref6.submitText;
 
-    var _React$useState17 = React.useState(dataEntry._id ? dataEntry.name : ""),
-        _React$useState18 = _slicedToArray(_React$useState17, 2),
-        contestName = _React$useState18[0],
-        setContestName = _React$useState18[1];
+    var _React$useState27 = React.useState(dataEntry._id ? dataEntry.name : ""),
+        _React$useState28 = _slicedToArray(_React$useState27, 2),
+        contestName = _React$useState28[0],
+        setContestName = _React$useState28[1];
 
-    var _React$useState19 = React.useState(dataEntry._id ? dataEntry.year : ""),
-        _React$useState20 = _slicedToArray(_React$useState19, 2),
-        year = _React$useState20[0],
-        setYear = _React$useState20[1];
+    var _React$useState29 = React.useState(dataEntry._id ? dataEntry.year : ""),
+        _React$useState30 = _slicedToArray(_React$useState29, 2),
+        year = _React$useState30[0],
+        setYear = _React$useState30[1];
 
     var _React$useReducer5 = React.useReducer(function (state, action) {
         if (action.type === "add") return [].concat(_toConsumableArray(state), [{ name: action.data, weighting: 0.0 }]);else if (action.type === "edit") return state.map(function (tst) {
@@ -605,26 +835,26 @@ function ContestEditForm(_ref5) {
     );
 }
 
-function DataEditTableRow(_ref6) {
-    var _ref6$dataEntry = _ref6.dataEntry,
-        dataEntry = _ref6$dataEntry === undefined ? {} : _ref6$dataEntry,
-        _ref6$meta = _ref6.meta,
-        meta = _ref6$meta === undefined ? {} : _ref6$meta,
-        _ref6$editFunc = _ref6.editFunc,
-        editFunc = _ref6$editFunc === undefined ? function (f) {
+function DataEditTableRow(_ref7) {
+    var _ref7$dataEntry = _ref7.dataEntry,
+        dataEntry = _ref7$dataEntry === undefined ? {} : _ref7$dataEntry,
+        _ref7$meta = _ref7.meta,
+        meta = _ref7$meta === undefined ? {} : _ref7$meta,
+        _ref7$editFunc = _ref7.editFunc,
+        editFunc = _ref7$editFunc === undefined ? function (f) {
         return f;
-    } : _ref6$editFunc,
-        _ref6$deleteFunc = _ref6.deleteFunc,
-        deleteFunc = _ref6$deleteFunc === undefined ? function (f) {
+    } : _ref7$editFunc,
+        _ref7$deleteFunc = _ref7.deleteFunc,
+        deleteFunc = _ref7$deleteFunc === undefined ? function (f) {
         return f;
-    } : _ref6$deleteFunc,
-        _ref6$DataEditForm = _ref6.DataEditForm,
-        DataEditForm = _ref6$DataEditForm === undefined ? null : _ref6$DataEditForm;
+    } : _ref7$deleteFunc,
+        _ref7$DataEditForm = _ref7.DataEditForm,
+        DataEditForm = _ref7$DataEditForm === undefined ? null : _ref7$DataEditForm;
 
-    var _React$useState21 = React.useState(false),
-        _React$useState22 = _slicedToArray(_React$useState21, 2),
-        editToggled = _React$useState22[0],
-        setEditToggled = _React$useState22[1];
+    var _React$useState31 = React.useState(false),
+        _React$useState32 = _slicedToArray(_React$useState31, 2),
+        editToggled = _React$useState32[0],
+        setEditToggled = _React$useState32[1];
 
     if (editToggled) {
         return dataEntry && React.createElement(
@@ -672,7 +902,7 @@ function DataEditTableRow(_ref6) {
                         type: "button",
                         className: "mr-1 p-2 w-11/24 text-sm uppercase rounded-full text-white bg-red-600 hover:bg-red-700 focus:outline-none transition duration-300 ease-in-out",
                         onClick: function onClick() {
-                            if (confirm("Are you sure you want to delete " + dataEntry.name + "?")) deleteFunc(dataEntry._id);
+                            if (confirm("Are you sure you want to delete this entry?")) deleteFunc(dataEntry._id);
                         } },
                     "Delete"
                 )
@@ -681,21 +911,28 @@ function DataEditTableRow(_ref6) {
     }
 }
 
-function DataEditTable(_ref7) {
-    var _ref7$meta = _ref7.meta,
-        meta = _ref7$meta === undefined ? {} : _ref7$meta,
-        _ref7$editFunc = _ref7.editFunc,
-        editFunc = _ref7$editFunc === undefined ? function (f) {
+function DataEditTable(_ref8) {
+    var _ref8$meta = _ref8.meta,
+        meta = _ref8$meta === undefined ? {} : _ref8$meta,
+        _ref8$filters = _ref8.filters,
+        filters = _ref8$filters === undefined ? {} : _ref8$filters,
+        _ref8$editFunc = _ref8.editFunc,
+        editFunc = _ref8$editFunc === undefined ? function (f) {
         return f;
-    } : _ref7$editFunc,
-        _ref7$deleteFunc = _ref7.deleteFunc,
-        deleteFunc = _ref7$deleteFunc === undefined ? function (f) {
+    } : _ref8$editFunc,
+        _ref8$deleteFunc = _ref8.deleteFunc,
+        deleteFunc = _ref8$deleteFunc === undefined ? function (f) {
         return f;
-    } : _ref7$deleteFunc,
-        _ref7$DataEditForm = _ref7.DataEditForm,
-        DataEditForm = _ref7$DataEditForm === undefined ? null : _ref7$DataEditForm;
+    } : _ref8$deleteFunc,
+        _ref8$DataEditForm = _ref8.DataEditForm,
+        DataEditForm = _ref8$DataEditForm === undefined ? null : _ref8$DataEditForm;
 
     var data = React.useContext(OfficerContext)[meta.dataTarget + "s"];
+    var matchesFilters = function matchesFilters(dataEntry) {
+        return filters.reduce(function (acc, filter) {
+            return !acc ? acc : !filter.value || dataEntry[filter.propName] === filter.value;
+        }, true);
+    };
 
     if (data.length === 0) return React.createElement(
         "p",
@@ -729,32 +966,82 @@ function DataEditTable(_ref7) {
             "tbody",
             { className: "divide-y" },
             data.map(function (dataEntry, i) {
-                return React.createElement(DataEditTableRow, {
-                    key: i,
-                    dataEntry: dataEntry,
-                    meta: meta,
-                    editFunc: editFunc,
-                    deleteFunc: deleteFunc,
-                    DataEditForm: DataEditForm });
+                if (matchesFilters(dataEntry)) {
+                    return React.createElement(DataEditTableRow, {
+                        key: i,
+                        dataEntry: dataEntry,
+                        meta: meta,
+                        editFunc: editFunc,
+                        deleteFunc: deleteFunc,
+                        DataEditForm: DataEditForm });
+                }
             })
         )
     );
 }
 
-function DataEditContainer(_ref8) {
-    var _ref8$meta = _ref8.meta,
-        meta = _ref8$meta === undefined ? {} : _ref8$meta,
-        _ref8$updateFunc = _ref8.updateFunc,
-        updateFunc = _ref8$updateFunc === undefined ? function (f) {
+function DataEditContainer(_ref9) {
+    var _ref9$meta = _ref9.meta,
+        meta = _ref9$meta === undefined ? {} : _ref9$meta,
+        _ref9$updateFunc = _ref9.updateFunc,
+        updateFunc = _ref9$updateFunc === undefined ? function (f) {
         return f;
-    } : _ref8$updateFunc,
-        _ref8$DataEditForm = _ref8.DataEditForm,
-        DataEditForm = _ref8$DataEditForm === undefined ? null : _ref8$DataEditForm;
+    } : _ref9$updateFunc,
+        _ref9$DataEditForm = _ref9.DataEditForm,
+        DataEditForm = _ref9$DataEditForm === undefined ? null : _ref9$DataEditForm;
 
-    var _React$useState23 = React.useState(false),
-        _React$useState24 = _slicedToArray(_React$useState23, 2),
-        addToggled = _React$useState24[0],
-        setAddToggled = _React$useState24[1];
+    var _React$useState33 = React.useState(false),
+        _React$useState34 = _slicedToArray(_React$useState33, 2),
+        addToggled = _React$useState34[0],
+        setAddToggled = _React$useState34[1];
+
+    var _React$useState35 = React.useState(meta.filters.map(function (filter) {
+        return { propName: filter.propName, value: "" };
+    })),
+        _React$useState36 = _slicedToArray(_React$useState35, 2),
+        filters = _React$useState36[0],
+        setFilters = _React$useState36[1];
+
+    var filtersElement = React.createElement(
+        "div",
+        null,
+        meta.filters.map(function (filter, i) {
+            if (filter.type === "select") {
+                return React.createElement(
+                    "div",
+                    { key: i, className: "flex items-center" },
+                    React.createElement(
+                        "label",
+                        { className: "text-sm mr-2" },
+                        "Filter ",
+                        filter.displayName
+                    ),
+                    React.createElement(
+                        "select",
+                        {
+                            value: filters.find(function (f) {
+                                return f.propName === filter.propName;
+                            }).value,
+                            className: "p-1 text-sm bg-gray-100 focus:bg-gray-200",
+                            onChange: function onChange(e) {
+                                return setFilters(filters.map(function (f) {
+                                    return f.propName === filter.propName ? Object.assign({}, f, { value: e.target.value }) : f;
+                                }));
+                            }
+                        },
+                        React.createElement("option", { value: "" }),
+                        filter.options.map(function (option, j) {
+                            return React.createElement(
+                                "option",
+                                { key: j, value: option },
+                                option
+                            );
+                        })
+                    )
+                );
+            }
+        })
+    );
 
     return React.createElement(
         "div",
@@ -764,8 +1051,10 @@ function DataEditContainer(_ref8) {
             { className: "text-2xl" },
             meta.dataDisplayName
         ),
+        meta.filters.length === 0 ? "" : filtersElement,
         React.createElement(DataEditTable, {
             meta: meta,
+            filters: filters,
             editFunc: function editFunc(editedData) {
                 return updateFunc({ target: meta.dataTarget, type: "edit", data: editedData });
             },
@@ -796,6 +1085,7 @@ function DataEditContainer(_ref8) {
 
 function OfficerPage() {
     var _React$useContext = React.useContext(OfficerContext),
+        tsts = _React$useContext.tsts,
         updateServer = _React$useContext.updateServer;
 
     return React.createElement(
@@ -805,14 +1095,27 @@ function OfficerPage() {
             meta: {
                 dataDisplayName: "TST",
                 dataTarget: "tst",
+                filters: [],
                 columnNames: [{ propName: "name", displayName: "TST Name", width: "1/3" }, { propName: "year", displayName: "Year", width: "1/5" }]
             },
             updateFunc: updateServer,
             DataEditForm: TstEditForm }),
         React.createElement(DataEditContainer, {
             meta: {
+                dataDisplayName: "Score",
+                dataTarget: "score",
+                filters: [{ propName: "tst", displayName: "TST", type: "select", options: tsts.map(function (tst) {
+                        return tst.name;
+                    }) }],
+                columnNames: [{ propName: "userIonUsername", displayName: "User Ion ID", width: "1/3" }, { propName: "tst", displayName: "TST", width: "1/5" }]
+            },
+            updateFunc: updateServer,
+            DataEditForm: ScoreEditForm }),
+        React.createElement(DataEditContainer, {
+            meta: {
                 dataDisplayName: "Contest",
                 dataTarget: "contest",
+                filters: [],
                 columnNames: [{ propName: "name", displayName: "Contest Name", width: "1/3" }, { propName: "year", displayName: "Year", width: "1/5" }]
             },
             updateFunc: updateServer,

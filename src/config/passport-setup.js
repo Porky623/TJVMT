@@ -35,6 +35,7 @@ passport.use('ion', new OAuth2Strategy({
     clientID: keys.ion.clientID,
     clientSecret: keys.ion.clientSecret,
     callbackURL: "https://activities.tjhsst.edu/vmt/auth/ion/redirect"
+    // callbackURL: "http://localhost:3000/auth/ion/redirect"
 }, async (accessToken, refreshToken, profile, done) => {
     let curUser = await User.findOne({ionUsername: profile.ion_username});
     if (curUser) {
