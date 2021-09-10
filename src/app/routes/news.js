@@ -31,21 +31,21 @@ router.get('/news', async (req, res) => {
     res.locals.metaTags = {
         title: 'News',
     };
-    let announcements = []
+    var announcements = []
     let allAnnounce = await Announcement.find({});
     for (var i = 0; i < allAnnounce.length; i++) {
         announcements.push({
             title: allAnnounce[i].title,
             body: marked(allAnnounce[i].body),
-            date: allAnnounce[i].date
+            date: new Date(allAnnounce[i].date),
         })
     }
+    announcements.sort((a1, a2) => a2.date - a1.date)
 
     res.render('news', {isOfficer: (req.user && req.user.isOfficer), announcement: announcements});
 });
 
 router.post('/announcement', async (req, res) => {
-    console.log(req.body)
     if (await Announcement.exists({title: req.body.title})) {
         return req.flash({
             type: "Warning",
@@ -53,15 +53,12 @@ router.post('/announcement', async (req, res) => {
             redirect: req.app.get('prefix') + 'news'
         });
     }
-    
-    var curDate = new Date();
-    curDate = months[curDate.getMonth()] + ' ' + curDate.getDay() + ', ' + curDate.getFullYear();
+
     await new Announcement({
         title: req.body.title,
         body: req.body.body,
-        date: curDate
+        date: new Date(),
     }).save();
-    console.log('announced')
 
     if (req.body.sendEmail) {
         let mailOptions = {
