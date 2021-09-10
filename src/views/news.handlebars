@@ -56,13 +56,17 @@
         const title = clicked.siblings('h4').html()
         $.ajax({
             url: '/announcement',
-            type: 'DELETE',
+            method: 'DELETE',
             data: {
                 'title': title
             },
         }).done((data) => {
-        }).fail((xhr) => {
+            console.log(data)
+        }).fail((xhr, ajaxOptions, thrownError) => {
             // TODO: 404 CORS stuff
+            console.log(xhr)
+            console.log(ajaxOptions)
+            console.log(thrownError)
         })
     });
 </script>

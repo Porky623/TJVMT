@@ -86,11 +86,8 @@ router.post('/announcement', async (req, res) => {
 
 router.delete('/announcement', officerCheck, async (req, res) => {
     await Announcement.deleteOne({title: req.body.title});
-    return req.flash({
-        type: "Success",
-        message: "Announcement deleted",
-        redirect: req.app.get('prefix') + 'news'
-    });
+    
+    return res.status(200).send(msg);
 });
 
 module.exports = router;
