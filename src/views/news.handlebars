@@ -1,28 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
 <body>
-    <h1>News</h1>
-    <section>
-        <h2>Calender</h2>
-        <iframe src="https://calendar.google.com/calendar/embed?src=vmtofficers%40gmail.com&ctz=America/New_York" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
-        <p><small>If there are any questions concerning the calendar, please email <a href="mailto:vmtofficers@gmail.com">vmtofficers@gmail.com</a>.</small></p>
+    <section class="flex flex-col items-center justify-center pt-24">
+        <h2 class="m-auto pl-4 font-adam text-5xl gradient-text text-center">Calendar</h2>
+        <iframe src="https://calendar.google.com/calendar/embed?src=vmtofficers%40gmail.com&ctz=America/New_York"
+            style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+        <p><small>If there are any questions concerning the calendar, please email <a
+                    href="mailto:vmtofficers@gmail.com">vmtofficers@gmail.com</a>.</small></p>
     </section>
-    <section>
-        <h2>Announcements</h2>
-        {{!-- {{#if isOfficer}} --}}
-            <button>Add Annoucement</button>
-            <form action="{{ prefix }}announcement" method="POST">
-                <input name="title" type="text" placeholder="Title"/>
-                <textarea name="body" cols="30" rows="10" placeholder="Announcement Body"></textarea>
-                <label for="send_email"><input id="send_email" name="sendEmail" type="checkbox"/> Send in Weekly Email</label>
-                <input type="submit" value="Post Annoucement">
-            </form>
-        {{!-- {{/if}} --}}
-        {{#each announcement}}
-            <div>
-                <p>{{date}}</p>
-                <h4>{{title}}</h4>
+    <section class="flex flex-col items-center justify-center pt-24">
+        <h2 class="m-auto pl-4 font-adam text-5xl gradient-text text-center">Announcements</h2>
+        {{#if isOfficer}}
+        {{!-- <button
+            class="block m-auto my-5 pt-2 pb-2 px-10 font-adam text-lg text-white rounded-full bg-gradient-to-br from-red-300 to-blue-300"
+        >
+            Add Annoucement
+        </button> --}}
+        <form action="{{ prefix }}announcement" method="POST"
+            class="flex flex-col items-center m-auto md:w-2/3 xl:w-1/2">
+            <input name="title" type="text" placeholder="Title"
+                class="block m-auto my-5 p-4 text-lg bg-gray-100 focus:bg-gray-200 w-4/5 focus:outline-none transition duration-300 ease-in-out" />
+            <textarea name="body" cols="30" rows="10" placeholder="Announcement Body"
+                class="block m-auto my-1 p-4 text-lg bg-gray-100 focus:bg-gray-200 w-4/5 focus:outline-none transition duration-300 ease-in-out"></textarea>
+            <label for="send_email" class="inline-flex items-center mt-3">
+                <input id="send_email" name="sendEmail" type="checkbox" class="align-baseline" />
+                <span class="ml-2">Send in Weekly Email</span>
+            </label>
+            <input type="submit" value="Post Annoucement"
+                class="block m-auto my-5 pt-2 pb-2 px-10 font-adam text-lg text-white rounded-full bg-gradient-to-br from-red-300 to-blue-300">
+        </form>
+        {{/if}}
+        
+        <div class="md:w-2/3 xl:w-1/2 flex flex-col items-center justify-center pt-24">
+            {{#each announcement}}
+            <div class="w-full my-5 px-5 py-3 shadow-md rounded-lg lg:mx-3">
+                {{#if ../isOfficer}}
+                <button class="delete-announcement w-5 h-5 focus:outline-none ">
+                    <img src="{{ prefix }}images/trash.png" alt="Trash" class="bg-cover"/></a>
+                </button>
+                {{/if}}
+
+                <h4 class="text-2xl font-adam">{{title}}</h4>
+                <p class="text-sm mt-1 mb-5">{{date}}</p>
                 <p>{{{body}}}</p>
             </div>
-        {{/each}}
+            {{/each}}
+        </div>
+
     </section>
 </body>
+<script>
+    $(".delete-announcement").click(function() {
+        const clicked = $(event.target).closest('.delete-announcement')
+        const title = clicked.siblings('h4').html()
+        $.ajax({
+            url: '/announcement',
+            type: 'DELETE',
+            data: {
+                'title': title
+            },
+        }).done((data) => {
+        }).fail((xhr) => {
+            // TODO: 404 CORS stuff
+        })
+    });
+</script>
 
+</html>

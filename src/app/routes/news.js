@@ -40,10 +40,12 @@ router.get('/news', async (req, res) => {
             date: allAnnounce[i].date
         })
     }
+
     res.render('news', {isOfficer: (req.user && req.user.isOfficer), announcement: announcements});
 });
 
 router.post('/announcement', async (req, res) => {
+    console.log(req.body)
     if (await Announcement.exists({title: req.body.title})) {
         return req.flash({
             type: "Warning",
@@ -56,9 +58,10 @@ router.post('/announcement', async (req, res) => {
     curDate = months[curDate.getMonth()] + ' ' + curDate.getDay() + ', ' + curDate.getFullYear();
     await new Announcement({
         title: req.body.title,
-        body: reœq.body.body,
+        body: req.body.body,
         date: curDate
     }).save();
+    console.log('announced')
 
     if (req.body.sendEmail) {
         let mailOptions = {
@@ -80,7 +83,7 @@ router.post('/announcement', async (req, res) => {
     return req.flash({
         type: "Success",
         message: "Announcement created",
-        redirect: req.app.get('prefix') + '/news'
+        redirect: req.app.get('prefix') + 'news'
     });
 });
 
@@ -94,3 +97,9 @@ router.delete('/announcement', officerCheck, async (req, res) => {
 });
 
 module.exports = router;
+
+/**
+ * TODO:
+ * Add Announcement button collapsing form
+ * Fix flash with ajax on delete announcement
+ */

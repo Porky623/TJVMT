@@ -3,13 +3,13 @@ const router = express.Router();
 const officerCtl = require('../controllers/officer');
 
 const officerCheck = function officerCheck(req, res, next) {
-  if(!req.user) {
-    return res.redirect(`${req.app.get('prefix')}auth/login`);
-  }
-  if (!req.user.isOfficer) {
-    return res.redirect(req.app.get('prefix'));
-  }
-  next();
+    if (!req.user) {
+        return res.redirect(`${req.app.get('prefix')}auth/login`);
+    }
+    if (!req.user.isOfficer) {
+        return res.redirect(req.app.get('prefix'));
+    }
+    next();
 };
 
 const sendCtlResult = (msg, res) => {
