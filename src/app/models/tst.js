@@ -11,14 +11,15 @@ const tst = new Schema({
         type: Number,
         required: true
     },
-    numProblems: {
-        type: Number,
+    type: {
+        type: String,
         required: true,
+        enum: ["short_answer_unweighted, short_answer_weighted, proof, arml"],
+        default: "short_answer_unweighted"
     },
-    scoreWeighted: {
-        type: Boolean,
-        required: true,
-        default: false
+    info: {
+        type: Map,
+        of: String
     },
     writers: {
         type: [String],

@@ -147,7 +147,6 @@ exports.deleteTst = async (tstId) => {
 };
 
 // Score functions
-
 exports.getScores = async (tst) => {
     let scores;
     if (tst)
