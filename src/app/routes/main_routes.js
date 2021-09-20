@@ -51,4 +51,12 @@ router.get('/archive', (req, res) => {
     res.render('archive');
 });
 
+//Monday Practice
+router.get('/monday_practice', (req, res) => {
+    res.locals.metaTags = {
+        title: "Monday Practice",
+    };
+    res.render('monday_practice');
+});
+
 module.exports = router;
