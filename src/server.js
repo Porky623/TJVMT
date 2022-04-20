@@ -47,12 +47,12 @@ let hbs = exphbs.create({
   defaultLayout: 'base',
   extname: '.handlebars',
   //For actual site use
-  layoutsDir: './TJVMT/src/views/layouts',
-  partialsDir: './TJVMT/src/views/partials',
+  // layoutsDir: './TJVMT/src/views/layouts',
+  // partialsDir: './TJVMT/src/views/partials',
 
   //For local use
-  // layoutsDir: './src/views/layouts',
-  // partialsDir: './src/views/partials',
+  layoutsDir: './src/views/layouts',
+  partialsDir: './src/views/partials',
   helpers: {
       json: function(context) {
           return JSON.stringify(context);
@@ -108,12 +108,13 @@ app.use(function(req,res,next){
 app.use('/', routes);
 
 //For actual site use
-app.listen(process.env.PORT, function() {
-  console.log("Server listening on: " + process.env.PORT);
-});
+// app.listen(process.env.PORT, function() {
+//   console.log("Server listening on: " + process.env.PORT);
+// });
 
 app.use(express.static('/views/images'));
+
 //For local use
-// app.listen(3000, () => {
-//     console.log("Server listening on: port 3000");
-// });
+app.listen(3000, () => {
+    console.log("Server listening on: port 3000");
+});
