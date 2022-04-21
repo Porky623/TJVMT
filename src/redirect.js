@@ -1,12 +1,10 @@
 const express = require('express');
+
 let app = express();
+app.set('prefix', '/vmt/');
 
-app.all('*', (req, res) => {
-  res.redirect(`https://tjvmt.com${req.url}`)
-})
+app.all('*', (req, res) => res.redirect(`https://tjvmt.com${req.url}`))
 
-const port = process.env.PORT | 3000
-//For local use
-app.listen(port, () => {
-    console.log(`Server listening on: port ${port}`);
+app.listen(process.env.PORT, function() {
+  console.log("Server listening on: " + process.env.PORT);
 });
